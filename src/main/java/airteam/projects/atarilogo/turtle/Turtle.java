@@ -87,6 +87,10 @@ public class Turtle {
 		return turtlePosY;
 	}
 	
+	public int getMovementsCount() {
+		return turtleMovementList.size();
+	}
+	
 	public void setX(int x) {
 		turtlePosX = x;
 	}
@@ -130,7 +134,6 @@ public class Turtle {
 	
 	public void drawMovements(Graphics2D g, int w, int h) {
 		if(turtleMovementList.size() == 0) return;
-		double scale = Turtles_Workspace_Area.getScale();
 		int offsetX = Turtles_Workspace_Area.getCurrentX();
 		int offsetY = Turtles_Workspace_Area.getCurrentY();
 		
@@ -140,10 +143,10 @@ public class Turtle {
 			
 			
 			g.drawLine(
-				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentX() + (move.x1))),
-				(int) ((h / 2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentY() + (move.y1))),
-				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentX() + (move.x2))),
-				(int) ((h / 2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentY() + (move.y2)))
+				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(offsetX + (move.x1))),
+				(int) ((h / 2) + Turtles_Workspace_Area.scaledValue(offsetY + (move.y1))),
+				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(offsetX + (move.x2))),
+				(int) ((h / 2) + Turtles_Workspace_Area.scaledValue(offsetY + (move.y2)))
 		);
 			
 		}

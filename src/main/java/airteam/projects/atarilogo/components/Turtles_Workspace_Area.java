@@ -26,6 +26,7 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -45,6 +46,7 @@ import airteam.projects.atarilogo.utilities.Log_Utilies;
 import javax.swing.JSeparator;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import javax.swing.ScrollPaneConstants;
 
 public class Turtles_Workspace_Area extends JPanel {
 	private static HashMap<Integer, Turtle> turtles = new HashMap<>();
@@ -63,10 +65,6 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	private static boolean mousePressed;
 	
-	private static int drawingBoardOffsetX, drawingBoardOffsetY;
-	private static BufferedImage drawingBoardImage;
-	private static Graphics2D drawingBoardGraphics;
-	
 	private static int dotSize = 3;
 	private static int dotSpacing = 20;
 	
@@ -77,8 +75,12 @@ public class Turtles_Workspace_Area extends JPanel {
 	private static JLabel coordinates;
 	private static JSlider scaleSlider;
 	
+	private BoardInfo lastBoardInfo;
+	private Graphics2D lastGraphics;
+	
 	
 	public Turtles_Workspace_Area() {
+		setDoubleBuffered(false);
 		setOpaque(false);
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		Turtles_Workspace_Area.instance = this;
@@ -165,41 +167,6 @@ public class Turtles_Workspace_Area extends JPanel {
 		Turtle t = Turtles_Workspace_Area.turtles.get(id);
 		if(t == null) Log_Utilies.logError("POPROSZONO O ZOLWIA KTORY NIE ISTNIEJE!");
 		return t;
-	}
-	
-	public void createDrawingBoard() {
-		int w = getBounds().width;
-		int h = getBounds().height;
-		
-		Turtles_Workspace_Area.drawingBoardImage = new BufferedImage(w, h, 2);
-		Turtles_Workspace_Area.drawingBoardGraphics = drawingBoardImage.createGraphics();
-		
-		drawingBoardOffsetX = drawingBoardOffsetY = 0;
-		
-		Log_Utilies.logInfo("drawingBoardOffsetX " + drawingBoardOffsetX, "drawingBoardOffsetY " + drawingBoardOffsetY);
-	}
-	
-	public static void resizeDrawingBoard(int addWidth, int addHeight) {
-		Log_Utilies.logInfo("Zwiekszono border mapy: X " + addWidth + " Y " + addHeight);
-		
-		BufferedImage image = new BufferedImage(Math.abs(addWidth) + drawingBoardImage.getWidth(), Math.abs(addHeight) + drawingBoardImage.getHeight(), 2);
-		Graphics2D tmpGraphics = image.createGraphics();
-		int x = 0;
-		int y = 0;
-		
-		if(addWidth < 0) {
-			x = Math.abs(addWidth);
-			drawingBoardOffsetX =- x;
-		}
-		if(addHeight < 0) {
-			y = Math.abs(addHeight);
-			drawingBoardOffsetY =- y;
-		}
-		tmpGraphics.drawImage(drawingBoardImage, x, y, null);
-		
-		Turtles_Workspace_Area.drawingBoardImage = image;
-		Turtles_Workspace_Area.drawingBoardGraphics = image.createGraphics();
-				
 	}
 	
 	public void implementListeners() {
@@ -300,56 +267,47 @@ public class Turtles_Workspace_Area extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g) {
-		//Log_Utilies.logInfo("ZRESETOWANO WORKSPACE ZOLWIA");
+		Log_Utilies.logInfo("ZRESETOWANO WORKSPACE ZOLWIA: " + System.currentTimeMillis());
 		int w = getBounds().width;
 		int h = getBounds().height;
 		
-		Graphics2D g2d = (Graphics2D) g.create();
+		int drawingCount = 0;
+		for(Turtle t : turtles.values()) {
+			drawingCount += t.getMovementsCount();
+		}
 		
-		g2d.setRenderingHint(
+		if(lastBoardInfo != null && lastBoardInfo.equals(w, h, currentPosX, currentPosY, scale, drawingCount)) {
+			Log_Utilies.logInfo("Nie wykryto zmian na planszy, zatrzymuje renderowanie!");
+			g.drawImage(lastBoardInfo.getBufferedImage(), 0, 0, null);
+			return;
+		}
+		
+		BufferedImage tmpImage = new BufferedImage(w, h, 2);
+		Graphics2D tmpGraphics = (Graphics2D) tmpImage.getGraphics();
+		
+		tmpGraphics.setRenderingHint(
 			RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		Graphics_Utilies.setGradientPaint(g2d, new Color(225, 225, 225), new Color(231, 231, 231), w, h);
-		g2d.fillRect(0, 0, w, h);
+		Graphics_Utilies.setGradientPaint(tmpGraphics, new Color(225, 225, 225), new Color(231, 231, 231), w, h);
+		tmpGraphics.fillRect(0, 0, w, h);
 		
-    g2d.setColor(new Color(173, 173, 173));
+		tmpGraphics.setColor(new Color(173, 173, 173));
     
     for (int x = scaledValue(Math.floorMod(currentPosX, dotSpacing + (dotSize/2))); x < w; x += scaledValue(dotSpacing)) {
         for (int y = scaledValue(Math.floorMod(currentPosY, dotSpacing + (dotSize/2))); y < h; y += scaledValue(dotSpacing)) {
-            g2d.fillOval(x  - (dotSize/2), y  - (dotSize/2), scaledValue(dotSize), scaledValue(dotSize));
+        	tmpGraphics.fillOval(x  - (dotSize/2), y  - (dotSize/2), scaledValue(dotSize), scaledValue(dotSize));
         }
     }
-    
-//    if(drawingBoardImage == null) {
-//    	createDrawingBoard();
-//    }
-//    
-//    drawingBoardGraphics.dispose();
-//    drawingBoardGraphics = drawingBoardImage.createGraphics();  
-//    g2d.drawImage(Graphics_Utilies.getScaledImage(drawingBoardImage, scale), scaledValue(currentPosX + drawingBoardOffsetX), scaledValue(currentPosY + drawingBoardOffsetY), null);
 
     for(Turtle t : turtles.values()) {
-    	t.drawMovements(g2d, w, h);
-    	t.drawTurtle(g2d);
+    	t.drawMovements(tmpGraphics, w, h);
+    	t.drawTurtle(tmpGraphics);
     }
     
-	}
-	
-	public static Graphics2D getDrawingGraphics() {
-		return drawingBoardGraphics;
-	}
-	
-	public static BufferedImage getDrawingImage() {
-		return drawingBoardImage;
-	}
-	
-	public static int getDrawingHeight() {
-		return drawingBoardImage.getHeight();
-	}
-	
-	public static int getDrawingWidth() {
-		return drawingBoardImage.getWidth();
+    tmpGraphics.dispose();
+    g.drawImage(tmpImage, 0, 0, null);
+    lastBoardInfo = new BoardInfo(w, h, currentPosX, currentPosY, scale, drawingCount, tmpImage);
 	}
 	
 	public static int getCurrentX() {
@@ -372,16 +330,46 @@ public class Turtles_Workspace_Area extends JPanel {
 		return scale;
 	}
 	
-	public static int getOffsetX() {
-		return drawingBoardOffsetX;
-	}
-	
-	public static int getOffsetY() {
-		return drawingBoardOffsetY;
-	}
-	
 	public static Turtles_Workspace_Area getInstance() {
 		return instance;
+	}
+	
+	public class BoardInfo {
+		private int offsetX;
+		private int offsetY;
+		private int drawingCount;
+		private double scale;
+		private int height;
+		private int width;
+		private BufferedImage bufferedImage;
+		
+		public BoardInfo(int width, int height, int offsetX, int offsetY, double scale, int drawingCount, BufferedImage image) {
+			this.height = height;
+			this.width = width;
+			this.offsetX = offsetX;
+			this.offsetY = offsetY;
+			this.scale = scale;
+			this.drawingCount = drawingCount;
+			
+			this.bufferedImage = image;
+
+		}
+		
+		public boolean equals(int width, int height, int offsetX, int offsetY, double scale, int drawingCount) {
+			if(this.height == height && 
+				this.width == width && 
+				this.offsetX == offsetX &&
+				this.offsetY == offsetY &&
+				this.scale == scale &&
+				this.drawingCount == drawingCount) 
+				return true;
+			return false;
+		}
+		
+		public BufferedImage getBufferedImage() {
+			return bufferedImage;
+		}
+		
 	}
 	
 }

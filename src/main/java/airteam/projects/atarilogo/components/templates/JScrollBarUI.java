@@ -67,8 +67,8 @@ public class JScrollBarUI extends BasicScrollBarUI {
             width = rctngl.width;
             height = size;
         }
-        g2.setColor(new Color(240, 240, 240));
-        g2.fillRect(x, y, width, height);
+        g2.setColor(scrollbar.getBackground());
+        g2.fillRoundRect(x, y, width, height, width, width);
     }
 
     @Override

@@ -9,9 +9,12 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -39,6 +42,9 @@ public class Console_Input extends JPanel {
 	private static int borderSize = 1;
 	private static int borderRadius = 15;
 	
+	private ArrayList<String> lastCommands = new ArrayList<>();
+	private int lastCommandIndex = 0;
+	
 	public Console_Input() {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		setBorder(new EmptyBorder(2, 15, 3, 15));
@@ -64,16 +70,65 @@ public class Console_Input extends JPanel {
 		textField.setColumns(7);
 		
 		textField.addActionListener(new ActionListener(){
-
 			public void actionPerformed(ActionEvent e){
-				Log_Utilies.logInfo(textField.getText());
+				String command = textField.getText();
+				if(command.length() == 0) return;
+				if(command.charAt(0) == ' ') {
+					int index = 0;
+					for(char ch : command.toCharArray()) {
+						index++;
+						if(ch != ' ') {
+							command = command.substring(index-1);
+							break;
+						}
+					}
+					if(index == command.length()) {
+						textField.setText("");
+						return;
+					}
+				}
 				
-				Turtle t = Turtles_Workspace_Area.getTurtle(0);
-				t.move(Integer.valueOf(textField.getText()));
-				t.rotate(45);
-				Turtles_Workspace_Area.refresh(true);
+				if(lastCommands.size() > 0) {
+					if(!lastCommands.get(lastCommands.size() - 1).equals(command)) {
+						lastCommands.add(command);
+					}
+				} else {
+					lastCommands.add(command);
+				}
+				
+				if(lastCommands.size() > 50) {
+					lastCommands.remove(0);
+				}
+				
+				lastCommandIndex = lastCommands.size();
+				
+				Console_Output.addUserLog(command);
+				
 				textField.setText("");
+				Log_Utilies.logInfo(command);
       }});
+		
+		textField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode()==38) {
+					if(lastCommandIndex > 0) {
+						textField.setText(lastCommands.get(lastCommandIndex - 1));
+						lastCommandIndex--;
+					}
+				}
+				if(e.getKeyCode()==40) {
+					if(lastCommandIndex < lastCommands.size() - 1) {
+						textField.setText(lastCommands.get(lastCommandIndex + 1));
+						lastCommandIndex++;
+					}
+					else {
+						textField.setText("");
+						lastCommandIndex = lastCommands.size();
+					}
+				}
+			}
+		});
 		
 		JSeparator separator = new JSeparator();
 		separator.setOrientation(SwingConstants.VERTICAL);

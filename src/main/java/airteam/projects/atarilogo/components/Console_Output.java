@@ -6,8 +6,20 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 
+import airteam.projects.atarilogo.components.templates.JScrollBarUI;
+import airteam.projects.atarilogo.components.templates.JSliderUI;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
+import net.miginfocom.swing.MigLayout;
+
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
+import java.awt.Dimension;
 
 @SuppressWarnings("serial")
 public class Console_Output extends JPanel {
@@ -19,19 +31,99 @@ public class Console_Output extends JPanel {
 	private static int borderRadius = 15;
 	
 	private static boolean visibility = false;
+	private static JPanel linesContainer = new JPanel();
+	private static JScrollPane scrollComponent = new JScrollPane();
+	private static Console_Output instance;
+	
+	private static Color infoColor = new Color(48, 48, 48, 180);
+	private static Color errorColor = new Color(230, 60, 60, 180);
+	private static Color userColor = new Color(60, 105, 230, 180);
+	
+	private static String logPrefix = "   >>   ";
 	
 	
 	public Console_Output() {
+		instance = this;
+		
 		setOpaque(false);
+		setBorder(new EmptyBorder(8, 6, 5, 6));
+		setVisible(visibility);
+		
+		JScrollBar scrollbar = new JScrollBar();
+		scrollbar.setUI(new JScrollBarUI());
+		scrollbar.setUnitIncrement(10);
+		scrollbar.setPreferredSize(new Dimension(11, 48));
+		scrollbar.setOpaque(false);
+		scrollbar.setForeground(new Color(52, 145, 80));
+		scrollbar.setBackground(new Color(57, 135, 80, 200));
+	
+		
+		scrollComponent.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollComponent.getViewport().setOpaque(false);
+		scrollComponent.setViewportView(linesContainer);
+		scrollComponent.setOpaque(false);
+		scrollComponent.setBorder(null);
+		scrollComponent.setVerticalScrollBar(scrollbar);
+
+		linesContainer.setOpaque(false);
+		linesContainer.setLayout(new MigLayout("", "[grow,leading]", "[]"));
+		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		
+		add(scrollComponent);
 	}
 	
-	public static boolean getVisbility() {
-		return visibility;
+	public static void addInfoLog(String... messages) {
+		for(String msg : messages) {
+			JLabel line = new JLabel(logPrefix + msg);
+			line.setForeground(infoColor);
+			line.setOpaque(false);
+			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
+		}
+		instance.revalidate();
+		instance.repaint();
+	}
+	
+	public static void addErrorLog(String... messages) {
+		for(String msg : messages) {
+			JLabel line = new JLabel(logPrefix + msg);
+			line.setForeground(errorColor);
+			line.setOpaque(false);
+			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
+		}
+		instance.revalidate();
+		instance.repaint();
+	}
+	
+	public static void addUserLog(String... messages) {
+		for(String msg : messages) {
+			JLabel line = new JLabel(logPrefix + msg);
+			line.setForeground(userColor);
+			line.setOpaque(false);
+			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
+		}
+		instance.revalidate();
+		instance.repaint();
+	}
+	
+	public static void addCustomColorLog(Color color, String... messages) {
+		for(String msg : messages) {
+			JLabel line = new JLabel(logPrefix + msg);
+			line.setForeground(color);
+			line.setOpaque(false);
+			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
+		}
+		instance.revalidate();
+		instance.repaint();
 	}
 	
 	public static void changeVisbility() {
 		if(visibility) visibility = false;
 		else visibility = true;
+		instance.setVisible(visibility);
+	}
+	
+	public static boolean getVisbility() {
+		return visibility;
 	}
 
 	public void paintComponent(Graphics g) {
