@@ -3,99 +3,72 @@ package airteam.projects.atarilogo.turtle;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class Turtle {
-	private int ROTATION;
-	private int POS_X;
-	private int POS_Y;
+	private int turtleRotation;
+	private int turtlePosX;
+	private int turtlePosY;
+	private Color turtleColor;
+	private BufferedImage turtleIcon;
+	private boolean turtleVisibility;
 	
-	private int PEN_SIZE;
-	private boolean PEN_SHOWN;
-	private Color PEN_COLOR;
+	private int penSize;
+	private boolean penVisibility;
+	private Color penColor;
 	
-	private boolean TURTLE_SHOWN;
-	private Color TURTLE_COLOR;
+	private ArrayList<Turtle_Movement> turtleMovementList = new ArrayList<>();
 	
-	private BufferedImage TURTLE_ICON;
 	
 	public Turtle(int x, int y) {
-		this.POS_X = x;
-		this.POS_Y = y;
-		this.ROTATION = 0;
-		this.TURTLE_SHOWN = true;
-		this.PEN_SHOWN = true;
-		this.PEN_COLOR = new Color(69, 67, 61);
-		this.PEN_SIZE = 3;
+		turtlePosX = x;
+		turtlePosY = y;
+		turtleRotation = 0;
+		turtleVisibility = true;
 		
-		try{
-			TURTLE_ICON = ImageIO.read(getClass().getResource("/airteam/atarilogo/resources/icons/turtle_icon.png"));
-	    } catch(IOException e) { e.printStackTrace(); }
-	      catch(Exception e) { e.printStackTrace(); }
+		penVisibility = true;
+		penColor = new Color(69, 67, 61);
+		penSize = 3;
+		
+		turtleIcon = (BufferedImage) Graphics_Utilies.getInternalIcon("icons/turtle_icon.png");
 	}
 	
-	public void ROTATE(int rot) {
-		ROTATION += rot;
-		ROTATION = (ROTATION - ((ROTATION / 360) * 360));
+	public void rotate(int rot) {
+		turtleRotation += rot;
+		turtleRotation = (turtleRotation - ((turtleRotation / 360) * 360));
 	}
 	
-//	public void MOVE(int length) {
-//		Graphics2D g = TURTLE_WORKSPACE_AREA.AREA_IMAGE_G2D;
-//		
-//		int[] points = GET_POINTS_WITH_ROTATION(POS_X, POS_Y, length, this.ROTATION);
-//		
-//		int newX = points[0];
-//		int newY = points[1];
-//		
-//		if(PEN_SHOWN) {
-//			g.setColor(PEN_COLOR);
-//			g.setStroke(new BasicStroke(PEN_SIZE));
-//			g.drawLine(POS_X, POS_Y, newX, newY);
-//			g.rotate(0);
-//		}
-//		
-//		if(newY > TURTLE_WORKSPACE_AREA.HEIGHT || newY < 0 || newX < 0 || newX > TURTLE_WORKSPACE_AREA.WIDTH) {
-//			do {
-//				if(newY > TURTLE_WORKSPACE_AREA.HEIGHT) {
-//					newY = newY - TURTLE_WORKSPACE_AREA.HEIGHT;
-//					POS_Y = POS_Y - TURTLE_WORKSPACE_AREA.HEIGHT;
-//				}
-//				if(newY < 0) {
-//					newY = newY + TURTLE_WORKSPACE_AREA.HEIGHT;
-//					POS_Y = POS_Y + TURTLE_WORKSPACE_AREA.HEIGHT;
-//				}
-//				if(newX < 0) {
-//					newX = newX + TURTLE_WORKSPACE_AREA.WIDTH;
-//					POS_X = POS_X + TURTLE_WORKSPACE_AREA.WIDTH;
-//				}
-//				if(newX > TURTLE_WORKSPACE_AREA.WIDTH) {
-//					newX = newX - TURTLE_WORKSPACE_AREA.WIDTH;
-//					POS_X = POS_X - TURTLE_WORKSPACE_AREA.WIDTH;
-//				}
-//				g.setColor(PEN_COLOR);
-//				g.setStroke(new BasicStroke(PEN_SIZE));
-//				g.drawLine(POS_X, POS_Y, newX, newY);
-//				g.rotate(0);
-//			
-//				LOGGING_UTIL.debug(String.valueOf("POS_X " + POS_X + " POS_Y " + POS_Y + " NEW_X " + newX + " NEW_Y" + newY));
-//			
-//			} while(newY > TURTLE_WORKSPACE_AREA.HEIGHT || newY < 0 || newX < 0 || newX > TURTLE_WORKSPACE_AREA.WIDTH);
-//				//
-//				//LOGGING_UTIL.debug("PORUSZAM ZNOWU " + String.valueOf((int) Math.round(length - Math.sqrt((newY * newY) + (newX * newX)))));
-//				//MOVE((int) Math.round(length - Math.sqrt((newY * newY) + (newX * newX))));
-//		}
-//		POS_X = newX;
-//		POS_Y = newY;
-//
-//	}
+	public void move(int length) {
+		int[] points = getPointWithGivenRotation(turtlePosX, turtlePosY, length, turtleRotation);
+		
+		int newX = points[0];
+		int newY = points[1];
 	
-	public int[] GET_POINTS_WITH_ROTATION(int x1, int x2, int length, int rotation) {
+		turtleMovementList.add(new Turtle_Movement(
+				turtlePosX, 
+				turtlePosY, 
+				newX, 
+				newY, 
+				penSize, 
+				penColor
+		));
+		
+		turtlePosX = newX;
+		turtlePosY = newY;
+
+	}
+	
+	public int[] getPointWithGivenRotation(int x1, int x2, int length, int rotation) {
 		int newX = 0;
 		int newY = 0;
 	
@@ -106,51 +79,89 @@ public class Turtle {
 		return new int[] {newX, newY};
 	}
 	
-	public int GET_X() {
-		return POS_X;
+	public int getX() {
+		return turtlePosX;
 	}
 	
-	public int GET_Y() {
-		return POS_Y;
+	public int getY() {
+		return turtlePosY;
 	}
 	
-	public void SET_X(int x) {
-		POS_X = x;
+	public void setX(int x) {
+		turtlePosX = x;
 	}
 	
-	public void SET_Y(int y) {
-		POS_Y = y;
+	public void setY(int y) {
+		turtlePosY = y;
 	}
 	
-	public void SET_PEN_SIZE(int size) {
-		PEN_SIZE = size;
+	public void setPenSize(int size) {
+		penSize = size;
 	}
 	
-	public int GET_ROTATION() {
-		return ROTATION;
+	public int getRotation() {
+		return turtleRotation;
 	}
 	
-	public void CHANGE_PEN_VISIBILITY(boolean bool) {
-		PEN_SHOWN = bool;
+	public void setPenVisibility(boolean bool) {
+		penVisibility = bool;
 	}
 	
-	public void CHANGE_VISIBILITY(boolean bool) {
-		TURTLE_SHOWN = bool;
+	public void setTurtleVisibility(boolean bool) {
+		turtleVisibility = bool;
 	}
 	
-	public void DRAW_TURTLE(Graphics2D g) {
-		Log_Utilies.logInfo(String.valueOf(POS_X), String.valueOf(POS_Y));
-		if(TURTLE_SHOWN) {
-			Log_Utilies.logInfo(String.valueOf(ROTATION));
+	public void drawTurtle(Graphics2D g) {
+		if(turtleVisibility) {
+			int w = Turtles_Workspace_Area.getBoundsWidth();
+			int h = Turtles_Workspace_Area.getBoundsHeight();
+			int x = Turtles_Workspace_Area.scaledValue(turtlePosX) + Math.round(w/2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentX() - Math.round(turtleIcon.getWidth() / 2));
+			int y = Turtles_Workspace_Area.scaledValue(turtlePosY) + Math.round(h/2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentY() - Math.round(turtleIcon.getHeight() / 2));
+			
 			AffineTransform identity = new AffineTransform();
 			AffineTransform trans = new AffineTransform();
 			trans.setTransform(identity);
-			trans.translate(POS_X - TURTLE_ICON.getWidth() / 2, POS_Y - TURTLE_ICON.getWidth() / 2);
-			trans.rotate(Math.toRadians(ROTATION), TURTLE_ICON.getWidth() / 2, TURTLE_ICON.getHeight() / 2);
+			trans.translate(x, y);
+			trans.rotate(Math.toRadians(turtleRotation), Turtles_Workspace_Area.scaledValue(turtleIcon.getWidth() / 2), Turtles_Workspace_Area.scaledValue(turtleIcon.getHeight() / 2));
 			
-			g.drawImage(TURTLE_ICON, trans, null);
+			g.drawImage(Graphics_Utilies.getScaledImage(turtleIcon, Turtles_Workspace_Area.getScale()), trans, null);
 		}
 	}
 	
+	public void drawMovements(Graphics2D g, int w, int h) {
+		if(turtleMovementList.size() == 0) return;
+		double scale = Turtles_Workspace_Area.getScale();
+		int offsetX = Turtles_Workspace_Area.getCurrentX();
+		int offsetY = Turtles_Workspace_Area.getCurrentY();
+		
+		for(Turtle_Movement move : turtleMovementList) {
+			g.setStroke(new BasicStroke(Turtles_Workspace_Area.scaledValue(move.penSize)));
+			g.setColor(move.penColor);
+			
+			
+			g.drawLine(
+				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentX() + (move.x1))),
+				(int) ((h / 2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentY() + (move.y1))),
+				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentX() + (move.x2))),
+				(int) ((h / 2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentY() + (move.y2)))
+		);
+			
+		}
+	}
+	
+	public class Turtle_Movement {
+		public int x1, x2, y1, y2, penSize;
+		public Color penColor;
+		
+		Turtle_Movement(int x1, int y1, int x2, int y2, int penSize, Color penColor) {
+			this.x1 = x1;
+			this.y1 = y1;
+			this.x2 = x2;
+			this.y2 = y2;
+			this.penSize = penSize;
+			this.penColor = penColor;
+		}
+	}
 }
+
 

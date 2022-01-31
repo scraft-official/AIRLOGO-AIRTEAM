@@ -8,8 +8,9 @@ import java.awt.Graphics2D;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import airteam.projects.atarilogo.components.Console_Component;
+import airteam.projects.atarilogo.components.Console_Input;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.templates.JSliderUI;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
 import com.jgoodies.forms.layout.FormLayout;
@@ -30,12 +31,17 @@ import javax.swing.border.EmptyBorder;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+
 import java.awt.Cursor;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseWheelListener;
+import java.awt.image.BufferedImage;
 import java.awt.event.MouseWheelEvent;
 import javax.swing.JSlider;
 import javax.swing.SwingConstants;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 @SuppressWarnings("serial")
 public class AtariLogo extends JFrame {
@@ -48,9 +54,7 @@ public class AtariLogo extends JFrame {
 	
 	public AtariLogo() {
 		appPanel = new JPanel() {
-			public void paintComponent(Graphics g) {
-				Log_Utilies.logInfo("Stworzono panel z gradientem!");
-				
+			public void paintComponent(Graphics g) {		
 				int w = getWidth();
 				int h = getHeight();
 				Graphics_Utilies.setGradientPaint((Graphics2D) g, gradient_color1, gradient_color2, 0, h);
@@ -73,54 +77,6 @@ public class AtariLogo extends JFrame {
 //		workspacePanel.add(consolePanel);
 		
 		appPanel.add(workspacePanel, "3, 1, fill, fill");
-		workspacePanel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("left:max(20dlu;pref)"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("10dlu"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("20dlu"),},
-			new RowSpec[] {
-				RowSpec.decode("10dlu"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("fill:0px:grow"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("fill:0px:grow"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("30dlu"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("10dlu"),}));
-		
-		JSlider slider = new JSlider();
-		slider.setName("");
-		slider.setPaintLabels(true);
-		slider.setValue(100);
-		slider.setSnapToTicks(true);
-		slider.setMinorTickSpacing(25);
-		slider.setMinimum(50);
-		slider.setMaximum(200);
-		slider.setMajorTickSpacing(25);
-		slider.setOpaque(false);
-		slider.setOrientation(SwingConstants.VERTICAL);
-		workspacePanel.add(slider, "4, 3, 4, 1");
-		
-		JPanel consolePanel = new Console_Component();
-		consolePanel.setBorder(new EmptyBorder(0, 15, 0, 15));
-		consolePanel.setOpaque(false);
-		workspacePanel.add(consolePanel, "3, 7, 4, 1, fill, fill");
-		consolePanel.setLayout(new BoxLayout(consolePanel, BoxLayout.X_AXIS));
-		
-		JLabel lblNewLabel = new JLabel("WYSLIJ POLECENIE »  ");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		consolePanel.add(lblNewLabel);
-		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textField.setBorder(null);
-		textField.setOpaque(false);
-		consolePanel.add(textField);
-		textField.setColumns(7);
 		
 		this.getContentPane().add(appPanel);
 		this.setMinimumSize(new Dimension(1280, 720));
@@ -128,9 +84,12 @@ public class AtariLogo extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(100, 100, 450, 300);
 		this.setVisible(true);
+		
+		((Turtles_Workspace_Area) workspacePanel).addTurtle();
 	}
 	
 	public static void main(String[] args) {
+		System.setProperty("sun.java2d.opengl", "true");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

@@ -4,31 +4,42 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
-import airteam.projects.atarilogo.utilities.Log_Utilies;
 
-public class Console_Component extends JPanel {
-	private static boolean isHovered;
-	private static Color backgroundColor1 = new Color(209, 209, 209);
-	private static Color backgroundColor2 = new Color(204, 204, 204);
+@SuppressWarnings("serial")
+public class Console_Output extends JPanel {
+	private static Color backgroundColor1 = new Color(242, 245, 247, 165);
+	private static Color backgroundColor2 = new Color(237, 239, 240, 150);
 	
 	private static int shadowSize = 4;
 	private static int borderSize = 1;
 	private static int borderRadius = 15;
 	
-	public Console_Component() {
+	private static boolean visibility = false;
+	
+	
+	public Console_Output() {
+		
 	}
 	
+	public static boolean getVisbility() {
+		return visibility;
+	}
+	
+	public static void changeVisbility() {
+		if(visibility) visibility = false;
+		else visibility = true;
+	}
+
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int w = getBounds().width;
 		int h = getBounds().height;
 		
+		if(!visibility) return;
 		
 		Graphics2D g2d = (Graphics2D) g.create();
 		
@@ -42,5 +53,4 @@ public class Console_Component extends JPanel {
 		g2d.fillRoundRect(shadowSize/2 + borderSize/2, shadowSize/2 + borderSize/2, w-shadowSize-borderSize, h-shadowSize-borderSize, borderRadius, borderRadius);
 		g2d.dispose();
 	}
-	
 }
