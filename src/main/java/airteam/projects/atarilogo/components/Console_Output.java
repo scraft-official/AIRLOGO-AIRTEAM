@@ -22,7 +22,7 @@ public class Console_Output extends JPanel {
 	
 	
 	public Console_Output() {
-		
+		setOpaque(false);
 	}
 	
 	public static boolean getVisbility() {

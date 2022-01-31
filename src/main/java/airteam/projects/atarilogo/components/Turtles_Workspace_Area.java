@@ -135,42 +135,6 @@ public class Turtles_Workspace_Area extends JPanel {
 		scaleBottomText.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		JPanel consolePanel = new Console_Input();
-		consolePanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		consolePanel.setBorder(new EmptyBorder(2, 15, 3, 15));
-		consolePanel.setOpaque(false);
-		consolePanel.setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.UNRELATED_GAP_COLSPEC,
-				ColumnSpec.decode("163px"),
-				ColumnSpec.decode("default:grow"),
-				ColumnSpec.decode("3px"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("40px"),},
-			new RowSpec[] {
-				RowSpec.decode("fill:default:grow"),}));
-		
-		
-		JLabel lblNewLabel = new JLabel("WYSLIJ POLECENIE »  ");
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
-		consolePanel.add(lblNewLabel, "1, 1, 2, 1, left, fill");
-		
-		JTextField textField = new JTextField();
-		textField.setOpaque(false);
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textField.setBorder(null);
-		textField.setColumns(7);
-		consolePanel.add(textField, "3, 1, fill, fill");
-		
-		textField.addActionListener(new ActionListener(){
-
-			public void actionPerformed(ActionEvent e){
-				Log_Utilies.logInfo(textField.getText());
-				
-				Turtle t = Turtles_Workspace_Area.getTurtle(0);
-				t.move(Integer.valueOf(textField.getText()));
-				t.rotate(45);
-				Turtles_Workspace_Area.refresh(true);
-				textField.setText("");
-      }});
 		
 		
 		coordinates = new JLabel("X: 2331    Y: 322   ");
@@ -181,38 +145,11 @@ public class Turtles_Workspace_Area extends JPanel {
 		add(scaleTopText, "10, 1, 4, 2, center, default");
 		
 		JPanel consoleOutput = new Console_Output();
-		consoleOutput.setOpaque(false);
+		
 		add(consoleOutput, "4, 9, 9, 1, fill, fill");
 		add(coordinates, "9, 12, 5, 1, right, center");
 		add(scaleSlider, "10, 3, 4, 1, default, fill");
 		add(consolePanel, "4, 11, 9, 1, fill, fill");
-		
-		JSeparator separator = new JSeparator();
-		separator.setOrientation(SwingConstants.VERTICAL);
-		separator.setPreferredSize(new Dimension(0, 0));
-		separator.setForeground(new Color(52, 145, 80));
-		separator.setBackground(new Color(52, 145, 80));
-		consolePanel.add(separator, "4, 1, 2, 1");
-		
-		JLabel consoleButton = new JLabel(new ImageIcon(
-				Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon.png"), 28, 28) 
-		));
-		
-		ImageIcon consoleOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon-full.png"), 28, 28));
-		ImageIcon consoleOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon.png"), 28, 28));
-		
-		consoleButton.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mousePressed(MouseEvent e) {
-				Log_Utilies.logInfo("KLIKNIETO");
-				Console_Output.changeVisbility();
-				if(Console_Output.getVisbility()) consoleButton.setIcon(consoleOn);
-				else consoleButton.setIcon(consoleOff);
-				consoleOutput.repaint();
-			}
-		});
-		consoleButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		consolePanel.add(consoleButton, "6, 1, center, default");
 		add(logo, "2, 2, 4, 2, left, top");
 		
 		implementListeners();

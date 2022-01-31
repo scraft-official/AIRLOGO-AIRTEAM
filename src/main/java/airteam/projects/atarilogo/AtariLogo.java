@@ -53,6 +53,10 @@ public class AtariLogo extends JFrame {
 	
 	
 	public AtariLogo() {
+		setIconImage(Graphics_Utilies.getSizedImage(
+				(BufferedImage) Graphics_Utilies.getInternalIcon("icons/app-icon.png"), 250, 250)
+		);
+		setTitle("AIRTEAM - ATARILOGO");
 		appPanel = new JPanel() {
 			public void paintComponent(Graphics g) {		
 				int w = getWidth();
@@ -71,6 +75,7 @@ public class AtariLogo extends JFrame {
 		appPanel.setLayout(appLayout);
 		
 		JPanel workspacePanel = new Turtles_Workspace_Area();
+		workspacePanel.setName("");
 		
 		workspacePanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 //		JPanel consolePanel = new Console_Component();
