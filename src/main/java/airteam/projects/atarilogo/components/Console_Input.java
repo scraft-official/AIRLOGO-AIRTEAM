@@ -18,20 +18,26 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
+import airteam.projects.atarilogo.commands.CommandManager;
 import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
 
 @SuppressWarnings("serial")
 public class Console_Input extends JPanel {
@@ -44,6 +50,10 @@ public class Console_Input extends JPanel {
 	
 	private ArrayList<String> lastCommands = new ArrayList<>();
 	private int lastCommandIndex = 0;
+	private static JLabel consoleButton;
+	
+	private static ImageIcon consoleOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon-full.png"), 28, 28));
+	private static ImageIcon consoleOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon.png"), 28, 28));
 	
 	public Console_Input() {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -53,6 +63,8 @@ public class Console_Input extends JPanel {
 				FormSpecs.UNRELATED_GAP_COLSPEC,
 				ColumnSpec.decode("163px"),
 				ColumnSpec.decode("default:grow"),
+				FormSpecs.LABEL_COMPONENT_GAP_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("3px"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("40px"),},
@@ -60,7 +72,7 @@ public class Console_Input extends JPanel {
 				RowSpec.decode("fill:default:grow"),}));
 		
 		
-		JLabel beforeText = new JLabel("WYSLIJ POLECENIE »  ");
+		JLabel beforeText = new JLabel("WYSLIJ POLECENIE »");
 		beforeText.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
 		JTextField textField = new JTextField();
@@ -73,19 +85,17 @@ public class Console_Input extends JPanel {
 			public void actionPerformed(ActionEvent e){
 				String command = textField.getText();
 				if(command.length() == 0) return;
+				
+				while(command.contains("  ")) {
+					command = command.replaceAll("  ", " ");
+				}
+				
 				if(command.charAt(0) == ' ') {
-					int index = 0;
-					for(char ch : command.toCharArray()) {
-						index++;
-						if(ch != ' ') {
-							command = command.substring(index-1);
-							break;
-						}
-					}
-					if(index == command.length()) {
+					if(command.length() == 1) {
 						textField.setText("");
 						return;
 					}
+					command = command.substring(1);
 				}
 				
 				if(lastCommands.size() > 0) {
@@ -102,7 +112,9 @@ public class Console_Input extends JPanel {
 				
 				lastCommandIndex = lastCommands.size();
 				
+				command = command.toUpperCase();
 				Console_Output.addUserLog(command);
+				CommandManager.parse(command.split(" "));
 				
 				textField.setText("");
 				Log_Utilies.logInfo(command);
@@ -136,7 +148,7 @@ public class Console_Input extends JPanel {
 		separator.setForeground(new Color(52, 145, 80));
 		separator.setBackground(new Color(52, 145, 80));
 		
-		JLabel consoleButton = new JLabel(new ImageIcon(
+		consoleButton = new JLabel(new ImageIcon(
 				Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon.png"), 28, 28) 
 		));
 		
@@ -146,19 +158,23 @@ public class Console_Input extends JPanel {
 		consoleButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				Console_Output.changeVisbility();
-				if(Console_Output.getVisbility()) consoleButton.setIcon(consoleOn);
-				else consoleButton.setIcon(consoleOff);
-				Turtles_Workspace_Area.refresh(true);
+				Console_Output.changeVisibility();
+				refreshConsoleButton();
+				Turtles_Workspace_Area.refresh();
 			}
 		});
 		consoleButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		
-		add(separator, "4, 1, 2, 1");
+		add(separator, "6, 1, 2, 1");
 		add(textField, "3, 1, fill, fill");
-		add(beforeText, "1, 1, 2, 1, left, fill");
-		add(consoleButton, "6, 1, center, default");
+		add(beforeText, "1, 1, 2, 1, center, fill");
+		add(consoleButton, "8, 1, center, default");
 		
+	}
+	
+	public static void refreshConsoleButton() {
+		if(Console_Output.getVisbility()) consoleButton.setIcon(consoleOn);
+		else consoleButton.setIcon(consoleOff);
 	}
 	
 	public void paintComponent(Graphics g) {

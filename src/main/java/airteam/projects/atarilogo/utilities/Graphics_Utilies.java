@@ -31,8 +31,11 @@ public class Graphics_Utilies {
 		}
 	}
 	
-	public static Image getScaledImage(BufferedImage image, double scale) {
-		return image.getScaledInstance((int) Math.round(image.getWidth() * scale), (int) Math.round(image.getHeight() * scale), Image.SCALE_SMOOTH);
+	public static BufferedImage getScaledImage(BufferedImage image, double scale) {
+		BufferedImage tmpImage = new BufferedImage((int) Math.round(image.getWidth() * scale), (int) Math.round(image.getHeight() * scale), 2);
+		tmpImage.getGraphics().drawImage(image.getScaledInstance((int) Math.round(image.getWidth() * scale), (int) Math.round(image.getHeight() * scale), Image.SCALE_SMOOTH), 0, 0, null);
+		tmpImage.getGraphics().dispose();
+		return tmpImage;
 	}
 	
 	public static Image getSizedImage(BufferedImage image, int width, int height) {
@@ -44,13 +47,29 @@ public class Graphics_Utilies {
 		return resized;
 	}
 	
-	public static Image getInternalIcon(String imagePath) {
+	public static BufferedImage getInternalIcon(String imagePath) {
 		try{
 			return ImageIO.read(Graphics_Utilies.class.getResource("/airteam/projects/atarilogo/resources/" + imagePath));
 	  } catch(Exception e) { Log_Utilies.logError("Wystapil blad przy pobieraniu ikonki: " + e.getMessage(), "Path do ikonki: " + "/airteam/projects/atarilogo/resources/" + imagePath); }
 		
 		Log_Utilies.logError("Zwrocono pustwa ikonke! ( /airteam/projects/atarilogo/resources/" + imagePath + " )");
 		return null;
+	}
+	
+	public static BufferedImage toBufferedImage(Image img)
+	{
+	    if (img instanceof BufferedImage)
+	    {
+	        return (BufferedImage) img;
+	    }
+
+	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+	    Graphics2D bGr = bimage.createGraphics();
+	    bGr.drawImage(img, 0, 0, null);
+	    bGr.dispose();
+
+	    return bimage;
 	}
 	
 }

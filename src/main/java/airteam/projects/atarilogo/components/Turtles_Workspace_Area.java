@@ -19,6 +19,7 @@ import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
@@ -58,9 +59,6 @@ public class Turtles_Workspace_Area extends JPanel {
 	private static int lastPosX = 0;
 	private static int lastPosY = 0;
 	
-	private static int lastHeight = 0;
-	private static int lastWidth = 0;
-	
 	private static double scale = 1;
 	
 	private static boolean mousePressed;
@@ -70,14 +68,14 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	private static Turtles_Workspace_Area instance;
 	
-	private static boolean needToRefresh;
+	private static boolean forceRefresh;
 	
 	private static JLabel coordinates;
 	private static JSlider scaleSlider;
 	
 	private BoardInfo lastBoardInfo;
-	private Graphics2D lastGraphics;
 	
+	private static int selectedTurtle;
 	
 	public Turtles_Workspace_Area() {
 		setDoubleBuffered(false);
@@ -157,9 +155,13 @@ public class Turtles_Workspace_Area extends JPanel {
 		implementListeners();
 	}
 	
-	public Turtle addTurtle() {
-		Turtle t = new Turtle(0, 0);
-		Turtles_Workspace_Area.turtles.put(lastTurtleID++, t);
+	public Turtle addTurtle(String name) {
+		int id = lastTurtleID;
+		Turtle t = new Turtle(0, 0, name);
+		
+		Turtles_Workspace_Area.turtles.put(id, t);
+		Turtles_Workspace_Area.selectTurtle(id);
+		lastTurtleID++;
 		return t;
 	}
 	
@@ -167,6 +169,21 @@ public class Turtles_Workspace_Area extends JPanel {
 		Turtle t = Turtles_Workspace_Area.turtles.get(id);
 		if(t == null) Log_Utilies.logError("POPROSZONO O ZOLWIA KTORY NIE ISTNIEJE!");
 		return t;
+	}
+	
+	public static Collection<Turtle> getAllTurtles() {
+		return turtles.values();
+	}
+	
+	public static void clearWorkspace() {
+		for(Turtle t : turtles.values()) {
+			t.setX(0);
+			t.setY(0);
+			t.clearMovements();
+			t.rotate((360 - t.getRotation()));
+			currentPosX = 0;
+			currentPosY = 0;
+		}
 	}
 	
 	public void implementListeners() {
@@ -194,14 +211,14 @@ public class Turtles_Workspace_Area extends JPanel {
 				lastPosX = e.getPoint().x;
 				lastPosY = e.getPoint().y;
 				
-				refresh(true);
+				repaint();
 			}
 			
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				
-				int w = getBounds().width;
-				int h = getBounds().height;
+				if(mousePressed) return;
+				int w = getWidth();
+				int h = getHeight();
 				
 				int x = (int) ((w/2));
 				int y = (int) ((h/2));
@@ -234,8 +251,8 @@ public class Turtles_Workspace_Area extends JPanel {
 				
 				scaleSlider.setValue((int) (scale * 100));
 				
-				int w = getBounds().width;
-				int h = getBounds().height;
+				int w = getWidth();
+				int h = getHeight();
 				
 				int x = (int) ((w/2));
 				int y = (int) ((h/2));
@@ -251,7 +268,7 @@ public class Turtles_Workspace_Area extends JPanel {
       public void stateChanged(ChangeEvent e) {
       	if(Math.floorMod(scaleSlider.getValue(), 25) == 0)
       		scale = (scaleSlider.getValue()/100d);
-      		refresh(true);
+      		refresh();
       }
     });
 	}
@@ -261,26 +278,36 @@ public class Turtles_Workspace_Area extends JPanel {
 		return (int) Math.round(value * scale);
 	}
 	
-	public static void refresh(boolean doRepaint) {
-		needToRefresh = true;
-		if(doRepaint) instance.repaint();
+	public static void refresh() {
+		instance.repaint();
+	}
+	
+	public static void forceRefresh(boolean repaint) {
+		forceRefresh = true;
+		if(repaint) instance.repaint();
+	}
+	
+	public static void selectTurtle(int id) {
+		selectedTurtle = id;
 	}
 	
 	public void paintComponent(Graphics g) {
-		Log_Utilies.logInfo("ZRESETOWANO WORKSPACE ZOLWIA: " + System.currentTimeMillis());
-		int w = getBounds().width;
-		int h = getBounds().height;
+		//Log_Utilies.logInfo("ZRESETOWANO WORKSPACE ZOLWIA: " + System.currentTimeMillis());
+		int w = getWidth();
+		int h = getHeight();
 		
 		int drawingCount = 0;
 		for(Turtle t : turtles.values()) {
 			drawingCount += t.getMovementsCount();
 		}
 		
-		if(lastBoardInfo != null && lastBoardInfo.equals(w, h, currentPosX, currentPosY, scale, drawingCount)) {
-			Log_Utilies.logInfo("Nie wykryto zmian na planszy, zatrzymuje renderowanie!");
-			g.drawImage(lastBoardInfo.getBufferedImage(), 0, 0, null);
-			return;
-		}
+		if(!forceRefresh) {
+			if(lastBoardInfo != null && lastBoardInfo.equals(w, h, currentPosX, currentPosY, scale, drawingCount)) {
+				//Log_Utilies.logInfo("Nie wykryto zmian na planszy, zatrzymuje renderowanie!");
+				g.drawImage(lastBoardInfo.getBufferedImage(), 0, 0, null);
+				return;
+			}
+		} else forceRefresh = false;
 		
 		BufferedImage tmpImage = new BufferedImage(w, h, 2);
 		Graphics2D tmpGraphics = (Graphics2D) tmpImage.getGraphics();
@@ -302,6 +329,8 @@ public class Turtles_Workspace_Area extends JPanel {
 
     for(Turtle t : turtles.values()) {
     	t.drawMovements(tmpGraphics, w, h);
+    }
+    for(Turtle t : turtles.values()) {
     	t.drawTurtle(tmpGraphics);
     }
     
@@ -309,6 +338,7 @@ public class Turtles_Workspace_Area extends JPanel {
     g.drawImage(tmpImage, 0, 0, null);
     lastBoardInfo = new BoardInfo(w, h, currentPosX, currentPosY, scale, drawingCount, tmpImage);
 	}
+	
 	
 	public static int getCurrentX() {
 		return currentPosX;
@@ -328,6 +358,15 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	public static double getScale() {
 		return scale;
+	}
+	
+	public static int getSelectedTurtleID() {
+		return selectedTurtle;
+	}
+	
+	public static Turtle getSelectedTurtle() {
+		Log_Utilies.logInfo(selectedTurtle);
+		return turtles.get(selectedTurtle);
 	}
 	
 	public static Turtles_Workspace_Area getInstance() {

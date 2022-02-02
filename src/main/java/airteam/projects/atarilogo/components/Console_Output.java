@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 import java.awt.Dimension;
+import java.awt.Font;
 
 @SuppressWarnings("serial")
 public class Console_Output extends JPanel {
@@ -35,9 +36,11 @@ public class Console_Output extends JPanel {
 	private static JScrollPane scrollComponent = new JScrollPane();
 	private static Console_Output instance;
 	
-	private static Color infoColor = new Color(48, 48, 48, 180);
-	private static Color errorColor = new Color(230, 60, 60, 180);
-	private static Color userColor = new Color(60, 105, 230, 180);
+	private static Color infoColor = new Color(48, 48, 48);
+	private static Color errorColor = new Color(230, 60, 60);
+	private static Color userColor = new Color(60, 105, 230);
+	
+	private static Font font = new Font("Tahoma", Font.BOLD, 14);
 	
 	private static String logPrefix = "   >>   ";
 	
@@ -77,10 +80,13 @@ public class Console_Output extends JPanel {
 			JLabel line = new JLabel(logPrefix + msg);
 			line.setForeground(infoColor);
 			line.setOpaque(false);
+			line.setFont(font);
 			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
 		}
-		instance.revalidate();
-		instance.repaint();
+		if(visibility) {
+			instance.revalidate();
+			instance.repaint();
+		}
 	}
 	
 	public static void addErrorLog(String... messages) {
@@ -88,7 +94,12 @@ public class Console_Output extends JPanel {
 			JLabel line = new JLabel(logPrefix + msg);
 			line.setForeground(errorColor);
 			line.setOpaque(false);
+			line.setFont(font);
 			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
+		}
+		if(!visibility) {
+			changeVisibility();
+			Console_Input.refreshConsoleButton();
 		}
 		instance.revalidate();
 		instance.repaint();
@@ -99,10 +110,13 @@ public class Console_Output extends JPanel {
 			JLabel line = new JLabel(logPrefix + msg);
 			line.setForeground(userColor);
 			line.setOpaque(false);
+			line.setFont(font);
 			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
 		}
-		instance.revalidate();
-		instance.repaint();
+		if(visibility) {
+			instance.revalidate();
+			instance.repaint();
+		}
 	}
 	
 	public static void addCustomColorLog(Color color, String... messages) {
@@ -110,13 +124,16 @@ public class Console_Output extends JPanel {
 			JLabel line = new JLabel(logPrefix + msg);
 			line.setForeground(color);
 			line.setOpaque(false);
+			line.setFont(font);
 			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
 		}
-		instance.revalidate();
-		instance.repaint();
+		if(visibility) {
+			instance.revalidate();
+			instance.repaint();
+		}
 	}
 	
-	public static void changeVisbility() {
+	public static void changeVisibility() {
 		if(visibility) visibility = false;
 		else visibility = true;
 		instance.setVisible(visibility);

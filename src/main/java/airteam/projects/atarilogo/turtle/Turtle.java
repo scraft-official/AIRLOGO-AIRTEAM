@@ -8,6 +8,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
@@ -16,31 +17,37 @@ import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class Turtle {
+	private String turtleName;
 	private int turtleRotation;
 	private int turtlePosX;
 	private int turtlePosY;
 	private Color turtleColor;
-	private BufferedImage turtleIcon;
 	private boolean turtleVisibility;
 	
 	private int penSize;
 	private boolean penVisibility;
 	private Color penColor;
 	
+	private	HashMap<Double, BufferedImage> scaledTurtleImages = new HashMap<>();
+	
 	private ArrayList<Turtle_Movement> turtleMovementList = new ArrayList<>();
 	
 	
-	public Turtle(int x, int y) {
+	public Turtle(int x, int y, String name) {
 		turtlePosX = x;
 		turtlePosY = y;
 		turtleRotation = 0;
 		turtleVisibility = true;
+		turtleName = name;
 		
 		penVisibility = true;
 		penColor = new Color(69, 67, 61);
 		penSize = 3;
 		
-		turtleIcon = (BufferedImage) Graphics_Utilies.getInternalIcon("icons/turtle_icon.png");
+		for(double i = 0.25; i <= 2; i += 0.25) {
+			BufferedImage turtleIcon = (BufferedImage) Graphics_Utilies.getInternalIcon("icons/turtle_icon.png");
+			scaledTurtleImages.put(i, Graphics_Utilies.toBufferedImage(Graphics_Utilies.getScaledImage(turtleIcon, i)));
+		}
 	}
 	
 	public void rotate(int rot) {
@@ -53,15 +60,17 @@ public class Turtle {
 		
 		int newX = points[0];
 		int newY = points[1];
-	
-		turtleMovementList.add(new Turtle_Movement(
+		
+		if(penVisibility) {
+			turtleMovementList.add(new Turtle_Movement(
 				turtlePosX, 
 				turtlePosY, 
 				newX, 
 				newY, 
 				penSize, 
 				penColor
-		));
+			));
+		}
 		
 		turtlePosX = newX;
 		turtlePosY = newY;
@@ -107,6 +116,10 @@ public class Turtle {
 		return turtleRotation;
 	}
 	
+	public String getName() {
+		return turtleName;
+	}
+	
 	public void setPenVisibility(boolean bool) {
 		penVisibility = bool;
 	}
@@ -117,19 +130,28 @@ public class Turtle {
 	
 	public void drawTurtle(Graphics2D g) {
 		if(turtleVisibility) {
+			BufferedImage turtleIcon = scaledTurtleImages.get(Turtles_Workspace_Area.getScale());
+			
 			int w = Turtles_Workspace_Area.getBoundsWidth();
 			int h = Turtles_Workspace_Area.getBoundsHeight();
-			int x = Turtles_Workspace_Area.scaledValue(turtlePosX) + Math.round(w/2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentX() - Math.round(turtleIcon.getWidth() / 2));
-			int y = Turtles_Workspace_Area.scaledValue(turtlePosY) + Math.round(h/2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentY() - Math.round(turtleIcon.getHeight() / 2));
+			
+			int x = Turtles_Workspace_Area.scaledValue(turtlePosX) + Math.round(w/2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentX()) - Math.round(turtleIcon.getWidth() / 2);
+			int y = Turtles_Workspace_Area.scaledValue(turtlePosY) + Math.round(h/2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentY()) - Math.round(turtleIcon.getHeight() / 2);
+			
 			
 			AffineTransform identity = new AffineTransform();
 			AffineTransform trans = new AffineTransform();
 			trans.setTransform(identity);
 			trans.translate(x, y);
-			trans.rotate(Math.toRadians(turtleRotation), Turtles_Workspace_Area.scaledValue(turtleIcon.getWidth() / 2), Turtles_Workspace_Area.scaledValue(turtleIcon.getHeight() / 2));
+			trans.rotate(Math.toRadians(turtleRotation), turtleIcon.getWidth() / 2, turtleIcon.getHeight() / 2);
 			
-			g.drawImage(Graphics_Utilies.getScaledImage(turtleIcon, Turtles_Workspace_Area.getScale()), trans, null);
+			//g.drawImage(Graphics_Utilies.getScaledImage(turtleIcon, Turtles_Workspace_Area.getScale()), trans, null);
+			g.drawImage(turtleIcon, trans, null);
 		}
+	}
+	
+	public void clearMovements() {
+		turtleMovementList.clear();
 	}
 	
 	public void drawMovements(Graphics2D g, int w, int h) {
@@ -140,8 +162,6 @@ public class Turtle {
 		for(Turtle_Movement move : turtleMovementList) {
 			g.setStroke(new BasicStroke(Turtles_Workspace_Area.scaledValue(move.penSize)));
 			g.setColor(move.penColor);
-			
-			
 			g.drawLine(
 				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(offsetX + (move.x1))),
 				(int) ((h / 2) + Turtles_Workspace_Area.scaledValue(offsetY + (move.y1))),

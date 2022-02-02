@@ -1,29 +1,35 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>AIRTEAM</groupId>
-  <artifactId>AIRTEAM-ATARILOGO</artifactId>
-  <version>1.0.0</version>
-  <packaging>jar</packaging>
+	<groupId>AIRTEAM</groupId>
+	<artifactId>AIRTEAM-ATARILOGO</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
 
-  <name>AIRTEAM-ATARILOGO</name>
-  
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<name>AIRTEAM-ATARILOGO</name>
 
-  <dependencies>
-  	<dependency>
-      <groupId>com.jgoodies</groupId>
-      <artifactId>jgoodies-forms</artifactId>
-      <version>1.8.0</version>
-	</dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<dependencies>
+		<dependency>
+	    	<groupId>com.kenai.nbpwr</groupId>
+	    	<artifactId>org-jdesktop-animation-timing</artifactId>
+	    	<version>1.0-201002281504</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jgoodies</groupId>
+			<artifactId>jgoodies-forms</artifactId>
+			<version>1.8.0</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

@@ -1,65 +1,92 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="1" failures="0" name="AIRTEAM.AIRTEAM_ATARILOGO.AppTest" time="0.003" errors="0" skipped="0">
-  <properties>
-    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
-    <property name="java.vm.version" value="11.0.9+7-LTS"/>
-    <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-11.0.9\bin"/>
-    <property name="maven.multiModuleProjectDirectory" value="F:\Eclipse\AIRTEAM PROJECTS\AIRTEAM - ATARI\AIRTEAM-ATARILOGO"/>
-    <property name="java.vm.vendor" value="Oracle Corporation"/>
-    <property name="java.vendor.url" value="https://openjdk.java.net/"/>
-    <property name="guice.disable.misplaced.annotation.check" value="true"/>
-    <property name="path.separator" value=";"/>
-    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
-    <property name="sun.os.patch.level" value=""/>
-    <property name="user.script" value=""/>
-    <property name="user.country" value="US"/>
-    <property name="sun.java.launcher" value="SUN_STANDARD"/>
-    <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
-    <property name="user.dir" value="F:\Eclipse\AIRTEAM PROJECTS\AIRTEAM - ATARI\AIRTEAM-ATARILOGO"/>
-    <property name="java.vm.compressedOopsMode" value="Zero based"/>
-    <property name="java.runtime.version" value="11.0.9+7-LTS"/>
-    <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment"/>
-    <property name="os.arch" value="amd64"/>
-    <property name="java.io.tmpdir" value="C:\Users\scraft\AppData\Local\Temp\"/>
-    <property name="line.separator" value="
-"/>
-    <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
-    <property name="user.variant" value=""/>
-    <property name="os.name" value="Windows 10"/>
-    <property name="classworlds.conf" value="C:\Users\scraft\Desktop\DreamPack\eclipse\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf1858234485185205465.tmp"/>
-    <property name="sun.jnu.encoding" value="Cp1250"/>
-    <property name="java.library.path" value="C:\Program Files\Java\jdk-11.0.9\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre1.8.0_271/bin/server;C:/Program Files/Java/jre1.8.0_271/bin;C:/Program Files/Java/jre1.8.0_271/lib/amd64;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Oculus\Support\oculus-runtime;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\GtkSharp\2.12\bin;D:\serwer\WorldPainter;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\IVI Foundation\VISA\WinNT\Bin;C:\Program Files (x86)\Common Files\Acronis\VirtualFile\;C:\Program Files (x86)\Common Files\Acronis\VirtualFile64\;C:\Program Files (x86)\Common Files\Acronis\FileProtector\;C:\Program Files (x86)\Common Files\Acronis\FileProtector64\;C:\Program Files (x86)\Common Files\Acronis\SnapAPI\;C:\Program Files\nodejs\;C:\WINDOWS\System32\OpenSSH\;D:\VirtaulBox\New folder\Windows Performance Toolkit\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\PuTTY\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\opt\apache-maven-3.8.1\bin;C:\Program Files\Java\jdk-11.0.9\bin;C:\Gradle\gradle-7.0.2\bin;;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\scraft\AppData\Local\Microsoft\WindowsApps;C:\Users\scraft\AppData\Local\GitHubDesktop\bin;C:\Users\scraft\AppData\Roaming\npm;C:\Users\scraft\AppData\Local\Microsoft\WindowsApps;C:\ffmpg\bin;C:\Users\scraft\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\scraft\AppData\Local\atom\bin;C:\WINDOWS\System32;;."/>
-    <property name="jdk.debug" value="release"/>
-    <property name="java.class.version" value="55.0"/>
-    <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
-    <property name="os.version" value="10.0"/>
-    <property name="user.home" value="C:\Users\scraft"/>
-    <property name="user.timezone" value="Europe/Berlin"/>
-    <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob"/>
-    <property name="file.encoding" value="Cp1250"/>
-    <property name="java.specification.version" value="11"/>
-    <property name="user.name" value="scraft"/>
-    <property name="java.class.path" value="C:\Users\scraft\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_1.13.0.20190716-1623\jars\plexus-classworlds-2.6.0.jar"/>
-    <property name="java.vm.specification.version" value="11"/>
-    <property name="sun.arch.data.model" value="64"/>
-    <property name="sun.java.command" value="org.codehaus.plexus.classworlds.launcher.Launcher -B -s F:\Eclipse\Maven Project Export\settings.xml install"/>
-    <property name="java.home" value="C:\Program Files\Java\jdk-11.0.9"/>
-    <property name="user.language" value="en"/>
-    <property name="java.specification.vendor" value="Oracle Corporation"/>
-    <property name="awt.toolkit" value="sun.awt.windows.WToolkit"/>
-    <property name="java.vm.info" value="mixed mode"/>
-    <property name="java.version" value="11.0.9"/>
-    <property name="java.vendor" value="Oracle Corporation"/>
-    <property name="maven.home" value="F:\Eclipse\AIRTEAM PROJECTS\AIRTEAM - ATARI\AIRTEAM-ATARILOGO\EMBEDDED"/>
-    <property name="file.separator" value="\"/>
-    <property name="java.version.date" value="2020-10-20"/>
-    <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
-    <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
-    <property name="sun.cpu.endian" value="little"/>
-    <property name="java.vendor.version" value="18.9"/>
-    <property name="sun.desktop" value="windows"/>
-    <property name="sun.cpu.isalist" value="amd64"/>
-  </properties>
-  <testcase classname="AIRTEAM.AIRTEAM_ATARILOGO.AppTest" name="testApp" time="0.003"/>
+<testsuite tests="1" failures="0"
+	name="AIRTEAM.AIRTEAM_ATARILOGO.AppTest" time="0.003" errors="0"
+	skipped="0">
+	<properties>
+		<property name="java.runtime.name"
+			value="Java(TM) SE Runtime Environment" />
+		<property name="java.vm.version" value="11.0.9+7-LTS" />
+		<property name="sun.boot.library.path"
+			value="C:\Program Files\Java\jdk-11.0.9\bin" />
+		<property name="maven.multiModuleProjectDirectory"
+			value="F:\Eclipse\AIRTEAM PROJECTS\AIRTEAM - ATARI\AIRTEAM-ATARILOGO" />
+		<property name="java.vm.vendor" value="Oracle Corporation" />
+		<property name="java.vendor.url"
+			value="https://openjdk.java.net/" />
+		<property name="guice.disable.misplaced.annotation.check"
+			value="true" />
+		<property name="path.separator" value=";" />
+		<property name="java.vm.name"
+			value="Java HotSpot(TM) 64-Bit Server VM" />
+		<property name="sun.os.patch.level" value="" />
+		<property name="user.script" value="" />
+		<property name="user.country" value="US" />
+		<property name="sun.java.launcher" value="SUN_STANDARD" />
+		<property name="java.vm.specification.name"
+			value="Java Virtual Machine Specification" />
+		<property name="user.dir"
+			value="F:\Eclipse\AIRTEAM PROJECTS\AIRTEAM - ATARI\AIRTEAM-ATARILOGO" />
+		<property name="java.vm.compressedOopsMode"
+			value="Zero based" />
+		<property name="java.runtime.version" value="11.0.9+7-LTS" />
+		<property name="java.awt.graphicsenv"
+			value="sun.awt.Win32GraphicsEnvironment" />
+		<property name="os.arch" value="amd64" />
+		<property name="java.io.tmpdir"
+			value="C:\Users\scraft\AppData\Local\Temp\" />
+		<property name="line.separator" value="
+" />
+		<property name="java.vm.specification.vendor"
+			value="Oracle Corporation" />
+		<property name="user.variant" value="" />
+		<property name="os.name" value="Windows 10" />
+		<property name="classworlds.conf"
+			value="C:\Users\scraft\Desktop\DreamPack\eclipse\.metadata\.plugins\org.eclipse.m2e.launching\launches\m2conf1858234485185205465.tmp" />
+		<property name="sun.jnu.encoding" value="Cp1250" />
+		<property name="java.library.path"
+			value="C:\Program Files\Java\jdk-11.0.9\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:/Program Files/Java/jre1.8.0_271/bin/server;C:/Program Files/Java/jre1.8.0_271/bin;C:/Program Files/Java/jre1.8.0_271/lib/amd64;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Oculus\Support\oculus-runtime;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\ProgramData\Oracle\Java\javapath;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\GtkSharp\2.12\bin;D:\serwer\WorldPainter;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\IVI Foundation\VISA\WinNT\Bin;C:\Program Files (x86)\Common Files\Acronis\VirtualFile\;C:\Program Files (x86)\Common Files\Acronis\VirtualFile64\;C:\Program Files (x86)\Common Files\Acronis\FileProtector\;C:\Program Files (x86)\Common Files\Acronis\FileProtector64\;C:\Program Files (x86)\Common Files\Acronis\SnapAPI\;C:\Program Files\nodejs\;C:\WINDOWS\System32\OpenSSH\;D:\VirtaulBox\New folder\Windows Performance Toolkit\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\PuTTY\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\opt\apache-maven-3.8.1\bin;C:\Program Files\Java\jdk-11.0.9\bin;C:\Gradle\gradle-7.0.2\bin;;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\scraft\AppData\Local\Microsoft\WindowsApps;C:\Users\scraft\AppData\Local\GitHubDesktop\bin;C:\Users\scraft\AppData\Roaming\npm;C:\Users\scraft\AppData\Local\Microsoft\WindowsApps;C:\ffmpg\bin;C:\Users\scraft\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\scraft\AppData\Local\atom\bin;C:\WINDOWS\System32;;." />
+		<property name="jdk.debug" value="release" />
+		<property name="java.class.version" value="55.0" />
+		<property name="java.specification.name"
+			value="Java Platform API Specification" />
+		<property name="sun.management.compiler"
+			value="HotSpot 64-Bit Tiered Compilers" />
+		<property name="os.version" value="10.0" />
+		<property name="user.home" value="C:\Users\scraft" />
+		<property name="user.timezone" value="Europe/Berlin" />
+		<property name="java.awt.printerjob"
+			value="sun.awt.windows.WPrinterJob" />
+		<property name="file.encoding" value="Cp1250" />
+		<property name="java.specification.version" value="11" />
+		<property name="user.name" value="scraft" />
+		<property name="java.class.path"
+			value="C:\Users\scraft\.p2\pool\plugins\org.eclipse.m2e.maven.runtime_1.13.0.20190716-1623\jars\plexus-classworlds-2.6.0.jar" />
+		<property name="java.vm.specification.version" value="11" />
+		<property name="sun.arch.data.model" value="64" />
+		<property name="sun.java.command"
+			value="org.codehaus.plexus.classworlds.launcher.Launcher -B -s F:\Eclipse\Maven Project Export\settings.xml install" />
+		<property name="java.home"
+			value="C:\Program Files\Java\jdk-11.0.9" />
+		<property name="user.language" value="en" />
+		<property name="java.specification.vendor"
+			value="Oracle Corporation" />
+		<property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
+		<property name="java.vm.info" value="mixed mode" />
+		<property name="java.version" value="11.0.9" />
+		<property name="java.vendor" value="Oracle Corporation" />
+		<property name="maven.home"
+			value="F:\Eclipse\AIRTEAM PROJECTS\AIRTEAM - ATARI\AIRTEAM-ATARILOGO\EMBEDDED" />
+		<property name="file.separator" value="\" />
+		<property name="java.version.date" value="2020-10-20" />
+		<property name="java.vendor.url.bug"
+			value="https://bugreport.java.com/bugreport/" />
+		<property name="sun.io.unicode.encoding"
+			value="UnicodeLittle" />
+		<property name="sun.cpu.endian" value="little" />
+		<property name="java.vendor.version" value="18.9" />
+		<property name="sun.desktop" value="windows" />
+		<property name="sun.cpu.isalist" value="amd64" />
+	</properties>
+	<testcase classname="AIRTEAM.AIRTEAM_ATARILOGO.AppTest"
+		name="testApp" time="0.003" />
 </testsuite>
