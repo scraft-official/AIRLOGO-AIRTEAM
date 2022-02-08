@@ -3,8 +3,10 @@ package airteam.projects.atarilogo.components.templates;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -12,10 +14,6 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
@@ -23,7 +21,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -34,9 +31,8 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.plaf.basic.BasicComboBoxUI;
 import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
-import org.jdesktop.animation.timing.Animator;
-import org.jdesktop.animation.timing.TimingTarget;
-import org.jdesktop.animation.timing.TimingTargetAdapter;
+
+import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 @SuppressWarnings("serial")
 public class ComboBox<E> extends JComboBox<E> {
@@ -60,7 +56,8 @@ public class ComboBox<E> extends JComboBox<E> {
     private String labeText = "TEXT";
     private Color lineColor = new Color(255,255,255);
     private boolean mouseOver;
-
+    private BasicComboPopup pop;
+    
     public ComboBox() {
     		setOpaque(false);
         setBackground(Color.WHITE);
@@ -109,7 +106,7 @@ public class ComboBox<E> extends JComboBox<E> {
             addPopupMenuListener(new PopupMenuListener() {
                 @Override
                 public void popupMenuWillBecomeVisible(PopupMenuEvent pme) {
-                    arrowButton.setBackground(new Color(200, 200, 200));
+	                 arrowButton.setBackground(new Color(200, 200, 200));
                 }
 
                 @Override
@@ -119,7 +116,6 @@ public class ComboBox<E> extends JComboBox<E> {
 
                 @Override
                 public void popupMenuCanceled(PopupMenuEvent pme) {
-                    arrowButton.setBackground(new Color(150, 150, 150));
                 }
             });
         }
@@ -136,10 +132,9 @@ public class ComboBox<E> extends JComboBox<E> {
 
         @Override
         protected ComboPopup createPopup() {
-            BasicComboPopup pop = new BasicComboPopup(comboBox) {
+            pop = new BasicComboPopup(comboBox) {
                 @Override
                 protected JScrollPane createScroller() {
-                    list.setFixedCellHeight(30);
                     JScrollPane scroll = new JScrollPane(list);
                     scroll.setBackground(Color.WHITE);
                     JScrollBar sb = new JScrollBar();
@@ -147,7 +142,7 @@ public class ComboBox<E> extends JComboBox<E> {
                     sb.setUnitIncrement(3);
                     sb.setPreferredSize(new Dimension(3, 25));
                     sb.setOpaque(false);
-                    sb.setForeground(new Color(207, 62, 101, 255));
+                    sb.setForeground(new Color(43, 138, 54, 255));
                     sb.setBackground(new Color(0, 0, 0, 0));
                     scroll.setVerticalScrollBar(sb);
                     scroll.getViewport().setOpaque(false);

@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -157,10 +158,20 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	public Turtle addTurtle(String name) {
 		int id = lastTurtleID;
-		Turtle t = new Turtle(0, 0, name);
+		Color color;
+		if(id != 0) {
+			Random random = new Random();
+			final float hue = random.nextFloat();
+			final float saturation = (random.nextInt(2000) + 5000) / 10000f;
+			final float luminance = 0.65f;
+			color = Color.getHSBColor(hue, saturation, luminance);
+		}
+		else { color = new Color(20, 186, 150); }
+		
+		Turtle t = new Turtle(0, 0, name, color);
 		
 		Turtles_Workspace_Area.turtles.put(id, t);
-		Turtles_Workspace_Area.selectTurtle(id);
+		Turtles_Workspace_Area.selectTurtle(id, true);
 		lastTurtleID++;
 		return t;
 	}
@@ -181,9 +192,12 @@ public class Turtles_Workspace_Area extends JPanel {
 			t.setY(0);
 			t.clearMovements();
 			t.rotate((360 - t.getRotation()));
+			t.setTurtleVisibility(true);
+			t.setPenVisibility(true);
 			currentPosX = 0;
 			currentPosY = 0;
 		}
+		
 	}
 	
 	public void implementListeners() {
@@ -282,13 +296,19 @@ public class Turtles_Workspace_Area extends JPanel {
 		instance.repaint();
 	}
 	
-	public static void forceRefresh(boolean repaint) {
+	public static void forceRefresh(boolean repaintWorkspace, boolean refreshSidebar) {
 		forceRefresh = true;
-		if(repaint) instance.repaint();
+		if(repaintWorkspace) instance.repaint();
+		if(refreshSidebar) {
+			Turtle_Options.refreshButtons();
+		}
 	}
 	
-	public static void selectTurtle(int id) {
+	public static void selectTurtle(int id, boolean refreshOptions) {
 		selectedTurtle = id;
+		if(refreshOptions) {
+			Turtle_Options.refreshSelected();
+		}
 	}
 	
 	public void paintComponent(Graphics g) {
@@ -365,7 +385,6 @@ public class Turtles_Workspace_Area extends JPanel {
 	}
 	
 	public static Turtle getSelectedTurtle() {
-		Log_Utilies.logInfo(selectedTurtle);
 		return turtles.get(selectedTurtle);
 	}
 	

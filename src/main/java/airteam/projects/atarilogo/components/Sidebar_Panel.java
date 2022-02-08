@@ -32,7 +32,7 @@ public class Sidebar_Panel extends JPanel {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
-				RowSpec.decode("50px:grow"),
+				RowSpec.decode("300px"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("50px:grow"),}));
 		

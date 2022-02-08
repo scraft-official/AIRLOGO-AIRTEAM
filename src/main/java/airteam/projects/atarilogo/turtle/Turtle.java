@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -33,7 +34,7 @@ public class Turtle {
 	private ArrayList<Turtle_Movement> turtleMovementList = new ArrayList<>();
 	
 	
-	public Turtle(int x, int y, String name) {
+	public Turtle(int x, int y, String name, Color color) {
 		turtlePosX = x;
 		turtlePosY = y;
 		turtleRotation = 0;
@@ -43,9 +44,12 @@ public class Turtle {
 		penVisibility = true;
 		penColor = new Color(69, 67, 61);
 		penSize = 3;
+
+		turtleColor = color;
 		
 		for(double i = 0.25; i <= 2; i += 0.25) {
 			BufferedImage turtleIcon = (BufferedImage) Graphics_Utilies.getInternalIcon("icons/turtle_icon.png");
+			turtleIcon = Graphics_Utilies.getTintedImage(turtleIcon, color);
 			scaledTurtleImages.put(i, Graphics_Utilies.toBufferedImage(Graphics_Utilies.getScaledImage(turtleIcon, i)));
 		}
 	}
@@ -118,6 +122,14 @@ public class Turtle {
 	
 	public String getName() {
 		return turtleName;
+	}
+	
+	public boolean getTurtleVisibility() {
+		return turtleVisibility;
+	}
+	
+	public boolean getPenVisibility() {
+		return penVisibility;
 	}
 	
 	public void setPenVisibility(boolean bool) {

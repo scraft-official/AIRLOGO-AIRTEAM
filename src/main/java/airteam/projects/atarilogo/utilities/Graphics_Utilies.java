@@ -56,6 +56,25 @@ public class Graphics_Utilies {
 		return null;
 	}
 	
+	public static BufferedImage getTintedImage(BufferedImage img, Color color) {
+		if(color.getAlpha() == 0) return img;
+		return getTintedImage(img, color.getRed(), color.getGreen(), color.getBlue());
+	}
+	public static BufferedImage getTintedImage(BufferedImage img, int red, int green, int blue) {
+		for (int x = 0; x < img.getWidth(); x++) {
+			for (int y = 0; y < img.getHeight(); y++) {
+				Color pixelColor = new Color(img.getRGB(x, y), true);
+        int r = (pixelColor.getRed() + red) / 2;
+        int g = (pixelColor.getGreen() + green) / 2;
+        int b = (pixelColor.getBlue() + blue) / 2;
+        int a = pixelColor.getAlpha();
+        int rgba = (a << 24) | (r << 16) | (g << 8) | b;
+        img.setRGB(x, y, rgba);
+			}
+		}
+		return img;
+	}
+	
 	public static BufferedImage toBufferedImage(Image img)
 	{
 	    if (img instanceof BufferedImage)

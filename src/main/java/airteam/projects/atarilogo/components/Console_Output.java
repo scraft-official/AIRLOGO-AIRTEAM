@@ -1,6 +1,7 @@
 package airteam.projects.atarilogo.components;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -51,6 +52,7 @@ public class Console_Output extends JPanel {
 		setOpaque(false);
 		setBorder(new EmptyBorder(8, 6, 5, 6));
 		setVisible(visibility);
+		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		
 		JScrollBar scrollbar = new JScrollBar();
 		scrollbar.setUI(new JScrollBarUI());

@@ -14,7 +14,7 @@ public class CMD_REPEAT {
 
 		if(args.length < argsCount + 1) {
 			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!");
-			Turtles_Workspace_Area.forceRefresh(true);
+			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}
 		
@@ -23,12 +23,12 @@ public class CMD_REPEAT {
 			repeatCount = Integer.valueOf(args[1]);
 			if(repeatCount <= 0) {
 				Console_Output.addErrorLog("LICZBA POWTORZEN MUSI BYC WIEKSZA OD 0! ( " + args[0] + " " + args[1] + " )");
-				Turtles_Workspace_Area.forceRefresh(true);
+				Turtles_Workspace_Area.forceRefresh(true, true);
 				return;
 			}
 		} catch(Exception e) {
 			Console_Output.addErrorLog("WPROWADZONO NIEPRAWIDLOWA LICZBE POWTORZEN! ( " + args[0] + " " + args[1] + " != LICZBA )");
-			Turtles_Workspace_Area.forceRefresh(true);
+			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}
 		
@@ -37,7 +37,7 @@ public class CMD_REPEAT {
 					"UZYJ ZNAKU \"[\", ABY ROZPOCZAC LISTE POWTARZNYCH POLECEN.",
 					"NIE ZNALEZIONO ROZPOCZECIA POWTARZNYCH POLECEN! ( " + String.join(" ", args) + " )"
 			);
-			Turtles_Workspace_Area.forceRefresh(true);
+			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}
 		
@@ -71,7 +71,7 @@ public class CMD_REPEAT {
 							"SPRAWDZ, CZY NIE UMIESCILES ZA DUZO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKOW!",
 							"ZLE ZAKONCZONO LISTE POWTARZANYCH POLECEN ( " + String.join(" ", args) + " )"
 								);
-						Turtles_Workspace_Area.forceRefresh(true);
+						Turtles_Workspace_Area.forceRefresh(true, true);
 						return;
 					}
 				repeatCommand = repeatCommand.substring(1, endIndex);
@@ -85,7 +85,7 @@ public class CMD_REPEAT {
 					"UZYJ ZNAKU \"]\", ABY ZAKONCZYC LISTE POWTARZNYCH POLECEN!",
 					"NIE ZNALEZIONO ZAKONCZENIA POWTARZNYCH POLECEN! ( " + String.join(" ", args) + " )"
 			);
-			Turtles_Workspace_Area.forceRefresh(true);
+			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}
 		
@@ -94,7 +94,7 @@ public class CMD_REPEAT {
 				Console_Output.addErrorLog(
 						"NIE WPROWADZONO ZADNEJ LISTY POLECEN DO POWTORZENIA! ( " + String.join(" ", args) + " )"
 				);
-				Turtles_Workspace_Area.forceRefresh(true);
+				Turtles_Workspace_Area.forceRefresh(true, true);
 				return;
 			}
 		}

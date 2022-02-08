@@ -13,7 +13,7 @@ public class CMD_PU {
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
 			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!");
-			Turtles_Workspace_Area.forceRefresh(true);
+			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}
 		
@@ -23,7 +23,7 @@ public class CMD_PU {
 			CommandManager.parse(Arrays.copyOfRange(args, argsCount + 1, args.length));
 		}
 		else {
-			Turtles_Workspace_Area.forceRefresh(true);
+			Turtles_Workspace_Area.forceRefresh(true, true);
 		}
 	}
 	
