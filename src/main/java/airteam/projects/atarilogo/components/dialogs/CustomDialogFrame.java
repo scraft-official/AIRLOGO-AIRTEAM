@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 
 import airteam.projects.atarilogo.AtariLogo;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
+import airteam.projects.atarilogo.utilities.Log_Utilies;
 import net.miginfocom.swing.MigLayout;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -32,13 +33,12 @@ import java.awt.Dimension;
 public class CustomDialogFrame extends JDialog {
 	private CustomDialogPanel dialogPanel;
 	
-  public CustomDialogFrame(String name) {
+  public CustomDialogFrame(String name, int dialogWidth, int dialogHeight, boolean onlyAcceptButton, boolean addDefaultIcons) {
   	int w = AtariLogo.getFrame().getContentPane().getBounds().width;
   	int h = AtariLogo.getFrame().getContentPane().getBounds().height;
   	
   	setLocation(AtariLogo.getFrame().getLocation().x + 8,AtariLogo.getFrame().getLocation().y + 31);
   	setSize(w, h);
-  	//setSize(474, 338);
   	setUndecorated(true);
   	setResizable(false);
     setModal(true);
@@ -46,14 +46,14 @@ public class CustomDialogFrame extends JDialog {
     setIconImage(AtariLogo.getFrame().getIconImage());
     setBackground(new Color(0, 0, 0, 170));
     
-    dialogPanel = new CustomDialogPanel(this, name);
+    dialogPanel = new CustomDialogPanel(this, name, onlyAcceptButton, addDefaultIcons);
     
     JPanel borderPanel = new JPanel();
     borderPanel.setOpaque(false);
-    borderPanel.setBorder(new EmptyBorder(h / 6, w/4, h / 6, w/4));
+    borderPanel.setBorder(new EmptyBorder((h- dialogHeight)/2, (w - dialogWidth)/2, (h - dialogHeight)/2, (w - dialogWidth)/2));
     borderPanel.setLayout(new BorderLayout(0, 0));
     borderPanel.add(dialogPanel);
-    
+
     getContentPane().add(borderPanel);
   }
   

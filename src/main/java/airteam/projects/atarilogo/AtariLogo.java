@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import airteam.projects.atarilogo.components.Sidebar_Panel;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
-import airteam.projects.atarilogo.components.dialogs.SavePopup;
+import airteam.projects.atarilogo.components.dialogs.popups.SavePopup;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -20,6 +20,7 @@ import com.jgoodies.forms.layout.FormSpecs;
 import java.awt.Dimension;
 import com.jgoodies.forms.layout.Sizes;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.image.BufferedImage;
 
@@ -40,13 +41,10 @@ public class AtariLogo extends JFrame {
 			new RowSpec[] {
 				RowSpec.decode("10px:grow"),});
 		
-		
 		JPanel workspacePanel = new Turtles_Workspace_Area();
 		workspacePanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		for(int i = 0; i <= 8; i++) {
-			((Turtles_Workspace_Area) workspacePanel).addTurtle("PODSTAWOWY" + i);
-		}
-//		((Turtles_Workspace_Area) workspacePanel).addTurtle("PODSTAWOWY3");
+
+		Turtles_Workspace_Area.addTurtle("PODSTAWOWY", new Color(20, 186, 150));
 		
 		JPanel sidebarPanel = new Sidebar_Panel();
 		
@@ -66,7 +64,6 @@ public class AtariLogo extends JFrame {
 			@Override
 	    public void windowClosing(WindowEvent e) {
 				new SavePopup();
-				
 			}
 		});
 	}

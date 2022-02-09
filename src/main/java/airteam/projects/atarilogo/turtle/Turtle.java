@@ -124,6 +124,10 @@ public class Turtle {
 		return turtleName;
 	}
 	
+	public Color getTurtleColor() {
+		return turtleColor;
+	}
+	
 	public boolean getTurtleVisibility() {
 		return turtleVisibility;
 	}
@@ -132,12 +136,25 @@ public class Turtle {
 		return penVisibility;
 	}
 	
+	public void setTurtleColor(Color color) {
+		turtleColor = color;
+		for(double i = 0.25; i <= 2; i += 0.25) {
+			BufferedImage turtleIcon = (BufferedImage) Graphics_Utilies.getInternalIcon("icons/turtle_icon.png");
+			turtleIcon = Graphics_Utilies.getTintedImage(turtleIcon, color);
+			scaledTurtleImages.put(i, Graphics_Utilies.toBufferedImage(Graphics_Utilies.getScaledImage(turtleIcon, i)));
+		}
+	}
+	
 	public void setPenVisibility(boolean bool) {
 		penVisibility = bool;
 	}
 	
 	public void setTurtleVisibility(boolean bool) {
 		turtleVisibility = bool;
+	}
+	
+	public void setName(String name) {
+		turtleName = name;
 	}
 	
 	public void drawTurtle(Graphics2D g) {

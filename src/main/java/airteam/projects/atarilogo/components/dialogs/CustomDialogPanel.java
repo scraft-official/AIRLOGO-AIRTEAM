@@ -38,10 +38,8 @@ public class CustomDialogPanel extends JPanel {
 	
 	private JButton buttonAccept = new JButton();
 	private JButton buttonCancel = new JButton();
-	private final JScrollPane scrollPane = new JScrollPane();
-	private final JPanel panel = new JPanel();
 	
-	public CustomDialogPanel(CustomDialogFrame dialog, String name) {
+	public CustomDialogPanel(CustomDialogFrame dialog, String name, boolean onlyAcceptButton, boolean addDefaultIcons) {
 		setBorder(new EmptyBorder(borderPadding/2 - 1, borderPadding, borderPadding, borderPadding));
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("15dlu"),
@@ -54,15 +52,16 @@ public class CustomDialogPanel extends JPanel {
 				ColumnSpec.decode("15dlu"),
 				ColumnSpec.decode("10dlu"),},
 			new RowSpec[] {
-				RowSpec.decode("30dlu"),
-				RowSpec.decode("8dlu"),
-				RowSpec.decode("fill:50dlu:grow"),
+				RowSpec.decode("30px"),
+				RowSpec.decode("18px"),
+				RowSpec.decode("50dlu:grow"),
 				RowSpec.decode("8dlu"),
 				RowSpec.decode("30dlu"),
 				FormSpecs.PARAGRAPH_GAP_ROWSPEC,}));
 		
 		title.setText(name);
 		title.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		add(title, "2, 1, 5, 1, left, top");
 		
 		JLabel closeButton = new JLabel(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/close-icon-dark.png"), 18, 18)));
 		closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -72,18 +71,15 @@ public class CustomDialogPanel extends JPanel {
 				dialog.dispose();
 			}
 		});
+		add(closeButton, "8, 1, 2, 2, left, bottom");
 		
+		if(addDefaultIcons) { buttonAccept.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/check-mark-icon.png"), 17, 17))); } 
 		buttonAccept.setUI(new CustomButtonUI());
 		buttonAccept.setForeground(new Color(234, 234, 234));
 		buttonAccept.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		buttonAccept.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		buttonAccept.setBackground(new Color(74, 176, 101));
 		buttonAccept.setText("ZAPISZ");
-		buttonAccept.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-      }
-    });
 		
 		buttonAccept.addMouseListener(new MouseAdapter() {
 		  @Override
@@ -99,47 +95,39 @@ public class CustomDialogPanel extends JPanel {
 		  }
 		});
 		
-		buttonCancel.setUI(new CustomButtonUI());
-		buttonCancel.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		buttonCancel.setForeground(new Color(234, 234, 234));
-		buttonCancel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		buttonCancel.setBackground(new Color(209, 85, 69));
-		buttonCancel.setText("ANULUJ");
-		buttonCancel.addActionListener(new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
-      }
-    });
+		if(!onlyAcceptButton) {
+			if(addDefaultIcons) { buttonCancel.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/close-icon.png"), 14, 14))); } 
+			buttonCancel.setUI(new CustomButtonUI());
+			buttonCancel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			buttonCancel.setForeground(new Color(234, 234, 234));
+			buttonCancel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			buttonCancel.setBackground(new Color(209, 85, 69));
+			buttonCancel.setText("ANULUJ");
+			
+			buttonCancel.addMouseListener(new MouseAdapter() {
+			  @Override
+			  public void mouseEntered(MouseEvent me) {
+			  	buttonCancel.setBackground(new Color(181, 72, 58));
+			    repaint();
+			  }
+	
+			  @Override
+			  public void mouseExited(MouseEvent me) {
+			  	buttonCancel.setBackground(new Color(209, 85, 69));
+			    repaint();
+			  }
+			});
+			
+			add(buttonCancel, "6, 5, 2, 1, fill, fill");
+			add(buttonAccept, "3, 5, 2, 1, fill, fill");
+			return;
+		}
 		
-		buttonCancel.addMouseListener(new MouseAdapter() {
-		  @Override
-		  public void mouseEntered(MouseEvent me) {
-		  	buttonCancel.setBackground(new Color(181, 72, 58));
-		    repaint();
-		  }
-
-		  @Override
-		  public void mouseExited(MouseEvent me) {
-		  	buttonCancel.setBackground(new Color(209, 85, 69));
-		    repaint();
-		  }
-		});
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setBorder(null);
-		
-		scrollPane.setOpaque(false);
-		scrollPane.getViewport().setOpaque(false);
-		
-		add(scrollPane, "3, 2, 5, 2, fill, fill");
-		add(buttonAccept, "3, 5, 2, 1, fill, fill");
-		add(buttonCancel, "6, 5, 2, 1, fill, fill");
-		add(closeButton, "8, 1, 2, 1, left, bottom");
-		add(title, "2, 1, 5, 1, left, top");
-
+		add(buttonAccept, "3, 5, 5, 1, fill, fill");
 	}
 	
-	public JScrollPane getContentPanel() {
-		return scrollPane;
+	public void setContentPanel(JPanel panel) {
+		add(panel, "3, 2, 5, 2, center, center");
 	}
 	
 	public JButton getAcceptButton() {

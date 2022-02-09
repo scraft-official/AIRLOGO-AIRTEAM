@@ -51,8 +51,7 @@ import java.awt.Dimension;
 import javax.swing.ScrollPaneConstants;
 
 public class Turtles_Workspace_Area extends JPanel {
-	private static HashMap<Integer, Turtle> turtles = new HashMap<>();
-	private static int lastTurtleID = 0;
+	private static ArrayList<Turtle> turtles = new ArrayList<>();
 	
 	private static int currentPosX = 0;
 	private static int currentPosY = 0;
@@ -156,24 +155,28 @@ public class Turtles_Workspace_Area extends JPanel {
 		implementListeners();
 	}
 	
-	public Turtle addTurtle(String name) {
-		int id = lastTurtleID;
-		Color color;
-		if(id != 0) {
-			Random random = new Random();
-			final float hue = random.nextFloat();
-			final float saturation = (random.nextInt(2000) + 5000) / 10000f;
-			final float luminance = 0.65f;
-			color = Color.getHSBColor(hue, saturation, luminance);
-		}
-		else { color = new Color(20, 186, 150); }
+	public static Turtle addTurtle(String name, Color color) {
+		int id = turtles.size();
 		
 		Turtle t = new Turtle(0, 0, name, color);
 		
-		Turtles_Workspace_Area.turtles.put(id, t);
-		Turtles_Workspace_Area.selectTurtle(id, true);
-		lastTurtleID++;
+		Turtles_Workspace_Area.turtles.add(t);
+		Turtles_Workspace_Area.selectTurtle(id, false);
+		
+		if(id != 0) forceRefresh(true, true);
 		return t;
+	}
+	
+	public static void removeTurtle(Turtle turtle) {
+		Turtles_Workspace_Area.turtles.remove(turtle);
+		Turtles_Workspace_Area.selectTurtle(turtles.size()-1, false);
+		forceRefresh(true, true);
+	}
+	
+	public static void removeTurtle(int id) {
+		Turtles_Workspace_Area.turtles.remove(id);
+		Turtles_Workspace_Area.selectTurtle(turtles.size()-1, false);
+		forceRefresh(true, true);
 	}
 	
 	public static Turtle getTurtle(int id) {
@@ -183,11 +186,11 @@ public class Turtles_Workspace_Area extends JPanel {
 	}
 	
 	public static Collection<Turtle> getAllTurtles() {
-		return turtles.values();
+		return turtles;
 	}
 	
 	public static void clearWorkspace() {
-		for(Turtle t : turtles.values()) {
+		for(Turtle t : turtles) {
 			t.setX(0);
 			t.setY(0);
 			t.clearMovements();
@@ -225,7 +228,7 @@ public class Turtles_Workspace_Area extends JPanel {
 				lastPosX = e.getPoint().x;
 				lastPosY = e.getPoint().y;
 				
-				repaint();
+				repaint(200);
 			}
 			
 			@Override
@@ -300,7 +303,7 @@ public class Turtles_Workspace_Area extends JPanel {
 		forceRefresh = true;
 		if(repaintWorkspace) instance.repaint();
 		if(refreshSidebar) {
-			Turtle_Options.refreshButtons();
+			Turtle_Options.refreshAll();
 		}
 	}
 	
@@ -317,7 +320,7 @@ public class Turtles_Workspace_Area extends JPanel {
 		int h = getHeight();
 		
 		int drawingCount = 0;
-		for(Turtle t : turtles.values()) {
+		for(Turtle t : turtles) {
 			drawingCount += t.getMovementsCount();
 		}
 		
@@ -347,16 +350,24 @@ public class Turtles_Workspace_Area extends JPanel {
         }
     }
 
-    for(Turtle t : turtles.values()) {
+    for(Turtle t : turtles) {
     	t.drawMovements(tmpGraphics, w, h);
     }
-    for(Turtle t : turtles.values()) {
+    for(Turtle t : turtles) {
     	t.drawTurtle(tmpGraphics);
     }
     
     tmpGraphics.dispose();
     g.drawImage(tmpImage, 0, 0, null);
     lastBoardInfo = new BoardInfo(w, h, currentPosX, currentPosY, scale, drawingCount, tmpImage);
+	}
+	
+	public static void setPosX(int x) {
+		currentPosX = -x;
+	}
+	
+public static void setPosY(int y) {
+		currentPosY = -y;
 	}
 	
 	

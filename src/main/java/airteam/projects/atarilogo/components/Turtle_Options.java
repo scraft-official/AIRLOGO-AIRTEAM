@@ -29,6 +29,9 @@ import javax.swing.plaf.basic.ComboPopup;
 
 import airteam.projects.atarilogo.AtariLogo;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
+import airteam.projects.atarilogo.components.dialogs.popups.AddNewTurtlePopup;
+import airteam.projects.atarilogo.components.dialogs.popups.DeleteTurtlePopup;
+import airteam.projects.atarilogo.components.dialogs.popups.EditTurtlePopup;
 import airteam.projects.atarilogo.components.templates.ComboBox;
 import airteam.projects.atarilogo.components.templates.CustomButtonUI;
 import airteam.projects.atarilogo.turtle.Turtle;
@@ -60,8 +63,8 @@ public class Turtle_Options extends JPanel {
 	private static ImageIcon hideIcon = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/hide-icon.png"), 14, 14));
 	
 	private static JButton buttonHidePen = new JButton();
-	private static ImageIcon penOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/pen-on.png"), 16, 16));
-	private static ImageIcon penOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/pen-off.png"), 16, 16));
+	private static ImageIcon penIconOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/pen-on.png"), 16, 16));
+	private static ImageIcon penIconOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/pen-off.png"), 16, 16));
 	
 	private static JButton buttonEditTurtle = new JButton();
 	private static ImageIcon settingsIcon = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/settings-icon.png"), 16, 16));
@@ -138,7 +141,7 @@ public class Turtle_Options extends JPanel {
     addIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				new CustomDialogFrame("DODAJ NOWEGO ŻÓŁWIA");
+				new AddNewTurtlePopup();
 			}
 		});
     
@@ -205,10 +208,7 @@ public class Turtle_Options extends JPanel {
     buttonEditTurtle.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-      	Turtle t = Turtles_Workspace_Area.getSelectedTurtle();
-        t.setPenVisibility(!t.getPenVisibility());
-        Turtles_Workspace_Area.forceRefresh(true, false);
-        refreshButtons();
+        new EditTurtlePopup(Turtles_Workspace_Area.getSelectedTurtle());
       }
     });
     
@@ -235,9 +235,10 @@ public class Turtle_Options extends JPanel {
       @Override
       public void actionPerformed(ActionEvent e) {
       	Turtle t = Turtles_Workspace_Area.getSelectedTurtle();
-        t.setPenVisibility(!t.getPenVisibility());
+      	
+      	Turtles_Workspace_Area.setPosX(t.getX());
+      	Turtles_Workspace_Area.setPosY(t.getY());
         Turtles_Workspace_Area.forceRefresh(true, false);
-        refreshButtons();
       }
     });
     
@@ -261,7 +262,9 @@ public class Turtle_Options extends JPanel {
     buttonDelete.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        refreshButtons();
+      	if(Turtles_Workspace_Area.getSelectedTurtleID() != 0) {
+      		new DeleteTurtlePopup(Turtles_Workspace_Area.getSelectedTurtle());
+      	}
       }
     });
     
@@ -307,10 +310,10 @@ public class Turtle_Options extends JPanel {
 		
 		if(Turtles_Workspace_Area.getSelectedTurtle().getPenVisibility()) {
 			buttonHidePen.setText("PODNIEŚ PISAK");
-			buttonHidePen.setIcon(penOff);
+			buttonHidePen.setIcon(penIconOff);
 		} else {
 			buttonHidePen.setText("OPUŚĆ PISAK");
-			buttonHidePen.setIcon(penOn);
+			buttonHidePen.setIcon(penIconOn);
 		}
 		if(Turtles_Workspace_Area.getSelectedTurtleID() == 0) {
 			CustomButtonUI ui = (CustomButtonUI) buttonDelete.getUI();
