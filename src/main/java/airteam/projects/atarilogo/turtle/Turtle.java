@@ -48,7 +48,9 @@ public class Turtle {
 		turtleColor = color;
 		
 		for(double i = 0.25; i <= 2; i += 0.25) {
-			BufferedImage turtleIcon = (BufferedImage) Graphics_Utilies.getInternalIcon("icons/turtle_icon.png");
+			BufferedImage turtleIcon;
+			if(turtleName.equals("KAMIL") || turtleName.equals("KB"))  { turtleIcon = (BufferedImage) Graphics_Utilies.getInternalIcon("icons/turtle_kamil.png"); }
+			else { turtleIcon = (BufferedImage) Graphics_Utilies.getInternalIcon("icons/turtle.png"); }
 			turtleIcon = Graphics_Utilies.getTintedImage(turtleIcon, color);
 			scaledTurtleImages.put(i, Graphics_Utilies.toBufferedImage(Graphics_Utilies.getScaledImage(turtleIcon, i)));
 		}
