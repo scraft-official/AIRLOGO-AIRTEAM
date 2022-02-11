@@ -86,6 +86,7 @@ public class AddNewTurtlePopup extends JPanel {
       		((CustomTextField) turtleNameField).showRequiredHint(true);
       		turtleNameField.setText("");
       		turtleNameField.repaint();
+      		return;
       	} else { 
       		((CustomTextField) turtleNameField).showRequiredHint(false);
       		turtleNameField.repaint();

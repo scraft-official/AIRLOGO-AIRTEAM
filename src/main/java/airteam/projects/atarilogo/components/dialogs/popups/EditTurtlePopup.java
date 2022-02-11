@@ -1,38 +1,27 @@
 package airteam.projects.atarilogo.components.dialogs.popups;
 
 import java.awt.Color;
-import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
-import airteam.projects.atarilogo.AtariLogo;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogPanel;
 import airteam.projects.atarilogo.components.templates.CustomTextField;
 import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
-import airteam.projects.atarilogo.utilities.Log_Utilies;
 
-import java.awt.BorderLayout;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Random;
 
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
-import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
@@ -87,6 +76,7 @@ public class EditTurtlePopup extends JPanel {
       		((CustomTextField) turtleNameField).showRequiredHint(true);
       		turtleNameField.setText("");
       		turtleNameField.repaint();
+      		return;
       	} else { 
       		((CustomTextField) turtleNameField).showRequiredHint(false);
       		turtleNameField.repaint();

@@ -1,6 +1,7 @@
 package airteam.projects.atarilogo.commands;
 
 import airteam.projects.atarilogo.components.Console_Output;
+import airteam.projects.atarilogo.functions.FunctionManager;
 
 public class CommandManager {
 	public static void parse(String[] args) {
@@ -35,12 +36,18 @@ public class CommandManager {
 			else if(args[0].equals("REPEAT")) {
 				CMD_REPEAT.execute(args);
 			}
+			else if(FunctionManager.existFunction(args[0])) {
+				FunctionManager.parseFunction(args[0], args);
+			}
 			else {
 				Console_Output.addErrorLog("NIE ZNALEZIONO TAKIEJ KOMENDY! ( " + String.join(" ", args) + " )");
 			}
 		}
 		catch(Exception e) { e.printStackTrace(); Console_Output.addErrorLog("WYSTAPIL BLAD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )"); }
-		
+	}
+	
+	public static String[] parseMath(String[] args) {
+		return args;
 	}
 			
 }

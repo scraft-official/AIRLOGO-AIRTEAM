@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import airteam.projects.atarilogo.components.Sidebar_Panel;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
+import airteam.projects.atarilogo.components.dialogs.popups.AddNewFunctionPopup;
 import airteam.projects.atarilogo.components.dialogs.popups.SavePopup;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import com.jgoodies.forms.layout.FormLayout;
@@ -80,6 +81,7 @@ public class AtariLogo extends JFrame {
 			public void run() {
 				try {
 					AtariLogo = new AtariLogo();
+					//new AddNewFunctionPopup();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

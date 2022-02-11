@@ -32,7 +32,9 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
+import airteam.projects.atarilogo.commands.CMD_ED;
 import airteam.projects.atarilogo.commands.CommandManager;
+import airteam.projects.atarilogo.components.dialogs.popups.AddNewFunctionPopup;
 import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
@@ -114,10 +116,16 @@ public class Console_Input extends JPanel {
 				
 				command = command.toUpperCase();
 				Console_Output.addUserLog(command);
-				CommandManager.parse(command.split(" "));
+				
+				String[] cmdList = command.split(" ");
+				if(cmdList[0].equals("TO")) {
+					new AddNewFunctionPopup(command);
+				}
+				else if(cmdList[0].equals("ED")) {
+					CMD_ED.execute(command.split(" "));
+				} else CommandManager.parse(cmdList);
 				
 				textField.setText("");
-				Log_Utilies.logInfo(command);
       }});
 		
 		textField.addKeyListener(new KeyAdapter() {
