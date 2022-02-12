@@ -79,14 +79,15 @@ public class EditTurtlePopup extends JPanel {
       		turtleNameField.repaint();
       		return;	
       	} else {
-      		for(Turtle t : Turtles_Workspace_Area.getAllTurtles()) {
-      			if(t.getName().equals(nameText.toUpperCase())) {
-      				((CustomTextField) turtleNameField).setRquiredHint("* ŻÓŁW O TAKIEJ NAZWIE JUŻ ISTNIEJE!");
-          		((CustomTextField) turtleNameField).showRequiredHint(true);
-          		turtleNameField.repaint();
-      				return;
-      			}
-      		}
+      		if(!turtle.getName().equals(nameText.toUpperCase()))
+	      		for(Turtle t : Turtles_Workspace_Area.getAllTurtles()) {
+	      			if(t.getName().equals(nameText.toUpperCase())) {
+	      				((CustomTextField) turtleNameField).setRquiredHint("* ŻÓŁW O TAKIEJ NAZWIE JUŻ ISTNIEJE!");
+	          		((CustomTextField) turtleNameField).showRequiredHint(true);
+	          		turtleNameField.repaint();
+	      				return;
+	      			}
+	      		}
       		((CustomTextField) turtleNameField).showRequiredHint(false);
       		turtleNameField.repaint();
       	}
