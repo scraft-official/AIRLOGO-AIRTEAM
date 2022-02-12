@@ -115,6 +115,7 @@ public class EditFunctionPopup extends JPanel {
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		
 		functionBodyField = new CustomTextPane();
+		functionBodyField.setTabSize(3);
 		functionBodyField.setLineWrap(true);
 
 		JScrollPane functionScrollPane = new JScrollPane();
@@ -134,6 +135,7 @@ public class EditFunctionPopup extends JPanel {
 		functionScrollPane.setVerticalScrollBar(functionScrollbar);
 		functionScrollPane.setViewportView(functionBodyField);
 		
+		//TODO DODAC OPIS BUDOWY FUNKCJI
 		text.setText("OPIS BUDOWANIA FUNKCJI:\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum");
 		text.setFont(new Font("Tahoma", Font.BOLD, 11));
 		text.setForeground(new Color(140,140,140));
@@ -166,7 +168,6 @@ public class EditFunctionPopup extends JPanel {
       	String functionName = null;
       	ArrayList<String> functionArguments = new ArrayList<>();
       	
-    		//TODO ZROBIC CHECKOWANIE CZY SA WHITESPACY, SPRAWDZNIE WIELKOSCI ITD
     		String[] firstLine = functionList[0].split(" "); 		
     		if(!firstLine[0].equals("TO")) { hintText.setText("* NIE ROZPOCZĘTO FUNKCJI OD \"TO (NAZWA)\""); return; }
     		if(firstLine.length == 1) { hintText.setText("* NIE WPROWADZONO NAZWY \"TO (NAZWA)\""); return;}
@@ -176,7 +177,7 @@ public class EditFunctionPopup extends JPanel {
     		for(String arg : Arrays.copyOfRange(firstLine, 2, firstLine.length)) {
     			if(arg.length() > 1 && arg.charAt(0) == ':') {
     				functionArguments.add(arg);
-    				Log_Utilies.logError(arg);
+    				Log_Utilies.logError(arg.toUpperCase());
     			} else { hintText.setText("* BŁĘDNIE ROZPOCZĘTO ARGUMENT \"" + arg + "\" (BRAK \":\")"); return; }
       	}
     		
@@ -186,15 +187,7 @@ public class EditFunctionPopup extends JPanel {
     		
     		String functionCommands = String.join(" ", Arrays.copyOfRange(functionList, 1, functionList.length-1));
     		
-    		functionCommands = functionCommands.replace("\t", " ");
-    		while(functionCommands.contains("  ")) {
-    			functionCommands = functionCommands.replaceAll("  ", " ");
-				}
-    		
-    		if(functionCommands.charAt(0) == ' ') {
-    			functionCommands = functionCommands.substring(1);
-				}
-    		
+    		if(!name.equals(functionName)) FunctionManager.removeFunction(name);
     		FunctionManager.addFunction(functionName, functionArguments, functionCommands);
       	dialog.frame.dispose();
       }

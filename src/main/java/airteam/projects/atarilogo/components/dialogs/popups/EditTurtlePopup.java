@@ -73,11 +73,20 @@ public class EditTurtlePopup extends JPanel {
       	//------------------------------------------------------------
       	
       	if(nameText.length() == 0) {
+      		((CustomTextField) turtleNameField).setRquiredHint("* TO POLE JEST WYMAGANE!");
       		((CustomTextField) turtleNameField).showRequiredHint(true);
       		turtleNameField.setText("");
       		turtleNameField.repaint();
-      		return;
-      	} else { 
+      		return;	
+      	} else {
+      		for(Turtle t : Turtles_Workspace_Area.getAllTurtles()) {
+      			if(t.getName().equals(nameText.toUpperCase())) {
+      				((CustomTextField) turtleNameField).setRquiredHint("* ŻÓŁW O TAKIEJ NAZWIE JUŻ ISTNIEJE!");
+          		((CustomTextField) turtleNameField).showRequiredHint(true);
+          		turtleNameField.repaint();
+      				return;
+      			}
+      		}
       		((CustomTextField) turtleNameField).showRequiredHint(false);
       		turtleNameField.repaint();
       	}
@@ -86,7 +95,7 @@ public class EditTurtlePopup extends JPanel {
       	
       	if(colorText.length() == 0) {
       		((CustomTextField) turtleColorField).showRequiredHint(true);
-      		((CustomTextField) turtleColorField).setRquiredHint("* To pole jest wymagane!");
+      		((CustomTextField) turtleColorField).setRquiredHint("* TO POLE JEST WYMAGANE!");
       		turtleColorField.setText("");
       		turtleColorField.repaint();
       		return;
@@ -94,7 +103,7 @@ public class EditTurtlePopup extends JPanel {
       		try { selectedColor = Color.decode(colorText);} 
       		catch(Exception ex) {
       			((CustomTextField) turtleColorField).showRequiredHint(true);
-        		((CustomTextField) turtleColorField).setRquiredHint("* Wprowadzono nieprawidlowy kolor!");
+        		((CustomTextField) turtleColorField).setRquiredHint("* WPROWADZONO NIEPRAWIDŁOWY KOLOR!");
         		turtleColorField.repaint();
         		return;
       		}

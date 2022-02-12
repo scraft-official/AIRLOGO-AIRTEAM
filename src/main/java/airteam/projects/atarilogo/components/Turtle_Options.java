@@ -113,14 +113,7 @@ public class Turtle_Options extends JPanel {
     combobox.addPopupMenuListener(new PopupMenuListener() {
       @Override
       public void popupMenuWillBecomeInvisible(PopupMenuEvent pme) {
-      	int i = 0;
-    		for(Turtle t : Turtles_Workspace_Area.getAllTurtles()) {
-    			if(i == combobox.getSelectedIndex()) { 
-    				Turtles_Workspace_Area.selectTurtle(i, false); 
-    				break; 
-    			}
-    			i++;
-    		}
+      	Turtles_Workspace_Area.selectTurtle(combobox.getSelectedIndex(), false); 
     		refreshButtons();
       }
 
@@ -345,7 +338,7 @@ public class Turtle_Options extends JPanel {
 		
 		for(Turtle t : Turtles_Workspace_Area.getAllTurtles()) {
 			if(selectedTurtle == t) { selectedID = i; }
-			turtleNames.add(t.getName());
+			turtleNames.add(t.getName() + " (" + i + ")");
 			i++;
 		}
 		combobox.setModel(new DefaultComboBoxModel(turtleNames.toArray()));

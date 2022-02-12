@@ -4,11 +4,12 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.turtle.Turtle;
 
-public class CMD_REPEAT {
-	private static int argsCount = 2;
+public class CMD_EACH {
+	private static int argsCount = 1;
 	
-	private static String syntax = "REPEAT <ILE RAZY> [LISTA KOMEND]";
+	private static String syntax = "EACH [LISTA KOMEND]";
 	
 	public static void execute(String[] args) {
 
@@ -18,27 +19,7 @@ public class CMD_REPEAT {
 			return;
 		}
 		
-		args[1] = CommandManager.parseMath(args[1]);
-		if(args[1] == null) {
-			Turtles_Workspace_Area.forceRefresh(true, true);
-			return;
-		}
-		
-		int repeatCount = 0;
-		try {
-			repeatCount = Integer.valueOf(args[1]);
-			if(repeatCount <= 0) {
-				Console_Output.addErrorLog("LICZBA POWTORZEN MUSI BYC WIEKSZA OD 0! ( " + args[0] + " " + args[1] + " )");
-				Turtles_Workspace_Area.forceRefresh(true, true);
-				return;
-			}
-		} catch(Exception e) {
-			Console_Output.addErrorLog("WPROWADZONO NIEPRAWIDLOWA LICZBE POWTORZEN! ( " + args[0] + " " + args[1] + " != LICZBA )");
-			Turtles_Workspace_Area.forceRefresh(true, true);
-			return;
-		}
-		
-		if(args[2].charAt(0) != '[') {
+		if(args[1].charAt(0) != '[') {
 			Console_Output.addErrorLog(
 					"UZYJ ZNAKU \"[\", ABY ROZPOCZAC LISTE POWTARZNYCH POLECEN.",
 					"NIE ZNALEZIONO ROZPOCZECIA POWTARZNYCH POLECEN! ( " + String.join(" ", args) + " )"
@@ -105,11 +86,16 @@ public class CMD_REPEAT {
 			}
 		}
 		
-		for(int i = 0; i < repeatCount; i++) {
+		int selectedTurtle = Turtles_Workspace_Area.getSelectedTurtleID();
+		for(int i = 0; i < Turtles_Workspace_Area.getAllTurtles().size(); i++) {
 			if(repeatCommand.charAt(0) == ' ')
 				repeatCommand = repeatCommand.substring(1);
 			CommandManager.parse(repeatCommand.split(" "));
+			Turtles_Workspace_Area.selectTurtle(i, false);
 		}
+		
+		Turtles_Workspace_Area.selectTurtle(selectedTurtle, false);
+		Turtles_Workspace_Area.forceRefresh(false, true);
 		
 		if(restOfCommands != null && restOfCommands.length() > 0){
 			CommandManager.parse(restOfCommands.split(" "));

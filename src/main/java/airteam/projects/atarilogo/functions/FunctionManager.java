@@ -8,27 +8,34 @@ import java.util.stream.Stream;
 import airteam.projects.atarilogo.commands.CommandManager;
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class FunctionManager {
 	private static HashMap<String, TurtleFunction> registeredFunctions = new HashMap<>();
 	
 	public static void parseFunction(String name, String[] args) {
 		TurtleFunction function = registeredFunctions.get(name);
-		if(function.args.size() > args.length + 1) { 
-			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE FUNKCJI: " + name + String.join(" ", function.args), "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!"); 
+		if(function.args.size() > args.length - 1) { 
+			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE FUNKCJI: " + name + " <" + String.join("> <", function.args) + ">", "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!"); 
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}
 		
-		String commands = null;
+		String commands = function.commands;
+		commands = commands.replace("\t", " ");
+		while(commands.contains("  ")) {
+			commands = commands.replaceAll("  ", " ");
+		}
+		
+		if(commands.charAt(0) == ' ') {
+			commands = commands.substring(1);
+		}
+		
 		if(function.args.size() > 0) {
-			int i = 0;
-			for(String arg : function.args) {
-				i++;
-				commands = function.commands;
-				commands.replaceAll(arg, args[i]);
+			for(int i = 0; i < function.args.size(); i++) {
+				commands = commands.replaceAll(function.args.get(i), args[i+1]);
 			}
-		} else commands = function.commands; 
+		}
 			
 		String[] finalCommands = Stream.concat(Arrays.stream(commands.split(" ")), Arrays.stream(Arrays.copyOfRange(args, function.args.size() + 1, args.length))).toArray(String[]::new);
 		CommandManager.parse(finalCommands);

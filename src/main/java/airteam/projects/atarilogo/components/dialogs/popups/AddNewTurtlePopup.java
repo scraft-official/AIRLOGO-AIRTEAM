@@ -18,6 +18,7 @@ import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogPanel;
 import airteam.projects.atarilogo.components.templates.CustomTextField;
+import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
 
@@ -83,11 +84,20 @@ public class AddNewTurtlePopup extends JPanel {
       	//------------------------------------------------------------
       	
       	if(nameText.length() == 0) {
+      		((CustomTextField) turtleNameField).setRquiredHint("* TO POLE JEST WYMAGANE!");
       		((CustomTextField) turtleNameField).showRequiredHint(true);
       		turtleNameField.setText("");
       		turtleNameField.repaint();
-      		return;
-      	} else { 
+      		return;	
+      	} else {
+      		for(Turtle t : Turtles_Workspace_Area.getAllTurtles()) {
+      			if(t.getName().equals(nameText.toUpperCase())) {
+      				((CustomTextField) turtleNameField).setRquiredHint("* ŻÓŁW O TAKIEJ NAZWIE JUŻ ISTNIEJE!");
+          		((CustomTextField) turtleNameField).showRequiredHint(true);
+          		turtleNameField.repaint();
+      				return;
+      			}
+      		}
       		((CustomTextField) turtleNameField).showRequiredHint(false);
       		turtleNameField.repaint();
       	}
@@ -96,7 +106,7 @@ public class AddNewTurtlePopup extends JPanel {
       	
       	if(colorText.length() == 0) {
       		((CustomTextField) turtleColorField).showRequiredHint(true);
-      		((CustomTextField) turtleColorField).setRquiredHint("* To pole jest wymagane!");
+      		((CustomTextField) turtleColorField).setRquiredHint("* TO POLE JEST WYMAGANE!");
       		turtleColorField.setText("");
       		turtleColorField.repaint();
       		return;
@@ -104,7 +114,7 @@ public class AddNewTurtlePopup extends JPanel {
       		try { selectedColor = Color.decode(colorText);} 
       		catch(Exception ex) {
       			((CustomTextField) turtleColorField).showRequiredHint(true);
-        		((CustomTextField) turtleColorField).setRquiredHint("* Wprowadzono nieprawidlowy kolor!");
+        		((CustomTextField) turtleColorField).setRquiredHint("* WPROWADZONO NIEPRAWIDŁOWY KOLOR!");
         		turtleColorField.repaint();
         		return;
       		}

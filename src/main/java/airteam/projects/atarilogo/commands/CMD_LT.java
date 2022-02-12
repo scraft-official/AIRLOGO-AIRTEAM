@@ -16,6 +16,12 @@ public class CMD_LT {
 			return;
 		}
 		
+		args[1] = CommandManager.parseMath(args[1]);
+		if(args[1] == null) {
+			Turtles_Workspace_Area.forceRefresh(true, true);
+			return;
+		}
+		
 		int stopnie = 0;
 		try {
 			stopnie = Integer.valueOf(args[1]);

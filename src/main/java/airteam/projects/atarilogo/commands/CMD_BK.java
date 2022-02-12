@@ -16,6 +16,12 @@ public class CMD_BK {
 			return;
 		}
 		
+		args[1] = CommandManager.parseMath(args[1]);
+		if(args[1] == null) {
+			Turtles_Workspace_Area.forceRefresh(true, true);
+			return;
+		}
+		
 		int distance = 0;
 		try {
 			distance = Integer.valueOf(args[1]);
