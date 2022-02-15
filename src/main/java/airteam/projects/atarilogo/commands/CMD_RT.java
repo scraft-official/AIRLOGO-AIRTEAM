@@ -18,7 +18,6 @@ public class CMD_RT {
 		}
 		
 		for(int id : Turtles_Workspace_Area.getSelectedTurtlesID()) {
-			args[1] = CommandManager.parseMath(args[1], id);
 			if(args[1] == null) {
 				Turtles_Workspace_Area.forceRefresh(true, true);
 				return;
@@ -26,10 +25,8 @@ public class CMD_RT {
 			
 			int stopnie = 0;
 			try {
-				stopnie = Integer.valueOf(args[1]);
-			} catch(Exception e) {
-				Console_Output.addErrorLog("WPROWADZONO NIEPRAWIDLOWY WARTOSC! ( " + args[0] + " " + args[1] + " != LICZBA )");
-			}
+				stopnie = CommandManager.parseMath(args[1], id);
+			} catch (Exception e) { return; }
 
 			Turtles_Workspace_Area.getTurtle(id).rotate(stopnie);
 		}

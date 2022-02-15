@@ -19,82 +19,86 @@ public class CMD_TELL {
 			return;
 		}
 		
-		if(args[1].charAt(0) != '[') {
-			Console_Output.addErrorLog(
-					"UZYJ ZNAKU \"[\", ABY ROZPOCZAC LISTE POWTARZNYCH POLECEN.",
-					"NIE ZNALEZIONO ROZPOCZECIA POWTARZNYCH POLECEN! ( " + String.join(" ", args) + " )"
-			);
-			Turtles_Workspace_Area.forceRefresh(true, true);
-			return;
-		}
+		String turtlesIDs;
+		String restOfCommands;	
 		
-		String turtlesIDs = String.join(" ", Arrays.copyOfRange(args, argsCount, args.length));
-		String restOfCommands = null;	
+		if(args[1].charAt(0) == '[') {
 		
-		int leftBracketCount = 0;
-		int rightBracketCount = 0;
-		int endIndex = 0;
-		
-		for(int i = 0; i < turtlesIDs.length(); i++) {
-			//Log_Utilies.logInfo(repeatCommand.charAt(i));
-			char ch = turtlesIDs.charAt(i);
+			turtlesIDs = String.join(" ", Arrays.copyOfRange(args, argsCount, args.length));
+			restOfCommands = null;	
 			
-			if(ch == '[') {
-				leftBracketCount++;
-			}
-			else if(ch == ']') {
-				rightBracketCount++;
-			}
+			int leftBracketCount = 0;
+			int rightBracketCount = 0;
+			int endIndex = 0;
 			
-			if(leftBracketCount == rightBracketCount) {
-				endIndex = i;
-				if(endIndex+1 < turtlesIDs.length()) 
-					
-					if(turtlesIDs.charAt(endIndex+1) == ' ')
-						restOfCommands = turtlesIDs.substring(endIndex+2, turtlesIDs.length());
-					
-					else {
-						Console_Output.addErrorLog(
-							"SPRAWDZ, CZY NIE UMIESCILES ZA DUZO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKOW!",
-							"ZLE ZAKONCZONO LISTE POWTARZANYCH POLECEN ( " + String.join(" ", args) + " )"
-								);
-						Turtles_Workspace_Area.forceRefresh(true, true);
-						return;
-					}
-				turtlesIDs = turtlesIDs.substring(1, endIndex);
- 				break;
-			}
+			for(int i = 0; i < turtlesIDs.length(); i++) {
+				//Log_Utilies.logInfo(repeatCommand.charAt(i));
+				char ch = turtlesIDs.charAt(i);
 				
-		}
-		
-		if(leftBracketCount > rightBracketCount) {
-			Console_Output.addErrorLog(
-					"UZYJ ZNAKU \"]\", ABY ZAKONCZYC LISTE WYBIERANYCH ZOLWI!",
-					"NIE ZNALEZIONO ZAKONCZENIA LISTY WYEBIERANYCH ZOLWI! ( " + String.join(" ", args) + " )"
-			);
-			Turtles_Workspace_Area.forceRefresh(true, true);
-			return;
-		}
-		
-		if(turtlesIDs.length() <= 1) {
-			if(turtlesIDs.length() == 0 || turtlesIDs.charAt(0) == ' ') {
+				if(ch == '[') {
+					leftBracketCount++;
+				}
+				else if(ch == ']') {
+					rightBracketCount++;
+				}
+				
+				if(leftBracketCount == rightBracketCount) {
+					endIndex = i;
+					if(endIndex+1 < turtlesIDs.length()) 
+						
+						if(turtlesIDs.charAt(endIndex+1) == ' ')
+							restOfCommands = turtlesIDs.substring(endIndex+2, turtlesIDs.length());
+						
+						else {
+							Console_Output.addErrorLog(
+								"SPRAWDZ, CZY NIE UMIESCILES ZA DUZO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKOW!",
+								"ZLE ZAKONCZONO LISTE POWTARZANYCH POLECEN ( " + String.join(" ", args) + " )"
+									);
+							Turtles_Workspace_Area.forceRefresh(true, true);
+							return;
+						}
+					turtlesIDs = turtlesIDs.substring(1, endIndex);
+					break;
+				}
+					
+			}
+			
+			if(leftBracketCount > rightBracketCount) {
 				Console_Output.addErrorLog(
-						"NIE WPROWADZONO ZADNEJ LISTY POLECEN DO POWTORZENIA! ( " + String.join(" ", args) + " )"
+						"UZYJ ZNAKU \"]\", ABY ZAKONCZYC LISTE WYBIERANYCH ZOLWI!",
+						"NIE ZNALEZIONO ZAKONCZENIA LISTY WYEBIERANYCH ZOLWI! ( " + String.join(" ", args) + " )"
 				);
 				Turtles_Workspace_Area.forceRefresh(true, true);
 				return;
 			}
+			
+			if(turtlesIDs.length() <= 1) {
+				if(turtlesIDs.length() == 0 || turtlesIDs.charAt(0) == ' ') {
+					Console_Output.addErrorLog(
+							"NIE WPROWADZONO ZADNEJ LISTY POLECEN DO POWTORZENIA! ( " + String.join(" ", args) + " )"
+					);
+					Turtles_Workspace_Area.forceRefresh(true, true);
+					return;
+				}
+			}
+			
+			
+		} else { turtlesIDs = args[1]; restOfCommands = String.join(" ",Arrays.copyOfRange(args, 2, args.length)); }
+		
+		if(turtlesIDs.charAt(0) == ' ')
+			turtlesIDs = turtlesIDs.substring(1);
+		
+		ArrayList<Integer> selectedIDs = new ArrayList<>();
+		
+		for(String id : turtlesIDs.split(" ")) {
+			try {
+				selectedIDs.add(Integer.valueOf(id));
+			} catch(Exception e) {
+				Console_Output.addErrorLog("WPROWADZONO BLEDNE ID ZOLWIA  ( " + id + "!= LICZBA )");
+			}
 		}
 		
-		ArrayList<Integer> selectedTurtles = Turtles_Workspace_Area.getSelectedTurtlesID();
-		for(int i = 0; i < Turtles_Workspace_Area.getAllTurtles().size(); i++) {
-			Turtles_Workspace_Area.selectTurtle(i, false);
-			if(turtlesIDs.charAt(0) == ' ')
-				turtlesIDs = turtlesIDs.substring(1);
-			CommandManager.parse(turtlesIDs.split(" "));
-		}
-		
-		Turtles_Workspace_Area.selectTurtle(selectedTurtles, false);
+		Turtles_Workspace_Area.selectTurtle(selectedIDs, false);
 		Turtles_Workspace_Area.forceRefresh(false, true);
 		
 		if(restOfCommands != null && restOfCommands.length() > 0){

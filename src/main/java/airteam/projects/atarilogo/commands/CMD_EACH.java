@@ -86,11 +86,12 @@ public class CMD_EACH {
 			}
 		}
 		
+		if(repeatCommand.charAt(0) == ' ')
+			repeatCommand = repeatCommand.substring(1);
+		
 		ArrayList<Integer> selectedTurtles = Turtles_Workspace_Area.getSelectedTurtlesID();
 		for(int i = 0; i < Turtles_Workspace_Area.getAllTurtles().size(); i++) {
 			Turtles_Workspace_Area.selectTurtle(i, false);
-			if(repeatCommand.charAt(0) == ' ')
-				repeatCommand = repeatCommand.substring(1);
 			CommandManager.parse(repeatCommand.split(" "));
 		}
 		

@@ -78,6 +78,8 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	private static ArrayList<Integer> selectedTurtles;
 	
+	private static String[] listaAutorow = {"Stanislas", "Stanisław", "Kuba", "Konrad", "Marcin"};
+	
 	public Turtles_Workspace_Area() {
 		setDoubleBuffered(false);
 		setOpaque(false);
@@ -310,6 +312,32 @@ public class Turtles_Workspace_Area extends JPanel {
 	}
 	
 	public static void selectTurtle(ArrayList<Integer> ids, boolean refreshOptions) {
+		for(int id : ids) {
+			if(id > (turtles.size()-1)) {
+				for(int i = turtles.size(); i <= id; i++) {
+					Random randomName = new Random();
+					int index = randomName.nextInt(listaAutorow.length-1);
+					String name = listaAutorow[index];
+					
+					Random randomIdentifier = new Random();
+					
+					while(existTurtle(name)) {
+						name = (listaAutorow[index] + "-" + String.valueOf(randomIdentifier.nextInt(9999)));
+					}
+					
+					//TODO poprawic nazwy powtarzajacego sie zolwia
+					
+					Random randomColor = new Random();
+					final float hue = randomColor.nextFloat();
+					final float saturation = (randomColor.nextInt(2000) + 5000) / 10000f;
+					final float luminance = 0.65f;
+					Color color = Color.getHSBColor(hue, saturation, luminance);
+					
+					Turtles_Workspace_Area.addTurtle(listaAutorow[index], color);
+				}
+			}
+		}
+		
 		selectedTurtles = new ArrayList<>();
 		selectedTurtles.addAll(ids);
 		
@@ -321,6 +349,28 @@ public class Turtles_Workspace_Area extends JPanel {
 	}
 	
 	public static void selectTurtle(int id, boolean refreshOptions) {
+		if(id > (turtles.size()-1)) {
+			for(int i = turtles.size(); i <= id; i++) {
+				Random randomName = new Random();
+				int index = randomName.nextInt(listaAutorow.length-1);
+				String name = listaAutorow[index];
+				
+				Random randomIdentifier = new Random();
+				
+				while(existTurtle(name)) {
+					name = (listaAutorow[index] + "-" + String.valueOf(randomIdentifier.nextInt(9999)));
+				}
+				
+				Random randomColor = new Random();
+				final float hue = randomColor.nextFloat();
+				final float saturation = (randomColor.nextInt(2000) + 5000) / 10000f;
+				final float luminance = 0.65f;
+				Color color = Color.getHSBColor(hue, saturation, luminance);
+				
+				Turtles_Workspace_Area.addTurtle(listaAutorow[index], color);
+			}
+		}
+		
 		selectedTurtles = new ArrayList<>();
 		selectedTurtles.add(id);
 		
@@ -329,6 +379,13 @@ public class Turtles_Workspace_Area extends JPanel {
 		if(refreshOptions) {
 			Turtle_Options.refreshSelected();
 		}
+	}
+	
+	public static boolean existTurtle(String name) {
+		for(Turtle t : turtles) {
+			if(t.getName().equals(name)) return true;
+		}
+		return false;
 	}
 	
 	public void paintComponent(Graphics g) {

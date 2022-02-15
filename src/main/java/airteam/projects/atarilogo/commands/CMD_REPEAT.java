@@ -105,9 +105,10 @@ public class CMD_REPEAT {
 			}
 		}
 		
+		if(repeatCommand.charAt(0) == ' ')
+			repeatCommand = repeatCommand.substring(1);
+		
 		for(int i = 0; i < repeatCount; i++) {
-			if(repeatCommand.charAt(0) == ' ')
-				repeatCommand = repeatCommand.substring(1);
 			CommandManager.parse(repeatCommand.split(" "));
 		}
 		

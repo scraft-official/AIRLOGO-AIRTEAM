@@ -48,6 +48,9 @@ public class CommandManager {
 			else if(args[0].equals("PD")) {
 				CMD_PD.execute(args);
 			}
+			else if(args[0].equals("TELL")) {
+				CMD_TELL.execute(args);
+			}
 			else if(args[0].equals("EACH")) {
 				CMD_EACH.execute(args);
 			}
@@ -64,17 +67,18 @@ public class CommandManager {
 		catch(Exception e) { e.printStackTrace(); Console_Output.addErrorLog("WYSTAPIL BLAD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )"); }
 	}
 	
-	public static String parseMath(String arg, int turtleID) {
+	public static int parseMath(String arg, int turtleID) throws Exception {
 		arg = arg.replaceAll("WHO", String.valueOf(turtleID));
-		
+		Log_Utilies.logInfo(turtleID, arg);
+		int calc = 0;
     try {
-    	arg = Integer.valueOf(((Number) engine.eval(arg)).toString()).toString();
+    	calc = Integer.valueOf(((Number) engine.eval(arg)).toString());
 		} catch (Exception e) {
-			Console_Output.addErrorLog("NIE MOZNA OBLICZYC ROWNANIA MATEMATYCZNEGO ( " + arg + " )");
-			return null;
+			Console_Output.addErrorLog("NIE MOZNA OBLICZYC WARTOSCI MATEMATYCZNEJ ( " + arg + " )");
+			throw new Exception();
 		}
 		
-		return arg;
+		return calc;
 	}
 			
 }
