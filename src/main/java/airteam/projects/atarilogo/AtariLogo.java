@@ -13,6 +13,7 @@ import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.popups.AddNewFunctionPopup;
 import airteam.projects.atarilogo.components.dialogs.popups.SavePopup;
+import airteam.projects.atarilogo.functions.FunctionManager;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -46,6 +47,8 @@ public class AtariLogo extends JFrame {
 		workspacePanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		Turtles_Workspace_Area.addTurtle("PODSTAWOWY", new Color(20, 186, 150));
+		
+		FunctionManager.registerDefaultFunctions();
 		
 		JPanel sidebarPanel = new Sidebar_Panel();
 		

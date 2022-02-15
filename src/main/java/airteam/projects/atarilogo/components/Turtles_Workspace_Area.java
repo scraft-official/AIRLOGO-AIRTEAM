@@ -41,6 +41,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
+import airteam.projects.atarilogo.commands.CommandManager;
 import airteam.projects.atarilogo.components.templates.JSliderUI;
 import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
@@ -75,7 +76,7 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	private BoardInfo lastBoardInfo;
 	
-	private static int selectedTurtle;
+	private static ArrayList<Integer> selectedTurtles;
 	
 	public Turtles_Workspace_Area() {
 		setDoubleBuffered(false);
@@ -153,6 +154,7 @@ public class Turtles_Workspace_Area extends JPanel {
 		add(logo, "2, 2, 4, 2, left, top");
 		
 		implementListeners();
+		CommandManager.initializeMathEngine();
 	}
 	
 	public static Turtle addTurtle(String name, Color color) {
@@ -185,7 +187,7 @@ public class Turtles_Workspace_Area extends JPanel {
 		return t;
 	}
 	
-	public static Collection<Turtle> getAllTurtles() {
+	public static ArrayList<Turtle> getAllTurtles() {
 		return turtles;
 	}
 	
@@ -307,8 +309,23 @@ public class Turtles_Workspace_Area extends JPanel {
 		}
 	}
 	
+	public static void selectTurtle(ArrayList<Integer> ids, boolean refreshOptions) {
+		selectedTurtles = new ArrayList<>();
+		selectedTurtles.addAll(ids);
+		
+		Turtle_Options.setSelectedTurtle(turtles.get(ids.get(0)));
+		
+		if(refreshOptions) {
+			Turtle_Options.refreshSelected();
+		}
+	}
+	
 	public static void selectTurtle(int id, boolean refreshOptions) {
-		selectedTurtle = id;
+		selectedTurtles = new ArrayList<>();
+		selectedTurtles.add(id);
+		
+		Turtle_Options.setSelectedTurtle(turtles.get(id));
+		
 		if(refreshOptions) {
 			Turtle_Options.refreshSelected();
 		}
@@ -391,12 +408,18 @@ public static void setPosY(int y) {
 		return scale;
 	}
 	
-	public static int getSelectedTurtleID() {
-		return selectedTurtle;
+	public static ArrayList<Integer> getSelectedTurtlesID() {
+		return selectedTurtles;
 	}
 	
-	public static Turtle getSelectedTurtle() {
-		return turtles.get(selectedTurtle);
+	public static ArrayList<Turtle> getSelectedTurtles() {
+		ArrayList<Turtle> selection = new ArrayList<>();
+		
+		for(int id : selectedTurtles) {
+			selection.add(turtles.get(id));
+		}
+		
+		return selection;
 	}
 	
 	public static Turtles_Workspace_Area getInstance() {

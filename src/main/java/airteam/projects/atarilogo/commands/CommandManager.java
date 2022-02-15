@@ -1,11 +1,24 @@
 package airteam.projects.atarilogo.commands;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 import airteam.projects.atarilogo.functions.FunctionManager;
+import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class CommandManager {
+	public static ScriptEngineManager manager;
+	public static ScriptEngine engine;
+	
+	public static void initializeMathEngine() {
+		manager = new ScriptEngineManager();
+		engine = manager.getEngineByName("js");
+	}
+	
 	public static void parse(String[] args) {
 		try {
 			if(args[0].equals("FD")) {
@@ -51,50 +64,16 @@ public class CommandManager {
 		catch(Exception e) { e.printStackTrace(); Console_Output.addErrorLog("WYSTAPIL BLAD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )"); }
 	}
 	
-	public static String parseMath(String arg) {
-		arg = arg.replaceAll("WHO", String.valueOf(Turtles_Workspace_Area.getSelectedTurtleID()+1));
-		for(int i = 0; i < arg.length(); i++) {
-			if(arg.charAt(i) == '+') {
-				try{
-					Log_Utilies.logInfo(Integer.valueOf(arg.substring(0, i)), Integer.valueOf(arg.substring(i+1, arg.length())));
-					int calc = Integer.valueOf(arg.substring(0, i)) + Integer.valueOf(arg.substring(i+1, arg.length()));
-					arg = String.valueOf(calc);
-					break;
-				} catch(Exception e) {
-					Console_Output.addErrorLog("NIE MOZNA OBLICZYC WARTOSCI MATEMATYCZNEJ ( " + arg + " )");
-					return null;
-			}} 
-			else if(arg.charAt(i) == '-') {
-				try{
-					Log_Utilies.logInfo(Integer.valueOf(arg.substring(0, i)), Integer.valueOf(arg.substring(i+1, arg.length())));
-					int calc = Integer.valueOf(arg.substring(0, i)) - Integer.valueOf(arg.substring(i+1, arg.length()));
-					arg = String.valueOf(calc);
-					break;
-				} catch(Exception e) {
-					Console_Output.addErrorLog("NIE MOZNA OBLICZYC WARTOSCI MATEMATYCZNEJ ( " + arg + " )");
-					return null;
-			}}
-			else if(arg.charAt(i) == '*') {
-				try{
-					Log_Utilies.logInfo(Integer.valueOf(arg.substring(0, i)), Integer.valueOf(arg.substring(i+1, arg.length())));
-					int calc = Integer.valueOf(arg.substring(0, i)) * Integer.valueOf(arg.substring(i+1, arg.length()));
-					arg = String.valueOf(calc);
-					break;
-				} catch(Exception e) {
-					Console_Output.addErrorLog("NIE MOZNA OBLICZYC WARTOSCI MATEMATYCZNEJ ( " + arg + " )");
-					return null;
-			}}
-			else if(arg.charAt(i) == '/') {
-				try{
-					Log_Utilies.logInfo(Integer.valueOf(arg.substring(0, i)), Integer.valueOf(arg.substring(i+1, arg.length())));
-					int calc = Integer.valueOf(arg.substring(0, i)) / Integer.valueOf(arg.substring(i+1, arg.length()));
-					arg = String.valueOf(calc);
-					break;
-				} catch(Exception e) {
-					Console_Output.addErrorLog("NIE MOZNA OBLICZYC WARTOSCI MATEMATYCZNEJ ( " + arg + " )");
-					return null;
-			}}
+	public static String parseMath(String arg, int turtleID) {
+		arg = arg.replaceAll("WHO", String.valueOf(turtleID));
+		
+    try {
+    	arg = Integer.valueOf(((Number) engine.eval(arg)).toString()).toString();
+		} catch (Exception e) {
+			Console_Output.addErrorLog("NIE MOZNA OBLICZYC ROWNANIA MATEMATYCZNEGO ( " + arg + " )");
+			return null;
 		}
+		
 		return arg;
 	}
 			

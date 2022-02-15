@@ -1,7 +1,5 @@
 package airteam.projects.atarilogo.commands;
 
-import java.util.Arrays;
-
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 import airteam.projects.atarilogo.components.dialogs.popups.EditFunctionPopup;
@@ -15,6 +13,11 @@ private static int argsCount = 1;
 		if(args.length < argsCount + 1) {
 			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!");
 			Turtles_Workspace_Area.forceRefresh(true, true);
+			return;
+		}
+		
+		if(FunctionManager.existFunction(args[1]) && FunctionManager.getFunction(args[1]).isDefaultFunction) {
+			Console_Output.addErrorLog("NIE MOZESZ EDYTOWAC WBUDOWANYCH FUNKCJI!");
 			return;
 		}
 		

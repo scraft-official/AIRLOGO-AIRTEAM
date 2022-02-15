@@ -6,10 +6,10 @@ import java.util.Arrays;
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 
-public class CMD_EACH {
+public class CMD_TELL {
 	private static int argsCount = 1;
 	
-	private static String syntax = "EACH [LISTA KOMEND]";
+	private static String syntax = "TELL [LISTA INDEKSÓW ŻÓŁWI]";
 	
 	public static void execute(String[] args) {
 
@@ -28,16 +28,16 @@ public class CMD_EACH {
 			return;
 		}
 		
-		String repeatCommand = String.join(" ", Arrays.copyOfRange(args, argsCount, args.length));
+		String turtlesIDs = String.join(" ", Arrays.copyOfRange(args, argsCount, args.length));
 		String restOfCommands = null;	
 		
 		int leftBracketCount = 0;
 		int rightBracketCount = 0;
 		int endIndex = 0;
 		
-		for(int i = 0; i < repeatCommand.length(); i++) {
+		for(int i = 0; i < turtlesIDs.length(); i++) {
 			//Log_Utilies.logInfo(repeatCommand.charAt(i));
-			char ch = repeatCommand.charAt(i);
+			char ch = turtlesIDs.charAt(i);
 			
 			if(ch == '[') {
 				leftBracketCount++;
@@ -48,10 +48,10 @@ public class CMD_EACH {
 			
 			if(leftBracketCount == rightBracketCount) {
 				endIndex = i;
-				if(endIndex+1 < repeatCommand.length()) 
+				if(endIndex+1 < turtlesIDs.length()) 
 					
-					if(repeatCommand.charAt(endIndex+1) == ' ')
-						restOfCommands = repeatCommand.substring(endIndex+2, repeatCommand.length());
+					if(turtlesIDs.charAt(endIndex+1) == ' ')
+						restOfCommands = turtlesIDs.substring(endIndex+2, turtlesIDs.length());
 					
 					else {
 						Console_Output.addErrorLog(
@@ -61,7 +61,7 @@ public class CMD_EACH {
 						Turtles_Workspace_Area.forceRefresh(true, true);
 						return;
 					}
-				repeatCommand = repeatCommand.substring(1, endIndex);
+				turtlesIDs = turtlesIDs.substring(1, endIndex);
  				break;
 			}
 				
@@ -69,15 +69,15 @@ public class CMD_EACH {
 		
 		if(leftBracketCount > rightBracketCount) {
 			Console_Output.addErrorLog(
-					"UZYJ ZNAKU \"]\", ABY ZAKONCZYC LISTE POWTARZNYCH POLECEN!",
-					"NIE ZNALEZIONO ZAKONCZENIA POWTARZNYCH POLECEN! ( " + String.join(" ", args) + " )"
+					"UZYJ ZNAKU \"]\", ABY ZAKONCZYC LISTE WYBIERANYCH ZOLWI!",
+					"NIE ZNALEZIONO ZAKONCZENIA LISTY WYEBIERANYCH ZOLWI! ( " + String.join(" ", args) + " )"
 			);
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}
 		
-		if(repeatCommand.length() <= 1) {
-			if(repeatCommand.length() == 0 || repeatCommand.charAt(0) == ' ') {
+		if(turtlesIDs.length() <= 1) {
+			if(turtlesIDs.length() == 0 || turtlesIDs.charAt(0) == ' ') {
 				Console_Output.addErrorLog(
 						"NIE WPROWADZONO ZADNEJ LISTY POLECEN DO POWTORZENIA! ( " + String.join(" ", args) + " )"
 				);
@@ -89,9 +89,9 @@ public class CMD_EACH {
 		ArrayList<Integer> selectedTurtles = Turtles_Workspace_Area.getSelectedTurtlesID();
 		for(int i = 0; i < Turtles_Workspace_Area.getAllTurtles().size(); i++) {
 			Turtles_Workspace_Area.selectTurtle(i, false);
-			if(repeatCommand.charAt(0) == ' ')
-				repeatCommand = repeatCommand.substring(1);
-			CommandManager.parse(repeatCommand.split(" "));
+			if(turtlesIDs.charAt(0) == ' ')
+				turtlesIDs = turtlesIDs.substring(1);
+			CommandManager.parse(turtlesIDs.split(" "));
 		}
 		
 		Turtles_Workspace_Area.selectTurtle(selectedTurtles, false);

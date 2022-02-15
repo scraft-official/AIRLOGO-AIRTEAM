@@ -77,6 +77,8 @@ public class Turtle_Options extends JPanel {
 	private static ImageIcon deleteIconOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/bin-icon.png"), 14, 14));
 	private static ImageIcon deleteIconOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/bin-icon-darker.png"), 14, 14));
 
+	private static Turtle selectedTurtle;
+	
 	public Turtle_Options() {
 		setOpaque(false);
 		setBorder(null);
@@ -145,8 +147,7 @@ public class Turtle_Options extends JPanel {
     buttonHideTurtle.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-      	Turtle t = Turtles_Workspace_Area.getSelectedTurtle();
-        t.setTurtleVisibility(!t.getTurtleVisibility());
+      	selectedTurtle.setTurtleVisibility(!selectedTurtle.getTurtleVisibility());
         Turtles_Workspace_Area.forceRefresh(true, false);
         refreshButtons();
       }
@@ -172,8 +173,7 @@ public class Turtle_Options extends JPanel {
     buttonHidePen.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-      	Turtle t = Turtles_Workspace_Area.getSelectedTurtle();
-        t.setPenVisibility(!t.getPenVisibility());
+      	selectedTurtle.setPenVisibility(!selectedTurtle.getPenVisibility());
         Turtles_Workspace_Area.forceRefresh(true, false);
         refreshButtons();
       }
@@ -201,7 +201,7 @@ public class Turtle_Options extends JPanel {
     buttonEditTurtle.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-        new EditTurtlePopup(Turtles_Workspace_Area.getSelectedTurtle());
+        new EditTurtlePopup(selectedTurtle);
       }
     });
     
@@ -227,10 +227,9 @@ public class Turtle_Options extends JPanel {
     buttonTeleport.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-      	Turtle t = Turtles_Workspace_Area.getSelectedTurtle();
-      	
-      	Turtles_Workspace_Area.setPosX(t.getX());
-      	Turtles_Workspace_Area.setPosY(t.getY());
+
+      	Turtles_Workspace_Area.setPosX(selectedTurtle.getX());
+      	Turtles_Workspace_Area.setPosY(selectedTurtle.getY());
         Turtles_Workspace_Area.forceRefresh(true, false);
       }
     });
@@ -255,8 +254,8 @@ public class Turtle_Options extends JPanel {
     buttonDelete.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-      	if(Turtles_Workspace_Area.getSelectedTurtleID() != 0) {
-      		new DeleteTurtlePopup(Turtles_Workspace_Area.getSelectedTurtle());
+      	if(Turtles_Workspace_Area.getAllTurtles().get(0) != selectedTurtle) {
+      		new DeleteTurtlePopup(selectedTurtle);
       	}
       }
     });
@@ -264,7 +263,7 @@ public class Turtle_Options extends JPanel {
     buttonDelete.addMouseListener(new MouseAdapter() {
       @Override
       public void mouseEntered(MouseEvent me) {
-      	if(Turtles_Workspace_Area.getSelectedTurtleID() != 0) {
+      	if(Turtles_Workspace_Area.getAllTurtles().get(0) != selectedTurtle) {
 	      	buttonDelete.setBackground(new Color(181, 72, 58));
 	        repaint();
       	}
@@ -272,7 +271,7 @@ public class Turtle_Options extends JPanel {
 
       @Override
       public void mouseExited(MouseEvent me) {
-      	if(Turtles_Workspace_Area.getSelectedTurtleID() != 0) {
+      	if(Turtles_Workspace_Area.getAllTurtles().get(0) != selectedTurtle) {
 	      	buttonDelete.setBackground(new Color(209, 85, 69));
 	        repaint();
       	}
@@ -293,7 +292,7 @@ public class Turtle_Options extends JPanel {
 	}
 	
 	public static void refreshButtons() {
-		if(Turtles_Workspace_Area.getSelectedTurtle().getTurtleVisibility()) {
+		if(selectedTurtle.getTurtleVisibility()) {
 			buttonHideTurtle.setText("UKRYJ ŻÓŁWIA");
 			buttonHideTurtle.setIcon(hideIcon);
 		} else {
@@ -301,14 +300,14 @@ public class Turtle_Options extends JPanel {
 			buttonHideTurtle.setIcon(showIcon);
 		}
 		
-		if(Turtles_Workspace_Area.getSelectedTurtle().getPenVisibility()) {
+		if(selectedTurtle.getPenVisibility()) {
 			buttonHidePen.setText("PODNIEŚ PISAK");
 			buttonHidePen.setIcon(penIconOff);
 		} else {
 			buttonHidePen.setText("OPUŚĆ PISAK");
 			buttonHidePen.setIcon(penIconOn);
 		}
-		if(Turtles_Workspace_Area.getSelectedTurtleID() == 0) {
+		if(Turtles_Workspace_Area.getAllTurtles().get(0) == selectedTurtle) {
 			CustomButtonUI ui = (CustomButtonUI) buttonDelete.getUI();
 			ui.allowClick(false);
 			
@@ -329,8 +328,11 @@ public class Turtle_Options extends JPanel {
 		}
 	}
 	
+	public static void setSelectedTurtle(Turtle t) {
+		selectedTurtle = t;
+	}
+	
 	public static void refreshSelected() {
-		Turtle selectedTurtle = Turtles_Workspace_Area.getSelectedTurtle();
 		ArrayList<String> turtleNames = new ArrayList<>();
 		
 		int selectedID = 0;
@@ -338,7 +340,7 @@ public class Turtle_Options extends JPanel {
 		
 		for(Turtle t : Turtles_Workspace_Area.getAllTurtles()) {
 			if(selectedTurtle == t) { selectedID = i; }
-			turtleNames.add(t.getName() + " (" + i + ")");
+			turtleNames.add(t.getName() + " (" + (i) + ")");
 			i++;
 		}
 		combobox.setModel(new DefaultComboBoxModel(turtleNames.toArray()));

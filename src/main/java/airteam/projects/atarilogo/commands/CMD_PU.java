@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.turtle.Turtle;
 
 public class CMD_PU {
 	private static int argsCount = 0;
@@ -17,7 +18,9 @@ public class CMD_PU {
 			return;
 		}
 		
-		Turtles_Workspace_Area.getSelectedTurtle().setPenVisibility(false);
+		for(Turtle t : Turtles_Workspace_Area.getSelectedTurtles()) {
+			t.setPenVisibility(false);
+		}
 		
 		if(args.length > (argsCount + 1)) {
 			CommandManager.parse(Arrays.copyOfRange(args, argsCount + 1, args.length));
