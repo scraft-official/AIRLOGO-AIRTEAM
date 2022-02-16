@@ -85,9 +85,9 @@ public class Console_Output extends JPanel {
 			line.setFont(font);
 			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
 		}
-		if(visibility) {
-			instance.revalidate();
-			instance.repaint();
+		if(!visibility) {
+			changeVisibility();
+			Console_Input.refreshConsoleButton();
 		}
 	}
 	
@@ -115,12 +115,10 @@ public class Console_Output extends JPanel {
 			line.setFont(font);
 			linesContainer.add(line, "cell 0 " + String.valueOf(9999 - linesContainer.getComponents().length));
 		}
-		if(!visibility) {
-			changeVisibility();
-			Console_Input.refreshConsoleButton();
+		if(visibility) {
+			instance.revalidate();
+			instance.repaint();
 		}
-		instance.revalidate();
-		instance.repaint();
 	}
 	
 	public static void addCustomColorLog(Color color, String... messages) {

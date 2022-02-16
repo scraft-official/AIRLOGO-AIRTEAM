@@ -9,7 +9,7 @@ import airteam.projects.atarilogo.turtle.Turtle;
 public class CMD_HT {
 private static int argsCount = 0;
 	
-	private static String syntax = "CS";
+	private static String syntax = "HT";
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {

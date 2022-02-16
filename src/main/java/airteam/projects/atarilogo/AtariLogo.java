@@ -29,6 +29,7 @@ import java.awt.image.BufferedImage;
 @SuppressWarnings("serial")
 public class AtariLogo extends JFrame {
 	private static AtariLogo AtariLogo;
+	private static int fps = 50;
 	
 	public AtariLogo() {
 		setTitle("AIRTEAM - ATARILOGO");
@@ -43,10 +44,11 @@ public class AtariLogo extends JFrame {
 			new RowSpec[] {
 				RowSpec.decode("10px:grow"),});
 		
-		JPanel workspacePanel = new Turtles_Workspace_Area();
+		Turtles_Workspace_Area workspacePanel = new Turtles_Workspace_Area(fps);
 		workspacePanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
 		Turtles_Workspace_Area.addTurtle("PODSTAWOWY", new Color(20, 186, 150));
+		
 		
 		FunctionManager.registerDefaultFunctions();
 		
@@ -77,7 +79,7 @@ public class AtariLogo extends JFrame {
 	}
 	
 	public static void main(String[] args) {
-//		System.setProperty("sun.java2d.opengl", "true");
+		System.setProperty("sun.java2d.opengl", "true");
 //		System.setProperty("sun.java2d.ddscale", "true");
 //		System.setProperty("sun.java2d.translaccel", "true");
 		EventQueue.invokeLater(new Runnable() {

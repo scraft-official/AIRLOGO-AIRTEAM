@@ -168,7 +168,6 @@ public class Console_Input extends JPanel {
 			public void mousePressed(MouseEvent e) {
 				Console_Output.changeVisibility();
 				refreshConsoleButton();
-				Turtles_Workspace_Area.refresh();
 			}
 		});
 		consoleButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

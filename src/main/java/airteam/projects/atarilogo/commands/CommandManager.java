@@ -48,6 +48,15 @@ public class CommandManager {
 			else if(args[0].equals("PD")) {
 				CMD_PD.execute(args);
 			}
+			else if(args[0].equals("SETC")) {
+				CMD_SETC.execute(args);
+			}
+			else if(args[0].equals("SETPN")) {
+				CMD_SETPN.execute(args);
+			}
+			else if(args[0].equals("SETPC")) {
+				CMD_SETPC.execute(args);
+			}
 			else if(args[0].equals("ASK")) {
 				CMD_ASK.execute(args);
 			}
@@ -83,7 +92,11 @@ public class CommandManager {
 		arg = arg.replaceAll("WHO", String.valueOf(turtleID));
 		int calc = 0;
     try {
-    	calc = Integer.valueOf(((Number) engine.eval(arg)).toString());
+    	Object obj = engine.eval(arg);
+    	if(obj instanceof Integer) calc = (int) engine.eval(arg);
+    	else if(obj instanceof Double) calc = (int) Math.round((Double) engine.eval(arg));
+    	else throw new Exception();
+
 		} catch (Exception e) {
 			Console_Output.addErrorLog("NIE MOŻNA OBLICZYĆ WARTOŚCI MATEMATYCZNEJ ( " + arg + " )");
 			throw new Exception();

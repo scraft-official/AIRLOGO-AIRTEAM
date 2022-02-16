@@ -3,6 +3,7 @@ package airteam.projects.atarilogo.components;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -62,7 +63,12 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	private static double scale = 1;
 	
+	private static int mouseCoordsX;
+	private static int mouseCoordsY;
 	private static boolean mousePressed;
+	
+	private static Color[] pens = {new Color(43, 43, 42), new Color(207, 88, 70), new Color(48, 121, 161)};
+	private static int selectedPenID = 0;
 	
 	private static int dotSize = 3;
 	private static int dotSpacing = 20;
@@ -70,8 +76,6 @@ public class Turtles_Workspace_Area extends JPanel {
 	private static Turtles_Workspace_Area instance;
 	
 	private static boolean forceRefresh;
-	
-	private static JLabel coordinates;
 	private static JSlider scaleSlider;
 	
 	private BoardInfo lastBoardInfo;
@@ -80,7 +84,7 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	private static String[] listaAutorow = {"Stanislas", "Stanisław", "Kuba", "Konrad", "Marcin"};
 	
-	public Turtles_Workspace_Area() {
+	public Turtles_Workspace_Area(int fps) {
 		setDoubleBuffered(false);
 		setOpaque(false);
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -91,17 +95,23 @@ public class Turtles_Workspace_Area extends JPanel {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("10dlu"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("center:150dlu:grow"),
+				ColumnSpec.decode("center:100dlu"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
+				ColumnSpec.decode("2dlu:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("100dlu"),
+				ColumnSpec.decode("center:max(200dlu;default):grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("10dlu:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("50dlu"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("10dlu"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("20dlu"),},
 			new RowSpec[] {
-				RowSpec.decode("10dlu"),
+				RowSpec.decode("15px"),
+				RowSpec.decode("6px"),
+				RowSpec.decode("25px"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("top:200px:grow"),
 				FormSpecs.LABEL_COMPONENT_GAP_ROWSPEC,
@@ -139,24 +149,42 @@ public class Turtles_Workspace_Area extends JPanel {
 		
 		JPanel consolePanel = new Console_Input();
 		
+		JPanel toolbar = new Turtle_ToolBar();
+		add(toolbar, "9, 1, 1, 3, fill, fill");
 		
-		coordinates = new JLabel("X: 2331    Y: 322   ");
-		coordinates.setFont(new Font("Tahoma", Font.BOLD, 13));
-		coordinates.setForeground(new Color(53, 103, 196));
-		
-		add(scaleBottomText, "10, 4, 4, 3, center, default");
-		add(scaleTopText, "10, 1, 4, 2, center, default");
+		add(scaleBottomText, "14, 6, 4, 3, center, default");
+		add(scaleTopText, "14, 1, 4, 2, center, default");
 		
 		JPanel consoleOutput = new Console_Output();
 		
-		add(consoleOutput, "4, 9, 9, 1, fill, fill");
-		add(coordinates, "9, 12, 5, 1, right, center");
-		add(scaleSlider, "10, 3, 4, 1, default, fill");
-		add(consolePanel, "4, 11, 9, 1, fill, fill");
-		add(logo, "2, 2, 4, 2, left, top");
+		add(consoleOutput, "4, 11, 13, 1, fill, fill");
+		add(scaleSlider, "14, 3, 4, 3, default, fill");
+		add(consolePanel, "4, 13, 13, 1, fill, fill");
+		add(logo, "2, 2, 4, 4, left, top");
 		
 		implementListeners();
 		CommandManager.initializeMathEngine();
+		start(fps);
+	}
+	
+	public void start(int fps) {
+    Thread thread = new Thread(new Runnable() {
+        public void run() {
+            long delay = 1000/fps;
+            boolean animate = true;
+            while(animate) {
+                try {
+                    Thread.sleep(delay);
+                } catch(InterruptedException e) {
+                    animate = false;
+                    break;
+                }
+                repaint();
+            }
+        }
+    });
+    thread.setPriority(Thread.MAX_PRIORITY);
+    thread.start();
 	}
 	
 	public static Turtle addTurtle(String name, Color color) {
@@ -191,6 +219,18 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	public static ArrayList<Turtle> getAllTurtles() {
 		return turtles;
+	}
+	
+	public static void selectPenID(int id) {
+		selectedPenID = id;
+	}
+	
+	public static void setPenColor(int id, Color color) {
+		pens[id] = color;
+	}
+	
+	public static Color getSelectedPenColor() {
+		return pens[selectedPenID];
 	}
 	
 	public static void clearWorkspace() {
@@ -231,8 +271,6 @@ public class Turtles_Workspace_Area extends JPanel {
 				currentPosY = (int) (currentPosY - Math.round((lastPosY - e.getPoint().y) / scale));
 				lastPosX = e.getPoint().x;
 				lastPosY = e.getPoint().y;
-				
-				repaint(200);
 			}
 			
 			@Override
@@ -247,7 +285,8 @@ public class Turtles_Workspace_Area extends JPanel {
 				x =+ (int) Math.round((w - e.getPoint().x - (w/2)) / scale) + currentPosX;
 				y =+ (int) Math.round((h - e.getPoint().y - (h/2)) / scale) + currentPosY;
 				
-				coordinates.setText("X: " + -x + "    Y: "+ y +"   ");
+				mouseCoordsX = -x;
+				mouseCoordsY = y;
 				
 			}
 		});
@@ -281,7 +320,9 @@ public class Turtles_Workspace_Area extends JPanel {
 				x =+ (int) Math.round((w - e.getPoint().x - (w/2)) / scale) + currentPosX;
 				y =+ (int) Math.round((h - e.getPoint().y - (h/2)) / scale) + currentPosY;
 				
-				coordinates.setText("X: " + -x + "    Y: "+ y +"   ");
+				mouseCoordsX = -x;
+				mouseCoordsY = y;
+				
 			}
 		});
 		
@@ -289,7 +330,6 @@ public class Turtles_Workspace_Area extends JPanel {
       public void stateChanged(ChangeEvent e) {
       	if(Math.floorMod(scaleSlider.getValue(), 25) == 0)
       		scale = (scaleSlider.getValue()/100d);
-      		refresh();
       }
     });
 	}
@@ -299,16 +339,9 @@ public class Turtles_Workspace_Area extends JPanel {
 		return (int) Math.round(value * scale);
 	}
 	
-	public static void refresh() {
-		instance.repaint();
-	}
-	
 	public static void forceRefresh(boolean repaintWorkspace, boolean refreshSidebar) {
-		forceRefresh = true;
-		if(repaintWorkspace) instance.repaint();
-		if(refreshSidebar) {
-			Turtle_Options.refreshAll();
-		}
+		if(repaintWorkspace) forceRefresh = true;
+		if(refreshSidebar) Turtle_Options.refreshAll();
 	}
 	
 	public static void selectTurtle(ArrayList<Integer> ids, boolean refreshOptions) {
@@ -398,8 +431,8 @@ public class Turtles_Workspace_Area extends JPanel {
 		
 		if(!forceRefresh) {
 			if(lastBoardInfo != null && lastBoardInfo.equals(w, h, currentPosX, currentPosY, scale, drawingCount)) {
-				//Log_Utilies.logInfo("Nie wykryto zmian na planszy, zatrzymuje renderowanie!");
 				g.drawImage(lastBoardInfo.getBufferedImage(), 0, 0, null);
+				drawCoords((Graphics2D) g); 
 				return;
 			}
 		} else forceRefresh = false;
@@ -431,15 +464,26 @@ public class Turtles_Workspace_Area extends JPanel {
     
     tmpGraphics.dispose();
     g.drawImage(tmpImage, 0, 0, null);
+    drawCoords((Graphics2D) g);
     lastBoardInfo = new BoardInfo(w, h, currentPosX, currentPosY, scale, drawingCount, tmpImage);
+	}
+	
+	public void drawCoords(Graphics2D g2d) {
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2d.setFont(new Font("Tahoma", Font.BOLD, 12));
+		g2d.setColor(new Color(53, 103, 196));
+		
+		FontMetrics ft = g2d.getFontMetrics();
+	  g2d.drawString("X: " + mouseCoordsX + " Y: " + mouseCoordsY, getBounds().width - ft.stringWidth("X: " + mouseCoordsX + " Y: " + mouseCoordsY) - 10, getBounds().height - 10);
 	}
 	
 	public static void setPosX(int x) {
 		currentPosX = -x;
 	}
 	
-public static void setPosY(int y) {
-		currentPosY = -y;
+	public static void setPosY(int y) {
+			currentPosY = -y;
 	}
 	
 	

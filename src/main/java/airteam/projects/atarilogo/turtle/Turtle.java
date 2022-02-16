@@ -25,9 +25,9 @@ public class Turtle {
 	private Color turtleColor;
 	private boolean turtleVisibility;
 	
-	private int penSize;
+	private int penSize = 4;
+	
 	private boolean penVisibility;
-	private Color penColor;
 	
 	private	HashMap<Double, BufferedImage> scaledTurtleImages = new HashMap<>();
 	
@@ -42,8 +42,6 @@ public class Turtle {
 		turtleName = name;
 		
 		penVisibility = true;
-		penColor = new Color(69, 67, 61);
-		penSize = 3;
 
 		turtleColor = color;
 		
@@ -73,8 +71,7 @@ public class Turtle {
 				turtlePosY, 
 				newX, 
 				newY, 
-				penSize, 
-				penColor
+				Turtles_Workspace_Area.getSelectedPenColor()
 			));
 		}
 		
@@ -112,10 +109,6 @@ public class Turtle {
 	
 	public void setY(int y) {
 		turtlePosY = y;
-	}
-	
-	public void setPenSize(int size) {
-		penSize = size;
 	}
 	
 	public int getRotation() {
@@ -191,7 +184,7 @@ public class Turtle {
 		int offsetY = Turtles_Workspace_Area.getCurrentY();
 		
 		for(Turtle_Movement move : turtleMovementList) {
-			g.setStroke(new BasicStroke(Turtles_Workspace_Area.scaledValue(move.penSize)));
+			g.setStroke(new BasicStroke(Turtles_Workspace_Area.scaledValue(penSize)));
 			g.setColor(move.penColor);
 			g.drawLine(
 				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(offsetX + (move.x1))),
@@ -204,15 +197,14 @@ public class Turtle {
 	}
 	
 	public class Turtle_Movement {
-		public int x1, x2, y1, y2, penSize;
+		public int x1, x2, y1, y2;
 		public Color penColor;
 		
-		Turtle_Movement(int x1, int y1, int x2, int y2, int penSize, Color penColor) {
+		Turtle_Movement(int x1, int y1, int x2, int y2, Color penColor) {
 			this.x1 = x1;
 			this.y1 = y1;
 			this.x2 = x2;
 			this.y2 = y2;
-			this.penSize = penSize;
 			this.penColor = penColor;
 		}
 	}

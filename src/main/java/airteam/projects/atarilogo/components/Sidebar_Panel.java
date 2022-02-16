@@ -54,7 +54,5 @@ public class Sidebar_Panel extends JPanel {
 		int h = getHeight();
 		Graphics_Utilies.setGradientPaint((Graphics2D) g, gradient_color1, gradient_color2, 0, h);
 		g.fillRect(0, 0, w, h);
-		
-		g.setColor(new Color(255, 255, 255));
 	}
 }

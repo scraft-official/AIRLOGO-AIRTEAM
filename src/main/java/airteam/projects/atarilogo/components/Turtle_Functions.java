@@ -355,7 +355,7 @@ public class Turtle_Functions extends JPanel {
 		g2d.drawRoundRect(14, 10, w-30, h-20, 15, 15);
 		
 		g2d.setStroke(new BasicStroke(3));
-		g2d.setColor(new Color(56, 57, 59));
+		g2d.setColor(new Color(51, 53, 54));
 		g2d.drawLine(34, 10, 49 + title.getBounds().width, 10);
 	}
 

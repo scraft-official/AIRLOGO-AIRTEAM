@@ -19,15 +19,14 @@ public class Graphics_Utilies {
 	public static void drawFadedBorder(Graphics2D g, Color shadowColor, int shadowSize, int x, int y, int w, int h) {
 		for (int i = 0; i < shadowSize; i++) {
       g.setColor(new Color(shadowColor.getRed(), shadowColor.getGreen(), shadowColor.getBlue(), ((80 / shadowSize) * i)));
-      g.drawRect(i+1, i+1, w - ((i * 2) + 1), h - ((i * 2) + 1));
+      g.drawRect(x+i+1, y+i+1, w - ((i * 2) + 1), h - ((i * 2) + 1));
 		}
-		g.clearRect(x + shadowSize, y + shadowSize, w - shadowSize, h - shadowSize);
 	}
 	
 	public static void drawRoundFadedBorder(Graphics2D g, Color shadowColor, int shadowSize, int x, int y, int w, int h, int borderRadius) {
 		for (int i = 0; i < shadowSize; i++) {
       g.setColor(new Color(shadowColor.getRed(), shadowColor.getGreen(), shadowColor.getBlue(), ((80 / shadowSize) * i)));
-      g.drawRoundRect(i+1, i+1, w - ((i * 2) + 1), h - ((i * 2) + 1), borderRadius, borderRadius);
+      g.drawRoundRect(x+i+1, y+i+1, w - ((i * 2) + 1), h - ((i * 2) + 1), borderRadius, borderRadius);
 		}
 	}
 	
