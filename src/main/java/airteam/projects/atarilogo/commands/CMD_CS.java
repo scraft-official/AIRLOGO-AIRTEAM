@@ -12,7 +12,7 @@ public class CMD_CS {
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
-			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!");
+			Console_Output.addErrorLog("PRAWIDŁOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}

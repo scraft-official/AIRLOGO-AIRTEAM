@@ -55,8 +55,6 @@ public class EditFunctionPopup extends JPanel {
 	private int width = 600;
 	private int height = 500;
 
-	private JTextField functionNameField;
-	private JTextField functionArgsField;
 	private CustomTextPane functionBodyField;
 	
 	public EditFunctionPopup(String name) {
@@ -66,8 +64,8 @@ public class EditFunctionPopup extends JPanel {
 		CustomDialogPanel panel = dialog.frame.getDialogPanel();
 		
 		setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("115px"),
-				ColumnSpec.decode("200dlu"),},
+				ColumnSpec.decode("90px"),
+				ColumnSpec.decode("325px"),},
 			new RowSpec[] {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
@@ -78,7 +76,7 @@ public class EditFunctionPopup extends JPanel {
 		
 		panel.setContentPanel(this);
 		
-		JLabel fieldTitle = new JLabel("BUDOWA FUNKCJI");
+		JLabel fieldTitle = new JLabel("BUDOWA PROCEDURY");
 		fieldTitle.setForeground(new Color(120, 120, 120));
 		fieldTitle.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
@@ -136,7 +134,7 @@ public class EditFunctionPopup extends JPanel {
 		functionScrollPane.setViewportView(functionBodyField);
 		
 		//TODO DODAC OPIS BUDOWY FUNKCJI
-		text.setText("OPIS BUDOWANIA FUNKCJI:\nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum");
+		text.setText("Jak zbudować procedure? \nLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum proident, sunt in culpa qui officia deserunt mollit anim id est laborum");
 		text.setFont(new Font("Tahoma", Font.BOLD, 11));
 		text.setForeground(new Color(140,140,140));
 		text.setEditable(false);
@@ -169,7 +167,7 @@ public class EditFunctionPopup extends JPanel {
       	ArrayList<String> functionArguments = new ArrayList<>();
       	
     		String[] firstLine = functionList[0].split(" "); 		
-    		if(!firstLine[0].equals("TO")) { hintText.setText("* NIE ROZPOCZĘTO FUNKCJI OD \"TO (NAZWA)\""); return; }
+    		if(!firstLine[0].equals("TO")) { hintText.setText("* NIE ROZPOCZĘTO PROCEDURY OD \"TO (NAZWA)\""); return; }
     		if(firstLine.length == 1) { hintText.setText("* NIE WPROWADZONO NAZWY \"TO (NAZWA)\""); return;}
     		
     		functionName = firstLine[1];
@@ -182,12 +180,17 @@ public class EditFunctionPopup extends JPanel {
       	}
     		
     		String lastLine = functionList[functionList.length - 1];
-    		if(lastLine.length() != 3 || !lastLine.equals("END")) { hintText.setText("* NIE ZNALEZIONO \"END\" NA KOŃCU FUNKCJI"); return; }
+    		if(lastLine.length() != 3 || !lastLine.equals("END")) { hintText.setText("* NIE ZNALEZIONO \"END\" NA KOŃCU PROCEDURY"); return; }
     		if(functionList.length < 3) { hintText.setText("* BRAKUJE LISTY POLECEŃ POMIĘDZY \"TO\" I \"END\""); return; }
     		
     		String functionCommands = String.join(" ", Arrays.copyOfRange(functionList, 1, functionList.length-1));
     		
-    		if(!name.equals(functionName)) FunctionManager.removeFunction(name);
+    		if(!name.equals(functionName)) {
+    			if(!FunctionManager.getFunction(name).isDefaultFunction)
+    				FunctionManager.removeFunction(name);
+    			else
+    				{ hintText.setText("* NIE MOŻNA EDYTOWAĆ WBUDOWANYCH PROCEDUR"); return; }
+    		}
     		FunctionManager.addFunction(functionName, functionArguments, functionCommands);
       	dialog.frame.dispose();
       }
@@ -223,6 +226,6 @@ public class EditFunctionPopup extends JPanel {
 	
 	
 	public class Dialog extends JPanel {
-		public CustomDialogFrame frame = new CustomDialogFrame("EDYTUJ FUNKCJE", width, height, false, false);
+		public CustomDialogFrame frame = new CustomDialogFrame("EDYTUJ PROCEDURE", width, height, false, false);
 	}
 }

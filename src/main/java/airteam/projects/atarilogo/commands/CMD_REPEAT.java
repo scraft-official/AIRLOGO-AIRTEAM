@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
-import airteam.projects.atarilogo.turtle.Turtle;
 
 public class CMD_REPEAT {
 	private static int argsCount = 2;
@@ -40,8 +39,8 @@ public class CMD_REPEAT {
 		
 		if(args[2].charAt(0) != '[') {
 			Console_Output.addErrorLog(
-					"UZYJ ZNAKU \"[\", ABY ROZPOCZAC LISTE POWTARZNYCH POLECEN.",
-					"NIE ZNALEZIONO ROZPOCZECIA POWTARZNYCH POLECEN! ( " + String.join(" ", args) + " )"
+					"UŻYJ ZNAKU \"[\", ABY ROZPOCZĄĆ LISTĘ POWTARZNYCH POLECEŃ.",
+					"NIE ZNALEZIONO ROZPOCZĘCIA POWTARZNYCH POLECEŃ! ( " + String.join(" ", args) + " )"
 			);
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
@@ -55,7 +54,6 @@ public class CMD_REPEAT {
 		int endIndex = 0;
 		
 		for(int i = 0; i < repeatCommand.length(); i++) {
-			//Log_Utilies.logInfo(repeatCommand.charAt(i));
 			char ch = repeatCommand.charAt(i);
 			
 			if(ch == '[') {
@@ -74,8 +72,8 @@ public class CMD_REPEAT {
 					
 					else {
 						Console_Output.addErrorLog(
-							"SPRAWDZ, CZY NIE UMIESCILES ZA DUZO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKOW!",
-							"ZLE ZAKONCZONO LISTE POWTARZANYCH POLECEN ( " + String.join(" ", args) + " )"
+								"SPRAWDŹ, CZY NIE UMIESZCZONO ZA DUŻO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKÓW!",
+								"ŹLE ZAKOŃCZONO LISTĘ POWTARZANYCH POLECEŃ ( " + String.join(" ", args) + " )"
 								);
 						Turtles_Workspace_Area.forceRefresh(true, true);
 						return;
@@ -88,8 +86,8 @@ public class CMD_REPEAT {
 		
 		if(leftBracketCount > rightBracketCount) {
 			Console_Output.addErrorLog(
-					"UZYJ ZNAKU \"]\", ABY ZAKONCZYC LISTE POWTARZNYCH POLECEN!",
-					"NIE ZNALEZIONO ZAKONCZENIA POWTARZNYCH POLECEN! ( " + String.join(" ", args) + " )"
+					"UŻYJ ZNAKU \"]\", ABY ZAKOŃCZYĆ LISTE POWTARZNYCH POLECEŃ!",
+					"NIE ZNALEZIONO ZAKOŃCZENIA LISTY POWTARZNYCH POLECEŃ! ( " + String.join(" ", args) + " )"
 			);
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
@@ -98,7 +96,7 @@ public class CMD_REPEAT {
 		if(repeatCommand.length() <= 1) {
 			if(repeatCommand.length() == 0 || repeatCommand.charAt(0) == ' ') {
 				Console_Output.addErrorLog(
-						"NIE WPROWADZONO ZADNEJ LISTY POLECEN DO POWTORZENIA! ( " + String.join(" ", args) + " )"
+						"NIE WPROWADZONO ŻADNEJ LISTY POLECEŃ DO POWTÓRZENIA! ( " + String.join(" ", args) + " )"
 				);
 				Turtles_Workspace_Area.forceRefresh(true, true);
 				return;

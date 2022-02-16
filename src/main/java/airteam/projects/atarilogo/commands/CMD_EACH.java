@@ -14,15 +14,15 @@ public class CMD_EACH {
 	public static void execute(String[] args) {
 
 		if(args.length < argsCount + 1) {
-			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!");
+			Console_Output.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}
 		
 		if(args[1].charAt(0) != '[') {
 			Console_Output.addErrorLog(
-					"UZYJ ZNAKU \"[\", ABY ROZPOCZAC LISTE POWTARZNYCH POLECEN.",
-					"NIE ZNALEZIONO ROZPOCZECIA POWTARZNYCH POLECEN! ( " + String.join(" ", args) + " )"
+					"UŻYJ ZNAKU \"[\", ABY ROZPOCZĄĆ LISTĘ POWTARZNYCH POLECEŃ.",
+					"NIE ZNALEZIONO ROZPOCZĘCIA POWTARZNYCH POLECEŃ! ( " + String.join(" ", args) + " )"
 			);
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
@@ -36,7 +36,6 @@ public class CMD_EACH {
 		int endIndex = 0;
 		
 		for(int i = 0; i < repeatCommand.length(); i++) {
-			//Log_Utilies.logInfo(repeatCommand.charAt(i));
 			char ch = repeatCommand.charAt(i);
 			
 			if(ch == '[') {
@@ -55,9 +54,9 @@ public class CMD_EACH {
 					
 					else {
 						Console_Output.addErrorLog(
-							"SPRAWDZ, CZY NIE UMIESCILES ZA DUZO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKOW!",
-							"ZLE ZAKONCZONO LISTE POWTARZANYCH POLECEN ( " + String.join(" ", args) + " )"
-								);
+							"SPRAWDŹ, CZY NIE UMIESZCZONO ZA DUŻO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKÓW!",
+							"ŹLE ZAKOŃCZONO LISTĘ POWTARZANYCH POLECEŃ ( " + String.join(" ", args) + " )"
+						);
 						Turtles_Workspace_Area.forceRefresh(true, true);
 						return;
 					}
@@ -69,8 +68,8 @@ public class CMD_EACH {
 		
 		if(leftBracketCount > rightBracketCount) {
 			Console_Output.addErrorLog(
-					"UZYJ ZNAKU \"]\", ABY ZAKONCZYC LISTE POWTARZNYCH POLECEN!",
-					"NIE ZNALEZIONO ZAKONCZENIA POWTARZNYCH POLECEN! ( " + String.join(" ", args) + " )"
+					"UŻYJ ZNAKU \"]\", ABY ZAKOŃCZYĆ LISTE POWTARZNYCH POLECEŃ!",
+					"NIE ZNALEZIONO ZAKOŃCZENIA LISTY POWTARZNYCH POLECEŃ! ( " + String.join(" ", args) + " )"
 			);
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
@@ -79,7 +78,7 @@ public class CMD_EACH {
 		if(repeatCommand.length() <= 1) {
 			if(repeatCommand.length() == 0 || repeatCommand.charAt(0) == ' ') {
 				Console_Output.addErrorLog(
-						"NIE WPROWADZONO ZADNEJ LISTY POLECEN DO POWTORZENIA! ( " + String.join(" ", args) + " )"
+						"NIE WPROWADZONO ŻADNEJ LISTY POLECEŃ DO POWTÓRZENIA! ( " + String.join(" ", args) + " )"
 				);
 				Turtles_Workspace_Area.forceRefresh(true, true);
 				return;
@@ -89,13 +88,13 @@ public class CMD_EACH {
 		if(repeatCommand.charAt(0) == ' ')
 			repeatCommand = repeatCommand.substring(1);
 		
-		ArrayList<Integer> selectedTurtles = Turtles_Workspace_Area.getSelectedTurtlesID();
+		ArrayList<Integer> alreadySelectedTurtles = Turtles_Workspace_Area.getSelectedTurtlesID();
 		for(int i = 0; i < Turtles_Workspace_Area.getAllTurtles().size(); i++) {
 			Turtles_Workspace_Area.selectTurtle(i, false);
 			CommandManager.parse(repeatCommand.split(" "));
 		}
 		
-		Turtles_Workspace_Area.selectTurtle(selectedTurtles, false);
+		Turtles_Workspace_Area.selectTurtle(alreadySelectedTurtles, false);
 		Turtles_Workspace_Area.forceRefresh(false, true);
 		
 		if(restOfCommands != null && restOfCommands.length() > 0){

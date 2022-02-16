@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
-import airteam.projects.atarilogo.turtle.Turtle;
 
 public class CMD_LT {
 	private static int argsCount = 1;
@@ -12,7 +11,7 @@ public class CMD_LT {
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
-			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!");
+			Console_Output.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}

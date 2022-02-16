@@ -6,9 +6,10 @@ import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 import airteam.projects.atarilogo.turtle.Turtle;
 
-public class CMD_RT {
-	private static int argsCount = 1;
-	private static String syntax = "RT <STOPNIE>";
+public class CMD_HELP {
+private static int argsCount = 0;
+	
+	private static String syntax = "HELP";
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
@@ -17,19 +18,16 @@ public class CMD_RT {
 			return;
 		}
 		
-		for(int id : Turtles_Workspace_Area.getSelectedTurtlesID()) {
-			if(args[1] == null) {
-				Turtles_Workspace_Area.forceRefresh(true, true);
-				return;
-			}
-			
-			int stopnie = 0;
-			try {
-				stopnie = CommandManager.parseMath(args[1], id);
-			} catch (Exception e) { return; }
-
-			Turtles_Workspace_Area.getTurtle(id).rotate(stopnie);
-		}
+		
+		//TODO WYPSIAC WSZYSTKIE komendy!
+		Console_Output.addInfoLog("==============================================");
+		Console_Output.addInfoLog(" - " + CMD_BK.syntax + " - " + CMD_BK.description);
+		Console_Output.addInfoLog("LISTA DOSTĘPNYCH KOMEND:");
+		Console_Output.addInfoLog("==============================================");
+		
+		
+		
+		
 		if(args.length > (argsCount + 1)) {
 			CommandManager.parse(Arrays.copyOfRange(args, argsCount + 1, args.length));
 		}

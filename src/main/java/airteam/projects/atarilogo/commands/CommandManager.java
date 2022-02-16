@@ -48,6 +48,18 @@ public class CommandManager {
 			else if(args[0].equals("PD")) {
 				CMD_PD.execute(args);
 			}
+			else if(args[0].equals("ASK")) {
+				CMD_ASK.execute(args);
+			}
+			else if(args[0].equals("ERALL")) {
+				CMD_ERALL.execute(args);
+			}
+			else if(args[0].equals("POTS")) {
+				CMD_POTS.execute(args);
+			}
+			else if(args[0].equals("HELP")) {
+				CMD_HELP.execute(args);
+			}
 			else if(args[0].equals("TELL")) {
 				CMD_TELL.execute(args);
 			}
@@ -64,17 +76,16 @@ public class CommandManager {
 				Console_Output.addErrorLog("NIE ZNALEZIONO TAKIEJ KOMENDY! ( " + String.join(" ", args) + " )");
 			}
 		}
-		catch(Exception e) { e.printStackTrace(); Console_Output.addErrorLog("WYSTAPIL BLAD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )"); }
+		catch(Exception e) { e.printStackTrace(); Console_Output.addErrorLog("WYSTĄPIŁ BŁĄD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )"); }
 	}
 	
 	public static int parseMath(String arg, int turtleID) throws Exception {
 		arg = arg.replaceAll("WHO", String.valueOf(turtleID));
-		Log_Utilies.logInfo(turtleID, arg);
 		int calc = 0;
     try {
     	calc = Integer.valueOf(((Number) engine.eval(arg)).toString());
 		} catch (Exception e) {
-			Console_Output.addErrorLog("NIE MOZNA OBLICZYC WARTOSCI MATEMATYCZNEJ ( " + arg + " )");
+			Console_Output.addErrorLog("NIE MOŻNA OBLICZYĆ WARTOŚCI MATEMATYCZNEJ ( " + arg + " )");
 			throw new Exception();
 		}
 		

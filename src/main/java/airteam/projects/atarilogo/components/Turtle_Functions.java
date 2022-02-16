@@ -63,7 +63,7 @@ import javax.swing.JSeparator;
 public class Turtle_Functions extends JPanel {
 	private static ComboBox combobox = new ComboBox();
 	
-	private JLabel title = new JLabel("ZAREJESTROWANE FUNKCJE");
+	private JLabel title = new JLabel("ZAREJESTROWANE PROCEDURY");
 	private static JButton buttonEditFunction = new JButton();
 	private static ImageIcon settingsIcon = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/settings-icon.png"), 16, 16));
 
@@ -103,7 +103,7 @@ public class Turtle_Functions extends JPanel {
 		title.setForeground(Color.WHITE);
 		title.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-    combobox.setTitleText("WYBRANA FUNKCJA");
+    combobox.setTitleText("WYBRANA PROCEDURA");
     combobox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     combobox.setMaximumRowCount(4);
     combobox.addPopupMenuListener(new PopupMenuListener() {
@@ -134,7 +134,7 @@ public class Turtle_Functions extends JPanel {
     addIcon.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				new AddNewFunctionPopup("TO (... WPROWADZ NAZWE FUNKCJI ...)\n\t(... WPROWADZ TRESC KODU FUNKCJI...)\nEND");
+				new AddNewFunctionPopup("TO (... WPROWADZ NAZWE PROCEDURY ...)\n\t(... WPROWADZ TRESC KODU PROCEDURY...)\nEND");
 			}
 		});
     
@@ -196,7 +196,7 @@ public class Turtle_Functions extends JPanel {
     buttonEditFunction.setUI(new CustomButtonUI());
     buttonEditFunction.setFont(new Font("Tahoma", Font.BOLD, 11));
     buttonEditFunction.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-    buttonEditFunction.setText("EDYTUJ FUNKCJE");
+    buttonEditFunction.setText("EDYTUJ PROCEDURE");
     buttonEditFunction.setIcon(settingsIcon);
     buttonEditFunction.addActionListener(new ActionListener() {
       @Override
@@ -227,7 +227,7 @@ public class Turtle_Functions extends JPanel {
     
     buttonDelete.setUI(new CustomButtonUI());
     buttonDelete.setFont(new Font("Tahoma", Font.BOLD, 12));
-    buttonDelete.setText("USUŃ FUNKCJE");
+    buttonDelete.setText("USUŃ PROCEDURE");
     buttonDelete.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {

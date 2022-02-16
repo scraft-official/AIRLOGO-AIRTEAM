@@ -9,10 +9,12 @@ import airteam.projects.atarilogo.turtle.Turtle;
 public class CMD_BK {
 	private static int argsCount = 1;
 	
-	private static String syntax = "BK <DYSTANS>";
+	public static String syntax = "BK <DYSTANS>";
+	public static String description = "KOMENDA TA SLUŻY DO COFANIA ŻÓLWIA OD PODANY <DYSTANS>";
+	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
-			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!");
+			Console_Output.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 			Turtles_Workspace_Area.forceRefresh(true, true);
 			return;
 		}

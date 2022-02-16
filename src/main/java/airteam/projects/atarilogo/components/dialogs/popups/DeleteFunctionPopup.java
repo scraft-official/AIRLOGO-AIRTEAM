@@ -45,7 +45,7 @@ public class DeleteFunctionPopup extends JPanel {
 		StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
 		doc.setParagraphAttributes(0, doc.getLength(), center, false);
 		
-		text.setText("CZY CHCESZ USUNĄĆ FUNKCJE \"" + name + "\"? \nSPOWODUJE TO JEJ TRWAŁE USUNIĘCIE!");
+		text.setText("CZY CHCESZ USUNĄĆ PROCEDURĘ \"" + name + "\"? \nSPOWODUJE TO JEJ TRWAŁE USUNIĘCIE!");
 		text.setFont(new Font("Tahoma", Font.PLAIN, 19));
 		text.setEditable(false);
 		text.setOpaque(false);
@@ -64,7 +64,7 @@ public class DeleteFunctionPopup extends JPanel {
 		
 		
 		JButton acceptButton = panel.getAcceptButton();
-		acceptButton.setText("USUŃ FUNKCJE");
+		acceptButton.setText("USUŃ PROCEDURE");
 		acceptButton.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/bin-icon.png"), 15, 15)));
 		acceptButton.addActionListener(new ActionListener() {
       @Override
@@ -80,6 +80,6 @@ public class DeleteFunctionPopup extends JPanel {
 	
 	
 	public class Dialog extends JPanel {
-		public CustomDialogFrame frame = new CustomDialogFrame("CZY CHCESZ USUNĄĆ FUNKCJE?", width, height, false, false);
+		public CustomDialogFrame frame = new CustomDialogFrame("CZY CHCESZ USUNĄĆ PROCEDURE?", width, height, false, false);
 	}
 }
