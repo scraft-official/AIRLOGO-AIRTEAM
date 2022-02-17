@@ -346,6 +346,7 @@ public class Turtles_Workspace_Area extends JPanel {
 	public static void forceRefresh(boolean repaintWorkspace, boolean refreshSidebar) {
 		if(repaintWorkspace) forceRefresh = true;
 		if(refreshSidebar) Turtle_Options.refreshAll();
+		if(refreshSidebar) Turtle_Functions.refreshAll();
 	}
 	
 	public static void selectTurtle(ArrayList<Integer> ids, boolean refreshOptions) {
@@ -509,6 +510,10 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	public static double getScale() {
 		return scale;
+	}
+	
+	public static void setTurtlesList(ArrayList<Turtle> t) {
+		turtles = t;
 	}
 	
 	public static ArrayList<Integer> getSelectedTurtlesID() {

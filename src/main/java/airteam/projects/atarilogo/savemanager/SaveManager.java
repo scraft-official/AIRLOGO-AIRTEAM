@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import javax.swing.JFileChooser;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import airteam.projects.atarilogo.components.Console_Output;
@@ -152,9 +153,10 @@ public class SaveManager {
     try {
     	JSONObject json = new JSONObject(fileContent);
     	
-    	ArrayList<HashMap<String, Object>> turtlesData = (ArrayList<HashMap<String, Object>>) json.get("turtles");
     	ArrayList<Turtle> turtlesFinalList = new ArrayList<>();
-    	for(HashMap<String, Object> turtleMap : turtlesData) {
+    	
+    	for(Object turtleMapObject : (JSONArray) json.get("turtles")) {
+    		JSONObject turtleMap = (JSONObject) turtleMapObject;
     		Turtle t = new Turtle((int) turtleMap.get("turtlePosX"),(int) turtleMap.get("turtlePosY"), (String) turtleMap.get("turtleName"), Color.decode((String) turtleMap.get("turtleColor")));
     		t.rotate((int) turtleMap.get("turtleRotation"));
     		t.setTurtleVisibility((boolean) turtleMap.get("turtleVisibility"));
@@ -162,21 +164,59 @@ public class SaveManager {
     		
     		ArrayList<Turtle_Movement> turtleMovements = new ArrayList<>();
     		
-    		for(HashMap<String, Object> moveData : (ArrayList<HashMap<String, Object>>) json.get("movements")) {
+    		for(Object moveDataObject : (JSONArray) turtleMap.get("movements")) {
+    			JSONObject moveData = (JSONObject) moveDataObject;
     			turtleMovements.add(new Turtle_Movement(
-    					(int) moveData.get("x1"),
-    					(int) moveData.get("y1"),
-    					(int) moveData.get("x2"),
-    					(int) moveData.get("y2"),
-    					Color.decode((String) moveData.get("penColor"))
-    					));
-    	}
+  					(int) moveData.get("x1"),
+  					(int) moveData.get("y1"),
+  					(int) moveData.get("x2"),
+  					(int) moveData.get("y2"),
+  					Color.decode((String) moveData.get("penColor"))
+    		));}
     			
     		t.setMovements(turtleMovements);
+    		turtlesFinalList.add(t);
     	}
+    	
+    	HashMap<String, TurtleFunction> funcionsFinalMap = new HashMap<>();
+    	
+    	for(Object functionMapObject : (JSONArray) json.get("functions")) {
+    		JSONObject functionMap = (JSONObject) functionMapObject;
+    		
+    		ArrayList<String> functionArgs = new ArrayList<>();
+    		for(Object arg : (JSONArray) functionMap.get("args")) {
+    			functionArgs.add((String) arg);
+    		}
+    		
+    		funcionsFinalMap.put((String) functionMap.get("name"), new TurtleFunction(
+    				functionArgs, 
+    				(String) functionMap.get("commands"),
+    				(Boolean) functionMap.get("isDefaultFunction")
+    		));
+    	}
+    	
+    	JSONObject workspaceDataMap = (JSONObject) json.get("workspace");
+    	ArrayList<Color> pensFinalList = new ArrayList<>();
+    	
+    	for(Object c : (JSONArray) workspaceDataMap.get("pens")) {
+    		pensFinalList.add(Color.decode((String) c));
+    	}
+    	
+    	Turtles_Workspace_Area.clearWorkspace();
+    	
+    	for(int i = 0; i < pensFinalList.size(); i++) {
+    		Turtles_Workspace_Area.setPenColor(i, pensFinalList.get(i));
+    	}
+    	
+    	Turtles_Workspace_Area.setTurtlesList(turtlesFinalList);
+    	FunctionManager.setFunctionsList(funcionsFinalMap);
+    	
+    	Turtles_Workspace_Area.selectTurtle(0, false);
+    	Turtles_Workspace_Area.forceRefresh(true, true);
     	
     } catch(Exception e) {
     	Console_Output.addErrorLog("(" + path + ")", "WYBRANY PLIK NIE JEST ZAPISEM PLANSZY ŻÓŁWIA!");
+    	e.printStackTrace();
 			return;
     }
     

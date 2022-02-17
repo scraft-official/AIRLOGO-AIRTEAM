@@ -70,6 +70,10 @@ public class FunctionManager {
 		return registeredFunctions;
 	}
 	
+	public static void setFunctionsList(HashMap<String, TurtleFunction> f) {
+		registeredFunctions = f;
+	}
+	
 	public static boolean existFunction(String name) {
 		return (registeredFunctions.get(name) != null);
 	}
@@ -95,7 +99,7 @@ public class FunctionManager {
 		public String commands;
 		public boolean isDefaultFunction;
 		
-		TurtleFunction(ArrayList<String> args, String commands, boolean isDefaultFunction) {
+		public TurtleFunction(ArrayList<String> args, String commands, boolean isDefaultFunction) {
 			this.args = args;
 			this.commands = commands;
 			this.isDefaultFunction = isDefaultFunction;
