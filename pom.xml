@@ -15,21 +15,27 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-	    	<groupId>com.kenai.nbpwr</groupId>
-	    	<artifactId>org-jdesktop-animation-timing</artifactId>
-	    	<version>1.0-201002281504</version>
-		</dependency>
+		<!-- JGOODIES -->
 		<dependency>
 			<groupId>com.jgoodies</groupId>
 			<artifactId>jgoodies-forms</artifactId>
 			<version>1.8.0</version>
 		</dependency>
+		
+		<!-- JUNIT -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>3.8.1</version>
 			<scope>test</scope>
 		</dependency>
+		
+		<!-- JSON -->
+		<dependency>  
+	    	<groupId>org.json</groupId>  
+	    	<artifactId>json</artifactId>  
+	    	<version>20210307</version>  
+	    	<scope>compile</scope>
+	  	</dependency>
 	</dependencies>
 </project>

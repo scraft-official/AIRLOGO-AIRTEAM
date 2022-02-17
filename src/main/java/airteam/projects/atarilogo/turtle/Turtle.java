@@ -25,9 +25,8 @@ public class Turtle {
 	private Color turtleColor;
 	private boolean turtleVisibility;
 	
-	private int penSize = 4;
-	
 	private boolean penVisibility;
+	private int penSize = 4;
 	
 	private	HashMap<Double, BufferedImage> scaledTurtleImages = new HashMap<>();
 	
@@ -131,6 +130,14 @@ public class Turtle {
 		return penVisibility;
 	}
 	
+	public ArrayList<Turtle_Movement> getAllTurtleMovements() {
+		return turtleMovementList;
+	}
+	
+	public void setMovements(ArrayList<Turtle_Movement> movements) {
+		turtleMovementList = movements;
+	}
+	
 	public void setTurtleColor(Color color) {
 		turtleColor = color;
 		for(double i = 0.25; i <= 2; i += 0.25) {
@@ -196,11 +203,11 @@ public class Turtle {
 		}
 	}
 	
-	public class Turtle_Movement {
+	public static class Turtle_Movement {
 		public int x1, x2, y1, y2;
 		public Color penColor;
 		
-		Turtle_Movement(int x1, int y1, int x2, int y2, Color penColor) {
+		public Turtle_Movement(int x1, int y1, int x2, int y2, Color penColor) {
 			this.x1 = x1;
 			this.y1 = y1;
 			this.x2 = x2;

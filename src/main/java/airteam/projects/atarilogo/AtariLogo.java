@@ -7,6 +7,9 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import airteam.projects.atarilogo.components.Sidebar_Panel;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
@@ -14,6 +17,7 @@ import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.popups.AddNewFunctionPopup;
 import airteam.projects.atarilogo.components.dialogs.popups.SavePopup;
 import airteam.projects.atarilogo.functions.FunctionManager;
+import airteam.projects.atarilogo.savemanager.SaveManager;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -39,8 +43,8 @@ public class AtariLogo extends JFrame {
 		);
 		
 		FormLayout appLayout = new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("center:200dlu"),
-				ColumnSpec.decode("max(320dlu;min):grow(2)"),},
+				ColumnSpec.decode("center:350px"),
+				ColumnSpec.decode("default:grow"),},
 			new RowSpec[] {
 				RowSpec.decode("10px:grow"),});
 		
@@ -82,6 +86,10 @@ public class AtariLogo extends JFrame {
 		System.setProperty("sun.java2d.opengl", "true");
 //		System.setProperty("sun.java2d.ddscale", "true");
 //		System.setProperty("sun.java2d.translaccel", "true");
+		
+		try { UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+  	} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {}
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

@@ -233,6 +233,10 @@ public class Turtles_Workspace_Area extends JPanel {
 		return pens[selectedPenID];
 	}
 	
+	public static Color[] getAllPens() {
+		return pens;
+	}
+	
 	public static void clearWorkspace() {
 		for(Turtle t : turtles) {
 			t.setX(0);
