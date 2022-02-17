@@ -4,13 +4,12 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
-import airteam.projects.atarilogo.turtle.Turtle;
 
 public class CMD_BK {
 	private static int argsCount = 1;
 	
 	public static String syntax = "BK <DYSTANS>";
-	public static String description = "KOMENDA TA SLUŻY DO COFANIA ŻÓLWIA OD PODANY <DYSTANS>";
+	public static String description = "COFA ŻÓLWIA O PODANY <DYSTANS>";
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {

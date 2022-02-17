@@ -9,7 +9,8 @@ import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 public class CMD_EACH {
 	private static int argsCount = 1;
 	
-	private static String syntax = "EACH [LISTA KOMEND]";
+	public static String syntax = "EACH [LISTA KOMEND]";
+	public static String description = "WYSYŁA POLECENIA DO WSZYSTKICH ŻÓŁWI";
 	
 	public static void execute(String[] args) {
 

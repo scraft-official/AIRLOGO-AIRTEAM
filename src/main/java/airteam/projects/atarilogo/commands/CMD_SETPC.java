@@ -4,13 +4,14 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
-import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.NTSCUtilies;
 
 public class CMD_SETPC {
 private static int argsCount = 2;
 	
-	private static String syntax = "SETPC <NUMER PISAKA> <NUMER KOLORU>";
+	public static String syntax = "SETPC <NUMER PISAKA> <NUMER KOLORU>";
+	public static String description = "USTAWIA KOLOR WSKAZANEGO PISAKA NA PODANY KOLOR (0 -> 127)";
+	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
 			Console_Output.addErrorLog("PRAWIDŁOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");

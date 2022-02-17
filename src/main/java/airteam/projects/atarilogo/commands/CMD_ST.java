@@ -8,7 +8,9 @@ import airteam.projects.atarilogo.turtle.Turtle;
 
 public class CMD_ST {
 	private static int argsCount = 0;
-	private static String syntax = "ST";
+	
+	public static String syntax = "ST";
+	public static String description = "POKAZUJE ŻÓŁWIA";
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {

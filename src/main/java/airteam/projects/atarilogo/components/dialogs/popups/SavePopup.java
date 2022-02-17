@@ -16,6 +16,7 @@ import javax.swing.text.StyledDocument;
 import airteam.projects.atarilogo.AtariLogo;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogPanel;
+import airteam.projects.atarilogo.savemanager.SaveManager;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 
 import java.awt.BorderLayout;
@@ -67,10 +68,12 @@ public class SavePopup extends JPanel {
 		acceptButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-      	//TODO Dodac zapisywanie planszy i automatyczn wykrywanie zmian + skrot klawiszowy ctr+s. Dodac takze ze zapisuje do wczesniej wybranej planszy lub zapisuje nowa kopie. (dodac dialog).
-      	
-      	AtariLogo.getFrame().dispose();
-      	System.exit(0);
+      	if(SaveManager.saveWorkspace()) {
+      		try { Thread.sleep(1000); } catch (InterruptedException ex) {}
+      		AtariLogo.getFrame().dispose();
+      		System.exit(0);
+      	}
+      	else dialog.frame.dispose();
       }
     });
 		

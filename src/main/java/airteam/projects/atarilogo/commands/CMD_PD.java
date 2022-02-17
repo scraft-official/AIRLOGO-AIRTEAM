@@ -8,7 +8,9 @@ import airteam.projects.atarilogo.turtle.Turtle;
 
 public class CMD_PD {
 	private static int argsCount = 0;
-	private static String syntax = "PU";
+	
+	public static String syntax = "PD";
+	public static String description = "OPUSZCZA PISAK";
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {

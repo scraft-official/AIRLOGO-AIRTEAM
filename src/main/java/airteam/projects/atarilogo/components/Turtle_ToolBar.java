@@ -1,8 +1,10 @@
 package airteam.projects.atarilogo.components;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -10,7 +12,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -24,6 +28,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -44,7 +49,7 @@ public class Turtle_ToolBar extends JPanel {
 			new RowSpec[] {
 				RowSpec.decode("fill:default:grow"),}));
 		
-		JButton buttonSave = new JButton("ZAPISZ PLANSZE");
+		JButton buttonSave = new JButton("ZAPISZ PLANSZĘ");
 		buttonSave.setUI(new CustomButtonUI());
 		buttonSave.setForeground(new Color(250,250,250));
 		buttonSave.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -74,7 +79,7 @@ public class Turtle_ToolBar extends JPanel {
 		
 		add(buttonSave, "1, 1");
 		
-		JButton buttonImport = new JButton("IMPORTUJ PLANSZE");
+		JButton buttonImport = new JButton("IMPORTUJ PLANSZĘ");
 		buttonImport.setUI(new CustomButtonUI());
 		buttonImport.setForeground(new Color(250,250,250));
 		buttonImport.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -84,7 +89,7 @@ public class Turtle_ToolBar extends JPanel {
 		buttonImport.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-      	SaveManager.importWorkspace();
+      	SaveManager.importWorkspace(null);
       }
     });
     
@@ -112,6 +117,7 @@ public class Turtle_ToolBar extends JPanel {
 		buttonScreenShoot.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
+      	SaveManager.saveWorkspaceImage();
       }
     });
     

@@ -8,7 +8,8 @@ import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 public class CMD_CS {
 	private static int argsCount = 0;
 	
-	private static String syntax = "CS";
+	public static String syntax = "CS";
+	public static String description = "CZYŚCI CAŁĄ PLANSZĘ I USTAWIA ŻÓŁWIE W POZYCJI STARTOWEJ";
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {

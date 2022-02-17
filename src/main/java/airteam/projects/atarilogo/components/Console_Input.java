@@ -35,6 +35,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import airteam.projects.atarilogo.commands.CMD_ED;
 import airteam.projects.atarilogo.commands.CommandManager;
 import airteam.projects.atarilogo.components.dialogs.popups.AddNewFunctionPopup;
+import airteam.projects.atarilogo.savemanager.SaveManager;
 import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
@@ -120,6 +121,12 @@ public class Console_Input extends JPanel {
 				String[] cmdList = command.split(" ");
 				if(cmdList[0].equals("TO")) {
 					new AddNewFunctionPopup(command);
+				}
+				else if(cmdList[0].equals("LOAD")) {
+					if(command.length() > 5) {
+						command = command.substring(5);
+						SaveManager.importWorkspace(command);
+					} else SaveManager.importWorkspace(null);
 				}
 				else if(cmdList[0].equals("ED")) {
 					CMD_ED.execute(command.split(" "));

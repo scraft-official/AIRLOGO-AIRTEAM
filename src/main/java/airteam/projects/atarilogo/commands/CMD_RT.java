@@ -4,11 +4,12 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
-import airteam.projects.atarilogo.turtle.Turtle;
 
 public class CMD_RT {
 	private static int argsCount = 1;
-	private static String syntax = "RT <STOPNIE>";
+	
+	public static String syntax = "RT <STOPNIE>";
+	public static String description = "OBRACA ŻÓŁWIA O <STOPNIE> W PRAWO";
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {

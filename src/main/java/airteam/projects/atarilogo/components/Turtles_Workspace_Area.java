@@ -78,7 +78,7 @@ public class Turtles_Workspace_Area extends JPanel {
 	private static boolean forceRefresh;
 	private static JSlider scaleSlider;
 	
-	private BoardInfo lastBoardInfo;
+	private static BoardInfo lastBoardInfo;
 	
 	private static ArrayList<Integer> selectedTurtles;
 	
@@ -532,6 +532,10 @@ public class Turtles_Workspace_Area extends JPanel {
 	
 	public static Turtles_Workspace_Area getInstance() {
 		return instance;
+	}
+	
+	public static BufferedImage getWorkspaceImage() {
+		return lastBoardInfo.getBufferedImage();
 	}
 	
 	public class BoardInfo {

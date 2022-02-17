@@ -7,7 +7,8 @@ import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 
 public class CMD_LT {
 	private static int argsCount = 1;
-	private static String syntax = "LT <STOPNIE>";
+	public static String syntax = "LT <STOPNIE>";
+	public static String description = "OBRACA ŻÓŁWIA O <STOPNIE> W LEWO";
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {

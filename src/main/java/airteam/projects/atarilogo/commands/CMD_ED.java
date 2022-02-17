@@ -8,7 +8,9 @@ import airteam.projects.atarilogo.functions.FunctionManager;
 public class CMD_ED {
 private static int argsCount = 1;
 	
-	private static String syntax = "ED <NAZWA PROCEDURY>";
+	public static String syntax = "ED <NAZWA PROCEDURY>";
+	public static String description = "ROZPOCZYNA EDYCJĘ WSKAZANEJ PROCEDURY";
+	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
 			Console_Output.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");

@@ -4,13 +4,13 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
-import airteam.projects.atarilogo.turtle.Turtle;
-import airteam.projects.atarilogo.utilities.NTSCUtilies;
 
 public class CMD_SETPN {
 private static int argsCount = 1;
 	
-	private static String syntax = "SETPN <NUMER PISAKA>";
+	public static String syntax = "SETPN <NUMER PISAKA>";
+	public static String description = "USTAWIA PISAK ŻÓŁWIA NA WSKAZANY (0 -> 2)";
+	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
 			Console_Output.addErrorLog("PRAWIDŁOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");

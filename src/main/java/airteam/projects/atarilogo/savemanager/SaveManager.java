@@ -1,6 +1,12 @@
 package airteam.projects.atarilogo.savemanager;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -10,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 
 import org.json.JSONArray;
@@ -21,10 +28,64 @@ import airteam.projects.atarilogo.functions.FunctionManager;
 import airteam.projects.atarilogo.functions.FunctionManager.TurtleFunction;
 import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.turtle.Turtle.Turtle_Movement;
+import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class SaveManager {
-	public static void saveWorkspace() {
+	public static void saveWorkspaceImage() {
+		BufferedImage workspace = Turtles_Workspace_Area.getWorkspaceImage();
+  	BufferedImage outputImage = new BufferedImage(workspace.getWidth()+30, workspace.getHeight()+30, 2);
+  	
+  	Graphics2D g2d = (Graphics2D) outputImage.getGraphics();
+  	g2d.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(
+				RenderingHints.KEY_TEXT_ANTIALIASING, 
+				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+		
+		Graphics_Utilies.setGradientPaint(g2d, new Color(250, 247, 247), new Color(232, 227, 227), outputImage.getWidth(), outputImage.getHeight());
+		g2d.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
+		g2d.drawImage(workspace, 15, 15, null);
+		
+		g2d.drawImage(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/logo.png"), 200, 200), 20, 20, null);
+		
+		g2d.setFont(new Font("Tahoma", Font.BOLD, 32));
+		g2d.setColor(new Color(59, 53, 53));
+		
+		FontMetrics ft = g2d.getFontMetrics();
+		g2d.drawString("AIRLOGO", outputImage.getWidth() - ft.stringWidth("AIRLOGO") - 25, outputImage.getHeight() - 25);
+
+		
+		g2d.setColor(new Color(46, 41, 41));
+		g2d.setStroke(new BasicStroke(5));
+		g2d.drawRoundRect(15, 15, workspace.getWidth(), workspace.getHeight(), 15, 15);
+  	
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		String path = null;
+    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        File file = fileChooser.getSelectedFile();
+        if (file == null) return;
+        
+        path = fileChooser.getSelectedFile().getAbsolutePath();
+    } else return;
+    
+    long startTime = System.currentTimeMillis();
+    
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM hh-mm-ss");
+		String filePath = (path + "\\AirLogo - ZRZUT PLANSZA - " + dateFormat.format(startTime) + ".png");
+		
+  	try {
+			ImageIO.write(outputImage, "png", new File(filePath));
+		} catch (Exception ex) {
+			Console_Output.addErrorLog("(" + path + ")", "NIE UDAŁO SIĘ ZAPISAĆ ZDJĘCIA PLANSZY W PODANEJ LOKALIZACJI!");
+		}
+	}
+	
+	
+	public static boolean saveWorkspace() {
 		String path = null;
 		
 		JFileChooser fileChooser = new JFileChooser();
@@ -32,10 +93,10 @@ public class SaveManager {
 		
     if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
         File file = fileChooser.getSelectedFile();
-        if (file == null) return;
+        if (file == null) return false;
         
         path = fileChooser.getSelectedFile().getAbsolutePath();
-    } else return;
+    } else return false;
 		
 		
 		long startTime = (System.currentTimeMillis());
@@ -100,8 +161,6 @@ public class SaveManager {
 		json.put("workspace", workspaceData);
 		json.put("turtles", turtlesData);
 		json.put("functions", functionsData);
-		Log_Utilies.logInfo(json.toString(2),"ZAPISANO W CIAGU: " + ((System.currentTimeMillis()) - startTime) + "MS");
-		
 		
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM hh-mm-ss");
 		String filePath = (path + "\\AirLogo - ZAPIS - " + dateFormat.format(startTime) + ".airlogo");
@@ -110,33 +169,34 @@ public class SaveManager {
 		try {
 			file.createNewFile();
 		} catch (Exception e) {
-			Console_Output.addErrorLog("(" + path + ")", "WYSTĄPIŁ PROBLEM Z ZAPISYWANIEM PLIKU!");
-			return;
+			Console_Output.addErrorLog("(" + path + ")", "NIE MOŻNA ZAPISAĆ PLIKU W PODANEJ LOKALIZACJI!");
+			return false;
 		}
 		
 		try (PrintWriter fileWriter = new PrintWriter(filePath)) {
 			fileWriter.println(json.toString(2));
 		} catch (Exception e) {
 			Console_Output.addErrorLog("(" + path + ")", "WYSTĄPIŁ PROBLEM Z ZAPISYWANIEM PLIKU!");
-			return;
+			return false;
 		}
 		
 		Console_Output.addCustomColorLog(new Color(50, 168, 82), "(" + filePath + ")", "POMYŚLNIE ZAPISANO PLANSZĘ! MOŻESZ JĄ ZNALEŹĆ TUTAJ:");
+		return true;
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static void importWorkspace() {
-		String path = null;
-		
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-		
-    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-        File file = fileChooser.getSelectedFile();
-        if (file == null) return;
-        
-        path = fileChooser.getSelectedFile().getAbsolutePath();
-    } else return;
+	public static boolean importWorkspace(String path) {
+		if(path == null) {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			
+	    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+	        File file = fileChooser.getSelectedFile();
+	        if (file == null) return false;
+	        
+	        path = fileChooser.getSelectedFile().getAbsolutePath();
+	    } else return false;
+		}
     
     
     String fileContent = null;
@@ -144,10 +204,10 @@ public class SaveManager {
     	fileContent = new String(inputStream.readAllBytes());
     } catch (FileNotFoundException e) {
     	Console_Output.addErrorLog("(" + path + ")", "NIE ZNALEZIONO TAKIEGO PLIKU!");
-			return;
+			return false;
 		} catch (IOException e) { 
 			Console_Output.addErrorLog("(" + path + ")", "WYSTĄPIŁ PROBLEM Z OTWIERANIEM PLIKU!");
-			return;
+			return false;
 		}
     
     try {
@@ -216,12 +276,9 @@ public class SaveManager {
     	
     } catch(Exception e) {
     	Console_Output.addErrorLog("(" + path + ")", "WYBRANY PLIK NIE JEST ZAPISEM PLANSZY ŻÓŁWIA!");
-    	e.printStackTrace();
-			return;
+			return false;
     }
-    
-    
+    Console_Output.addCustomColorLog(new Color(50, 168, 82), "POMYŚLNIE ZIMPORTOWANO PLANSZĘ ŻÓŁWIA!");
+    return true;
 	}
-	
-	
 }

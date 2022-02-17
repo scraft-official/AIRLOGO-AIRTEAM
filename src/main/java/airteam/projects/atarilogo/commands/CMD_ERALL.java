@@ -8,7 +8,9 @@ import airteam.projects.atarilogo.functions.FunctionManager;
 public class CMD_ERALL {
 private static int argsCount = 1;
 	
-	private static String syntax = "ERALL <NAZWA PROCEDURY>";
+	public static String syntax = "ERALL <NAZWA PROCEDURY>";
+	public static String description = "USUWA WSKAZANĄ PROCEDURĘ";
+	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
 			Console_Output.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");

@@ -5,12 +5,12 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.Console_Output;
 import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
-import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class CMD_ASK {
 	private static int argsCount = 2;
 	
-	private static String syntax = "ASK [LISTA INDEKSÓW ŻÓŁWI] [LISTA KOMEND]";
+	public static String syntax = "ASK [LISTA INDEKSÓW ŻÓŁWI] [LISTA KOMEND]";
+	public static String description = "WYSYŁA OKREŚLONE POLECENIA DO WSKAZANYCH ŻÓŁWI";
 	
 	public static void execute(String[] args) {
 

@@ -8,7 +8,8 @@ import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 public class CMD_REPEAT {
 	private static int argsCount = 2;
 	
-	private static String syntax = "REPEAT <ILE RAZY> [LISTA KOMEND]";
+	public static String syntax = "REPEAT <ILE RAZY> [LISTA KOMEND]";
+	public static String description = "POWTARZA WSKAZANE KOMENDY PODANĄ ILOŚĆ RAZY";
 	
 	public static void execute(String[] args) {
 

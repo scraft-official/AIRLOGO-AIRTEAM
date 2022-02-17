@@ -9,7 +9,8 @@ import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
 public class CMD_TELL {
 	private static int argsCount = 1;
 	
-	private static String syntax = "TELL [LISTA INDEKSÓW ŻÓŁWI]";
+	public static String syntax = "TELL [LISTA INDEKSÓW ŻÓŁWI]";
+	public static String description = "WSKAZUJE ŻÓLWI KTÓRZY MAJĄ WYKONYWAĆ DALSZE POLECENIA";
 	
 	public static void execute(String[] args) {
 
