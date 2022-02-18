@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogPanel;
 import airteam.projects.atarilogo.components.templates.CustomTextField;
@@ -80,7 +80,7 @@ public class EditTurtlePopup extends JPanel {
       		return;	
       	} else {
       		if(!turtle.getName().equals(nameText.toUpperCase()))
-	      		for(Turtle t : Turtles_Workspace_Area.getAllTurtles()) {
+	      		for(Turtle t : TurtlesWorkspacePanel.getAllTurtles()) {
 	      			if(t.getName().equals(nameText.toUpperCase())) {
 	      				((CustomTextField) turtleNameField).setRquiredHint("* ŻÓŁW O TAKIEJ NAZWIE JUŻ ISTNIEJE!");
 	          		((CustomTextField) turtleNameField).showRequiredHint(true);
@@ -115,7 +115,7 @@ public class EditTurtlePopup extends JPanel {
       	
       	turtle.setName(nameText.toUpperCase());
       	turtle.setTurtleColor(selectedColor);
-      	Turtles_Workspace_Area.forceRefresh(true, true);
+      	TurtlesWorkspacePanel.forceRefresh(true, true);
       	dialog.frame.dispose();
       }
     });

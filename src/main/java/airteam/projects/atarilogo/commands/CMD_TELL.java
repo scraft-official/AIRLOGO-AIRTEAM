@@ -3,8 +3,8 @@ package airteam.projects.atarilogo.commands;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import airteam.projects.atarilogo.components.Console_Output;
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.ConsoleOutputPanel;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 
 public class CMD_TELL {
 	private static int argsCount = 1;
@@ -15,8 +15,8 @@ public class CMD_TELL {
 	public static void execute(String[] args) {
 
 		if(args.length < argsCount + 1) {
-			Console_Output.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			Turtles_Workspace_Area.forceRefresh(true, true);
+			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
+			TurtlesWorkspacePanel.forceRefresh(true, true);
 			return;
 		}
 		
@@ -50,11 +50,11 @@ public class CMD_TELL {
 							restOfCommands = turtlesIDs.substring(endIndex+2, turtlesIDs.length());
 						
 						else {
-							Console_Output.addErrorLog(
+							ConsoleOutputPanel.addErrorLog(
 									"SPRAWDZ, CZY NIE UMIESCILES ZA DUZO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKOW!",
 									"ZLE ZAKONCZONO LIST INDEKSÓW ŻÓŁWI " + String.join(" ", args) + " )"
 									);
-							Turtles_Workspace_Area.forceRefresh(true, true);
+							TurtlesWorkspacePanel.forceRefresh(true, true);
 							return;
 						}
 					turtlesIDs = turtlesIDs.substring(1, endIndex);
@@ -64,20 +64,20 @@ public class CMD_TELL {
 			}
 			
 			if(leftBracketCount > rightBracketCount) {
-				Console_Output.addErrorLog(
+				ConsoleOutputPanel.addErrorLog(
 						"UŻYJ ZNAKU \"]\", ABY ZAKOŃCZYĆ LISTE INDEKSÓW ŻÓŁWI!",
 						"NIE ZNALEZIONO ZAKOŃCZENIA LISTY INDEKSÓW ŻÓŁWI! ( " + String.join(" ", args) + " )"
 				);
-				Turtles_Workspace_Area.forceRefresh(true, true);
+				TurtlesWorkspacePanel.forceRefresh(true, true);
 				return;
 			}
 			
 			if(turtlesIDs.length() <= 1) {
 				if(turtlesIDs.length() == 0 || turtlesIDs.charAt(0) == ' ') {
-					Console_Output.addErrorLog(
+					ConsoleOutputPanel.addErrorLog(
 							"NIE WPROWADZONO ŻADNEJ LISTY INDEKSÓW ŻÓŁWI! ( " + String.join(" ", args) + " )"
 					);
-					Turtles_Workspace_Area.forceRefresh(true, true);
+					TurtlesWorkspacePanel.forceRefresh(true, true);
 					return;
 				}
 			}
@@ -94,12 +94,12 @@ public class CMD_TELL {
 			try {
 				selectedIDs.add(Integer.valueOf(id));
 			} catch(Exception e) {
-				Console_Output.addErrorLog("WPROWADZONO BŁĘDNY INDEKS ŻÓŁWIA  ( " + id + "!= LICZBA )");
+				ConsoleOutputPanel.addErrorLog("WPROWADZONO BŁĘDNY INDEKS ŻÓŁWIA  ( " + id + "!= LICZBA )");
 			}
 		}
 		
-		Turtles_Workspace_Area.selectTurtle(selectedIDs, false);
-		Turtles_Workspace_Area.forceRefresh(false, true);
+		TurtlesWorkspacePanel.selectTurtle(selectedIDs, false);
+		TurtlesWorkspacePanel.forceRefresh(false, true);
 		
 		if(restOfCommands != null && restOfCommands.length() > 0){
 			CommandManager.parse(restOfCommands.split(" "));

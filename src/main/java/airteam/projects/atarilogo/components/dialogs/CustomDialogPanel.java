@@ -17,7 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.components.templates.CustomButtonUI;
 import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
@@ -42,8 +42,8 @@ public class CustomDialogPanel extends JPanel {
 	public CustomDialogPanel(CustomDialogFrame dialog, String name, boolean onlyAcceptButton, boolean addDefaultIcons) {
 		setBorder(new EmptyBorder(borderPadding/2 - 1, borderPadding, borderPadding, borderPadding));
 		setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("15dlu"),
-				ColumnSpec.decode("10dlu"),
+				ColumnSpec.decode("27px"),
+				ColumnSpec.decode("8dlu"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("50px:grow"),
 				ColumnSpec.decode("15dlu"),

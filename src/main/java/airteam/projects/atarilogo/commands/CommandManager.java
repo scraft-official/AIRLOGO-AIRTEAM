@@ -4,8 +4,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import airteam.projects.atarilogo.components.Console_Output;
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.ConsoleOutputPanel;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.functions.FunctionManager;
 import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
@@ -49,7 +49,7 @@ public class CommandManager {
 				CMD_PD.execute(args);
 			}
 			else if(args[0].equals("SETC")) {
-				CMD_SETC.execute(args);
+			  CMD_SETC.execute(args);
 			}
 			else if(args[0].equals("SETPN")) {
 				CMD_SETPN.execute(args);
@@ -82,10 +82,10 @@ public class CommandManager {
 				FunctionManager.parseFunction(args[0], args);
 			}
 			else {
-				Console_Output.addErrorLog("NIE ZNALEZIONO TAKIEJ KOMENDY! ( " + String.join(" ", args) + " )");
+				ConsoleOutputPanel.addErrorLog("NIE ZNALEZIONO TAKIEJ KOMENDY! ( " + String.join(" ", args) + " )");
 			}
 		}
-		catch(Exception e) { e.printStackTrace(); Console_Output.addErrorLog("WYSTĄPIŁ BŁĄD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )"); }
+		catch(Exception e) { e.printStackTrace(); ConsoleOutputPanel.addErrorLog("WYSTĄPIŁ BŁĄD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )");}
 	}
 	
 	public static int parseMath(String arg, int turtleID) throws Exception {
@@ -98,7 +98,7 @@ public class CommandManager {
     	else throw new Exception();
 
 		} catch (Exception e) {
-			Console_Output.addErrorLog("NIE MOŻNA OBLICZYĆ WARTOŚCI MATEMATYCZNEJ ( " + arg + " )");
+			ConsoleOutputPanel.addErrorLog("NIE MOŻNA OBLICZYĆ WARTOŚCI MATEMATYCZNEJ ( " + arg + " )");
 			throw new Exception();
 		}
 		

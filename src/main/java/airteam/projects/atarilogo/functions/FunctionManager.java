@@ -6,9 +6,9 @@ import java.util.HashMap;
 import java.util.stream.Stream;
 
 import airteam.projects.atarilogo.commands.CommandManager;
-import airteam.projects.atarilogo.components.Console_Output;
-import airteam.projects.atarilogo.components.Turtle_Functions;
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.ConsoleOutputPanel;
+import airteam.projects.atarilogo.components.TurtleFunctionsPanel;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class FunctionManager {
@@ -17,13 +17,13 @@ public class FunctionManager {
 	public static void parseFunction(String name, String[] args) {
 		TurtleFunction function = registeredFunctions.get(name);
 		if(function.args.size() > args.length - 1) { 
-			Console_Output.addErrorLog("PRAWIDLOWE UZYCIE FUNKCJI: " + name + " <" + String.join("> <", function.args) + ">", "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!"); 
-			Turtles_Workspace_Area.forceRefresh(true, true);
+			ConsoleOutputPanel.addErrorLog("PRAWIDLOWE UZYCIE FUNKCJI: " + name + " <" + String.join("> <", function.args) + ">", "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!"); 
+			TurtlesWorkspacePanel.forceRefresh(true, true);
 			return;
 		}
 		
 		String commands = function.commands;
-		commands = commands.replace("\t", " ");
+		commands = commands.replace("\t", " ").replace("\n", "");
 		while(commands.contains("  ")) {
 			commands = commands.replaceAll("  ", " ");
 		}
@@ -45,12 +45,12 @@ public class FunctionManager {
 	
 	public static void addFunction(String name, ArrayList<String> args, String commands, boolean isDefaultFunction) {
 		registeredFunctions.put(name, new TurtleFunction(args, commands, isDefaultFunction));
-		Turtle_Functions.setSelectedFunction(name, false);
+		TurtleFunctionsPanel.setSelectedFunction(name, false);
 	}
 	
 	public static void addFunction(String name, ArrayList<String> args, String commands) {
 		registeredFunctions.put(name, new TurtleFunction(args, commands, false));
-		Turtle_Functions.setSelectedFunction(name, true);
+		TurtleFunctionsPanel.setSelectedFunction(name, true);
 	}
 	
 	public static void removeFunction(String name) {
@@ -59,7 +59,7 @@ public class FunctionManager {
 		for(String n : registeredFunctions.keySet()) {
 			selected = n;
 		}
-		Turtle_Functions.setSelectedFunction(selected, true);
+		TurtleFunctionsPanel.setSelectedFunction(selected, true);
 	}
 	
 	public static TurtleFunction getFunction(String name) {

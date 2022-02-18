@@ -2,8 +2,8 @@ package airteam.projects.atarilogo.commands;
 
 import java.util.Arrays;
 
-import airteam.projects.atarilogo.components.Console_Output;
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.ConsoleOutputPanel;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 
 public class CMD_CS {
 	private static int argsCount = 0;
@@ -13,17 +13,17 @@ public class CMD_CS {
 	
 	public static void execute(String[] args) {
 		if(args.length < argsCount + 1) {
-			Console_Output.addErrorLog("PRAWIDŁOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			Turtles_Workspace_Area.forceRefresh(true, true);
+			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
+			TurtlesWorkspacePanel.forceRefresh(true, true);
 			return;
 		}
 		
-		Turtles_Workspace_Area.clearWorkspace();
+		TurtlesWorkspacePanel.clearWorkspace();
 		if(args.length > (argsCount + 1)) {
 			CommandManager.parse(Arrays.copyOfRange(args, argsCount + 1, args.length));
 		}
 		else {
-			Turtles_Workspace_Area.forceRefresh(true, true);
+			TurtlesWorkspacePanel.forceRefresh(true, true);
 		}
 	}
 }

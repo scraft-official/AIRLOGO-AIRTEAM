@@ -22,8 +22,8 @@ import javax.swing.JFileChooser;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import airteam.projects.atarilogo.components.Console_Output;
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.ConsoleOutputPanel;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.functions.FunctionManager;
 import airteam.projects.atarilogo.functions.FunctionManager.TurtleFunction;
 import airteam.projects.atarilogo.turtle.Turtle;
@@ -33,7 +33,7 @@ import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class SaveManager {
 	public static void saveWorkspaceImage() {
-		BufferedImage workspace = Turtles_Workspace_Area.getWorkspaceImage();
+		BufferedImage workspace = TurtlesWorkspacePanel.getWorkspaceImage();
   	BufferedImage outputImage = new BufferedImage(workspace.getWidth()+30, workspace.getHeight()+30, 2);
   	
   	Graphics2D g2d = (Graphics2D) outputImage.getGraphics();
@@ -80,8 +80,9 @@ public class SaveManager {
   	try {
 			ImageIO.write(outputImage, "png", new File(filePath));
 		} catch (Exception ex) {
-			Console_Output.addErrorLog("(" + path + ")", "NIE UDAŁO SIĘ ZAPISAĆ ZDJĘCIA PLANSZY W PODANEJ LOKALIZACJI!");
+			ConsoleOutputPanel.addErrorLog("(" + path + ")", "NIE UDAŁO SIĘ ZAPISAĆ ZDJĘCIA PLANSZY W PODANEJ LOKALIZACJI!");
 		}
+  	ConsoleOutputPanel.addCustomColorLog(new Color(50, 168, 82), "(" + filePath + ")", "POMYŚLNIE ZROBIONO ZDJĘCIE PLANSZY! ZNAJDZIESZ JE TUTAJ");
 	}
 	
 	
@@ -107,7 +108,7 @@ public class SaveManager {
 		
 		HashMap<String, Object> turtleMap;
 		
-		for(Turtle t : Turtles_Workspace_Area.getAllTurtles()) {
+		for(Turtle t : TurtlesWorkspacePanel.getAllTurtles()) {
 			turtleMap = new HashMap<>();
 			turtleMap.put("turtleName", t.getName());
 			turtleMap.put("turtleRotation", t.getRotation());
@@ -152,7 +153,7 @@ public class SaveManager {
 		HashMap<String, Object> workspaceData = new HashMap<>();
 		
 		ArrayList<String> pens = new ArrayList<>();
-		for(Color p : Turtles_Workspace_Area.getAllPens()) {
+		for(Color p : TurtlesWorkspacePanel.getAllPens()) {
 			pens.add(String.format("#%02x%02x%02x", p.getRed(), p.getGreen(), p.getBlue()));
 		}
 		
@@ -169,18 +170,18 @@ public class SaveManager {
 		try {
 			file.createNewFile();
 		} catch (Exception e) {
-			Console_Output.addErrorLog("(" + path + ")", "NIE MOŻNA ZAPISAĆ PLIKU W PODANEJ LOKALIZACJI!");
+			ConsoleOutputPanel.addErrorLog("(" + path + ")", "NIE MOŻNA ZAPISAĆ PLIKU W PODANEJ LOKALIZACJI!");
 			return false;
 		}
 		
 		try (PrintWriter fileWriter = new PrintWriter(filePath)) {
 			fileWriter.println(json.toString(2));
 		} catch (Exception e) {
-			Console_Output.addErrorLog("(" + path + ")", "WYSTĄPIŁ PROBLEM Z ZAPISYWANIEM PLIKU!");
+			ConsoleOutputPanel.addErrorLog("(" + path + ")", "WYSTĄPIŁ PROBLEM Z ZAPISYWANIEM PLIKU!");
 			return false;
 		}
 		
-		Console_Output.addCustomColorLog(new Color(50, 168, 82), "(" + filePath + ")", "POMYŚLNIE ZAPISANO PLANSZĘ! MOŻESZ JĄ ZNALEŹĆ TUTAJ:");
+		ConsoleOutputPanel.addCustomColorLog(new Color(50, 168, 82), "(" + filePath + ")", "POMYŚLNIE ZAPISANO PLANSZĘ! MOŻESZ JĄ ZNALEŹĆ TUTAJ:");
 		return true;
 	}
 	
@@ -203,10 +204,10 @@ public class SaveManager {
     try(FileInputStream inputStream = new FileInputStream(path)) {     
     	fileContent = new String(inputStream.readAllBytes());
     } catch (FileNotFoundException e) {
-    	Console_Output.addErrorLog("(" + path + ")", "NIE ZNALEZIONO TAKIEGO PLIKU!");
+    	ConsoleOutputPanel.addErrorLog("(" + path + ")", "NIE ZNALEZIONO TAKIEGO PLIKU!");
 			return false;
 		} catch (IOException e) { 
-			Console_Output.addErrorLog("(" + path + ")", "WYSTĄPIŁ PROBLEM Z OTWIERANIEM PLIKU!");
+			ConsoleOutputPanel.addErrorLog("(" + path + ")", "WYSTĄPIŁ PROBLEM Z OTWIERANIEM PLIKU!");
 			return false;
 		}
     
@@ -262,23 +263,23 @@ public class SaveManager {
     		pensFinalList.add(Color.decode((String) c));
     	}
     	
-    	Turtles_Workspace_Area.clearWorkspace();
+    	TurtlesWorkspacePanel.clearWorkspace();
     	
     	for(int i = 0; i < pensFinalList.size(); i++) {
-    		Turtles_Workspace_Area.setPenColor(i, pensFinalList.get(i));
+    		TurtlesWorkspacePanel.setPenColor(i, pensFinalList.get(i));
     	}
     	
-    	Turtles_Workspace_Area.setTurtlesList(turtlesFinalList);
+    	TurtlesWorkspacePanel.setTurtlesList(turtlesFinalList);
     	FunctionManager.setFunctionsList(funcionsFinalMap);
     	
-    	Turtles_Workspace_Area.selectTurtle(0, false);
-    	Turtles_Workspace_Area.forceRefresh(true, true);
+    	TurtlesWorkspacePanel.selectTurtle(0, false);
+    	TurtlesWorkspacePanel.forceRefresh(true, true);
     	
     } catch(Exception e) {
-    	Console_Output.addErrorLog("(" + path + ")", "WYBRANY PLIK NIE JEST ZAPISEM PLANSZY ŻÓŁWIA!");
+    	ConsoleOutputPanel.addErrorLog("(" + path + ")", "WYBRANY PLIK NIE JEST ZAPISEM PLANSZY ŻÓŁWIA!");
 			return false;
     }
-    Console_Output.addCustomColorLog(new Color(50, 168, 82), "POMYŚLNIE ZIMPORTOWANO PLANSZĘ ŻÓŁWIA!");
+    ConsoleOutputPanel.addCustomColorLog(new Color(50, 168, 82), "POMYŚLNIE ZIMPORTOWANO PLANSZĘ ŻÓŁWIA!");
     return true;
 	}
 }

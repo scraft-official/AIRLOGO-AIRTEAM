@@ -11,8 +11,8 @@ import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import airteam.projects.atarilogo.components.Sidebar_Panel;
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.SidebarPanel;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.popups.AddNewFunctionPopup;
 import airteam.projects.atarilogo.components.dialogs.popups.SavePopup;
@@ -36,7 +36,7 @@ public class AtariLogo extends JFrame {
 	private static int fps = 50;
 	
 	public AtariLogo() {
-		setTitle("AIRTEAM - ATARILOGO");
+		setTitle("AIRLOGO - AIRTEAM");
 
 		setIconImage(Graphics_Utilies.getSizedImage(
 				(BufferedImage) Graphics_Utilies.getInternalIcon("icons/app-icon.png"), 250, 250)
@@ -48,15 +48,15 @@ public class AtariLogo extends JFrame {
 			new RowSpec[] {
 				RowSpec.decode("10px:grow"),});
 		
-		Turtles_Workspace_Area workspacePanel = new Turtles_Workspace_Area(fps);
+		TurtlesWorkspacePanel workspacePanel = new TurtlesWorkspacePanel(fps);
 		workspacePanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-		Turtles_Workspace_Area.addTurtle("PODSTAWOWY", new Color(20, 186, 150));
+		TurtlesWorkspacePanel.addTurtle("PODSTAWOWY", new Color(20, 186, 150));
 		
 		
 		FunctionManager.registerDefaultFunctions();
 		
-		JPanel sidebarPanel = new Sidebar_Panel();
+		JPanel sidebarPanel = new SidebarPanel();
 		
 		getContentPane().setLayout(appLayout);
 		getContentPane().add(sidebarPanel, "1, 1, fill, fill");

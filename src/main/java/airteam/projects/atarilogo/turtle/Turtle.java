@@ -13,7 +13,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.utilities.Graphics_Utilies;
 import airteam.projects.atarilogo.utilities.Log_Utilies;
 
@@ -70,7 +70,7 @@ public class Turtle {
 				turtlePosY, 
 				newX, 
 				newY, 
-				Turtles_Workspace_Area.getSelectedPenColor()
+				TurtlesWorkspacePanel.getSelectedPenColor()
 			));
 		}
 		
@@ -161,13 +161,13 @@ public class Turtle {
 	
 	public void drawTurtle(Graphics2D g) {
 		if(turtleVisibility) {
-			BufferedImage turtleIcon = scaledTurtleImages.get(Turtles_Workspace_Area.getScale());
+			BufferedImage turtleIcon = scaledTurtleImages.get(TurtlesWorkspacePanel.getScale());
 			
-			int w = Turtles_Workspace_Area.getBoundsWidth();
-			int h = Turtles_Workspace_Area.getBoundsHeight();
+			int w = TurtlesWorkspacePanel.getBoundsWidth();
+			int h = TurtlesWorkspacePanel.getBoundsHeight();
 			
-			int x = Turtles_Workspace_Area.scaledValue(turtlePosX) + Math.round(w/2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentX()) - Math.round(turtleIcon.getWidth() / 2);
-			int y = Turtles_Workspace_Area.scaledValue(turtlePosY) + Math.round(h/2) + Turtles_Workspace_Area.scaledValue(Turtles_Workspace_Area.getCurrentY()) - Math.round(turtleIcon.getHeight() / 2);
+			int x = TurtlesWorkspacePanel.scaledValue(turtlePosX) + Math.round(w/2) + TurtlesWorkspacePanel.scaledValue(TurtlesWorkspacePanel.getCurrentX()) - Math.round(turtleIcon.getWidth() / 2);
+			int y = TurtlesWorkspacePanel.scaledValue(turtlePosY) + Math.round(h/2) + TurtlesWorkspacePanel.scaledValue(TurtlesWorkspacePanel.getCurrentY()) - Math.round(turtleIcon.getHeight() / 2);
 			
 			
 			AffineTransform identity = new AffineTransform();
@@ -187,17 +187,17 @@ public class Turtle {
 	
 	public void drawMovements(Graphics2D g, int w, int h) {
 		if(turtleMovementList.size() == 0) return;
-		int offsetX = Turtles_Workspace_Area.getCurrentX();
-		int offsetY = Turtles_Workspace_Area.getCurrentY();
+		int offsetX = TurtlesWorkspacePanel.getCurrentX();
+		int offsetY = TurtlesWorkspacePanel.getCurrentY();
 		
 		for(Turtle_Movement move : turtleMovementList) {
-			g.setStroke(new BasicStroke(Turtles_Workspace_Area.scaledValue(penSize)));
+			g.setStroke(new BasicStroke(TurtlesWorkspacePanel.scaledValue(penSize)));
 			g.setColor(move.penColor);
 			g.drawLine(
-				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(offsetX + (move.x1))),
-				(int) ((h / 2) + Turtles_Workspace_Area.scaledValue(offsetY + (move.y1))),
-				(int) ((w / 2) + Turtles_Workspace_Area.scaledValue(offsetX + (move.x2))),
-				(int) ((h / 2) + Turtles_Workspace_Area.scaledValue(offsetY + (move.y2)))
+				(int) ((w / 2) + TurtlesWorkspacePanel.scaledValue(offsetX + (move.x1))),
+				(int) ((h / 2) + TurtlesWorkspacePanel.scaledValue(offsetY + (move.y1))),
+				(int) ((w / 2) + TurtlesWorkspacePanel.scaledValue(offsetX + (move.x2))),
+				(int) ((h / 2) + TurtlesWorkspacePanel.scaledValue(offsetY + (move.y2)))
 		);
 			
 		}

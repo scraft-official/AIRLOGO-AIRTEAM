@@ -16,7 +16,7 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import airteam.projects.atarilogo.AtariLogo;
-import airteam.projects.atarilogo.components.Turtles_Workspace_Area;
+import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogPanel;
 import airteam.projects.atarilogo.components.dialogs.popups.SavePopup.Dialog;
@@ -183,7 +183,7 @@ public class EditFunctionPopup extends JPanel {
     		if(lastLine.length() != 3 || !lastLine.equals("END")) { hintText.setText("* NIE ZNALEZIONO \"END\" NA KOŃCU PROCEDURY"); return; }
     		if(functionList.length < 3) { hintText.setText("* BRAKUJE LISTY POLECEŃ POMIĘDZY \"TO\" I \"END\""); return; }
     		
-    		String functionCommands = String.join(" ", Arrays.copyOfRange(functionList, 1, functionList.length-1));
+    		String functionCommands = String.join(" \n", Arrays.copyOfRange(functionList, 1, functionList.length-1));
     		
     		if(!name.equals(functionName)) {
     			if(!FunctionManager.getFunction(name).isDefaultFunction)
@@ -191,6 +191,7 @@ public class EditFunctionPopup extends JPanel {
     			else
     				{ hintText.setText("* NIE MOŻNA EDYTOWAĆ WBUDOWANYCH PROCEDUR"); return; }
     		}
+
     		FunctionManager.addFunction(functionName, functionArguments, functionCommands);
       	dialog.frame.dispose();
       }
