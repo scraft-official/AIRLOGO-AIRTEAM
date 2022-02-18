@@ -13,20 +13,15 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
@@ -36,11 +31,7 @@ import airteam.projects.atarilogo.commands.CMD_ED;
 import airteam.projects.atarilogo.commands.CommandManager;
 import airteam.projects.atarilogo.components.dialogs.popups.AddNewFunctionPopup;
 import airteam.projects.atarilogo.savemanager.SaveManager;
-import airteam.projects.atarilogo.turtle.Turtle;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
-import airteam.projects.atarilogo.utilities.Log_Utilies;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 
 @SuppressWarnings("serial")
 public class ConsoleInputPanel extends JPanel {
@@ -51,12 +42,17 @@ public class ConsoleInputPanel extends JPanel {
 	private static int borderSize = 1;
 	private static int borderRadius = 15;
 	
-	private ArrayList<String> lastCommands = new ArrayList<>();
-	private int lastCommandIndex = 0;
 	private static JLabel consoleButton;
+	private static ImageIcon consoleOn = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/paper-icon-full.png"), 28, 28));
+	private static ImageIcon consoleOff = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/paper-icon.png"), 28, 28));
 	
-	private static ImageIcon consoleOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon-full.png"), 28, 28));
-	private static ImageIcon consoleOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon.png"), 28, 28));
+	public static void refreshConsoleButton() {
+		if(ConsoleOutputPanel.getVisbility()) consoleButton.setIcon(consoleOn);
+		else consoleButton.setIcon(consoleOff);
+	}
+	private ArrayList<String> lastCommands = new ArrayList<>();
+	
+	private int lastCommandIndex = 0;
 	
 	public ConsoleInputPanel() {
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -85,6 +81,7 @@ public class ConsoleInputPanel extends JPanel {
 		textField.setColumns(7);
 		
 		textField.addActionListener(new ActionListener(){
+			@Override
 			public void actionPerformed(ActionEvent e){
 				String command = textField.getText();
 				if(command.length() == 0) return;
@@ -164,11 +161,8 @@ public class ConsoleInputPanel extends JPanel {
 		separator.setBackground(new Color(52, 145, 80));
 		
 		consoleButton = new JLabel(new ImageIcon(
-				Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon.png"), 28, 28) 
+				GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/paper-icon.png"), 28, 28) 
 		));
-		
-		ImageIcon consoleOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon-full.png"), 28, 28));
-		ImageIcon consoleOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/paper-icon.png"), 28, 28));
 		
 		consoleButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -186,16 +180,10 @@ public class ConsoleInputPanel extends JPanel {
 		
 	}
 	
-	public static void refreshConsoleButton() {
-		if(ConsoleOutputPanel.getVisbility()) consoleButton.setIcon(consoleOn);
-		else consoleButton.setIcon(consoleOff);
-	}
-	
+	@Override
 	public void paintComponent(Graphics g) {
-		//super.paintComponent(g);
 		int w = getBounds().width;
 		int h = getBounds().height;
-		
 		
 		Graphics2D g2d = (Graphics2D) g.create();
 		
@@ -203,8 +191,8 @@ public class ConsoleInputPanel extends JPanel {
 			RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		Graphics_Utilies.drawRoundFadedBorder(g2d, new Color(0,0,0), shadowSize, 0, 0, w, h, borderRadius);
-		Graphics_Utilies.setGradientPaint(g2d, backgroundColor1, backgroundColor2, 0, h);
+		GraphicsUtility.drawRoundFadedBorder(g2d, new Color(0,0,0), shadowSize, 0, 0, w, h, borderRadius);
+		GraphicsUtility.setGradientPaint(g2d, backgroundColor1, backgroundColor2, 0, h);
 		
 		g2d.fillRoundRect(shadowSize/2 + borderSize/2, shadowSize/2 + borderSize/2, w-shadowSize-borderSize, h-shadowSize-borderSize, borderRadius, borderRadius);
 		g2d.dispose();

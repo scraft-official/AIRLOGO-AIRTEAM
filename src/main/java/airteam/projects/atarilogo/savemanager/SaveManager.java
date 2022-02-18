@@ -28,61 +28,104 @@ import airteam.projects.atarilogo.functions.FunctionManager;
 import airteam.projects.atarilogo.functions.FunctionManager.TurtleFunction;
 import airteam.projects.atarilogo.turtle.Turtle;
 import airteam.projects.atarilogo.turtle.Turtle.Turtle_Movement;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
-import airteam.projects.atarilogo.utilities.Log_Utilies;
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 
 public class SaveManager {
-	public static void saveWorkspaceImage() {
-		BufferedImage workspace = TurtlesWorkspacePanel.getWorkspaceImage();
-  	BufferedImage outputImage = new BufferedImage(workspace.getWidth()+30, workspace.getHeight()+30, 2);
-  	
-  	Graphics2D g2d = (Graphics2D) outputImage.getGraphics();
-  	g2d.setRenderingHint(
-				RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(
-				RenderingHints.KEY_TEXT_ANTIALIASING, 
-				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-		
-		Graphics_Utilies.setGradientPaint(g2d, new Color(250, 247, 247), new Color(232, 227, 227), outputImage.getWidth(), outputImage.getHeight());
-		g2d.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
-		g2d.drawImage(workspace, 15, 15, null);
-		
-		g2d.drawImage(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/logo.png"), 200, 200), 20, 20, null);
-		
-		g2d.setFont(new Font("Tahoma", Font.BOLD, 32));
-		g2d.setColor(new Color(59, 53, 53));
-		
-		FontMetrics ft = g2d.getFontMetrics();
-		g2d.drawString("AIRLOGO", outputImage.getWidth() - ft.stringWidth("AIRLOGO") - 25, outputImage.getHeight() - 25);
-
-		
-		g2d.setColor(new Color(46, 41, 41));
-		g2d.setStroke(new BasicStroke(5));
-		g2d.drawRoundRect(15, 15, workspace.getWidth(), workspace.getHeight(), 15, 15);
-  	
-		JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		
-		String path = null;
-    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-        File file = fileChooser.getSelectedFile();
-        if (file == null) return;
-        
-        path = fileChooser.getSelectedFile().getAbsolutePath();
-    } else return;
-    
-    long startTime = System.currentTimeMillis();
-    
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM hh-mm-ss");
-		String filePath = (path + "\\AirLogo - ZRZUT PLANSZA - " + dateFormat.format(startTime) + ".png");
-		
-  	try {
-			ImageIO.write(outputImage, "png", new File(filePath));
-		} catch (Exception ex) {
-			ConsoleOutputPanel.addErrorLog("(" + path + ")", "NIE UDAŁO SIĘ ZAPISAĆ ZDJĘCIA PLANSZY W PODANEJ LOKALIZACJI!");
+	public static boolean importWorkspace(String path) {
+		if(path == null) {
+			JFileChooser fileChooser = new JFileChooser();
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			
+	    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+	        File file = fileChooser.getSelectedFile();
+	        if (file == null) return false;
+	        
+	        path = fileChooser.getSelectedFile().getAbsolutePath();
+	    } else return false;
 		}
-  	ConsoleOutputPanel.addCustomColorLog(new Color(50, 168, 82), "(" + filePath + ")", "POMYŚLNIE ZROBIONO ZDJĘCIE PLANSZY! ZNAJDZIESZ JE TUTAJ");
+    
+    
+    String fileContent = null;
+    try(FileInputStream inputStream = new FileInputStream(path)) {     
+    	fileContent = new String(inputStream.readAllBytes());
+    } catch (FileNotFoundException e) {
+    	ConsoleOutputPanel.addErrorLog("(" + path + ")", "NIE ZNALEZIONO TAKIEGO PLIKU!");
+			return false;
+		} catch (IOException e) { 
+			ConsoleOutputPanel.addErrorLog("(" + path + ")", "WYSTĄPIŁ PROBLEM Z OTWIERANIEM PLIKU!");
+			return false;
+		}
+    
+    try {
+    	JSONObject json = new JSONObject(fileContent);
+    	
+    	ArrayList<Turtle> turtlesFinalList = new ArrayList<>();
+    	
+    	for(Object turtleMapObject : (JSONArray) json.get("turtles")) {
+    		JSONObject turtleMap = (JSONObject) turtleMapObject;
+    		Turtle t = new Turtle((int) turtleMap.get("turtlePosX"),(int) turtleMap.get("turtlePosY"), (String) turtleMap.get("turtleName"), Color.decode((String) turtleMap.get("turtleColor")));
+    		t.rotate((int) turtleMap.get("turtleRotation"));
+    		t.setTurtleVisibility((boolean) turtleMap.get("turtleVisibility"));
+    		t.setPenVisibility((boolean) turtleMap.get("penVisibility"));
+    		
+    		ArrayList<Turtle_Movement> turtleMovements = new ArrayList<>();
+    		
+    		for(Object moveDataObject : (JSONArray) turtleMap.get("movements")) {
+    			JSONObject moveData = (JSONObject) moveDataObject;
+    			turtleMovements.add(new Turtle_Movement(
+  					(int) moveData.get("x1"),
+  					(int) moveData.get("y1"),
+  					(int) moveData.get("x2"),
+  					(int) moveData.get("y2"),
+  					Color.decode((String) moveData.get("penColor"))
+    		));}
+    			
+    		t.setMovements(turtleMovements);
+    		turtlesFinalList.add(t);
+    	}
+    	
+    	HashMap<String, TurtleFunction> funcionsFinalMap = new HashMap<>();
+    	
+    	for(Object functionMapObject : (JSONArray) json.get("functions")) {
+    		JSONObject functionMap = (JSONObject) functionMapObject;
+    		
+    		ArrayList<String> functionArgs = new ArrayList<>();
+    		for(Object arg : (JSONArray) functionMap.get("args")) {
+    			functionArgs.add((String) arg);
+    		}
+    		
+    		funcionsFinalMap.put((String) functionMap.get("name"), new TurtleFunction(
+    				functionArgs, 
+    				(String) functionMap.get("commands"),
+    				(Boolean) functionMap.get("isDefaultFunction")
+    		));
+    	}
+    	
+    	JSONObject workspaceDataMap = (JSONObject) json.get("workspace");
+    	ArrayList<Color> pensFinalList = new ArrayList<>();
+    	
+    	for(Object c : (JSONArray) workspaceDataMap.get("pens")) {
+    		pensFinalList.add(Color.decode((String) c));
+    	}
+    	
+    	TurtlesWorkspacePanel.clearWorkspace();
+    	
+    	for(int i = 0; i < pensFinalList.size(); i++) {
+    		TurtlesWorkspacePanel.setPenColor(i, pensFinalList.get(i));
+    	}
+    	
+    	TurtlesWorkspacePanel.setTurtlesList(turtlesFinalList);
+    	FunctionManager.setFunctionsList(funcionsFinalMap);
+    	
+    	TurtlesWorkspacePanel.selectTurtle(0, false);
+    	TurtlesWorkspacePanel.forceRefresh(true, true);
+    	
+    } catch(Exception e) {
+    	ConsoleOutputPanel.addErrorLog("(" + path + ")", "WYBRANY PLIK NIE JEST ZAPISEM PLANSZY ŻÓŁWIA!");
+			return false;
+    }
+    ConsoleOutputPanel.addCustomColorLog(new Color(50, 168, 82), "POMYŚLNIE ZIMPORTOWANO PLANSZĘ ŻÓŁWIA!");
+    return true;
 	}
 	
 	
@@ -185,101 +228,56 @@ public class SaveManager {
 		return true;
 	}
 	
-	@SuppressWarnings("unchecked")
-	public static boolean importWorkspace(String path) {
-		if(path == null) {
-			JFileChooser fileChooser = new JFileChooser();
-			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			
-	    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-	        File file = fileChooser.getSelectedFile();
-	        if (file == null) return false;
-	        
-	        path = fileChooser.getSelectedFile().getAbsolutePath();
-	    } else return false;
+	public static void saveWorkspaceImage() {
+		BufferedImage workspace = TurtlesWorkspacePanel.getWorkspaceImage();
+  	BufferedImage outputImage = new BufferedImage(workspace.getWidth()+30, workspace.getHeight()+30, 2);
+  	
+  	Graphics2D g2d = (Graphics2D) outputImage.getGraphics();
+  	g2d.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(
+				RenderingHints.KEY_TEXT_ANTIALIASING, 
+				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+		
+		GraphicsUtility.setGradientPaint(g2d, new Color(250, 247, 247), new Color(232, 227, 227), outputImage.getWidth(), outputImage.getHeight());
+		g2d.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
+		g2d.drawImage(workspace, 15, 15, null);
+		
+		g2d.drawImage(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/logo.png"), 200, 200), 20, 20, null);
+		
+		g2d.setFont(new Font("Tahoma", Font.BOLD, 32));
+		g2d.setColor(new Color(59, 53, 53));
+		
+		FontMetrics ft = g2d.getFontMetrics();
+		g2d.drawString("AIRLOGO", outputImage.getWidth() - ft.stringWidth("AIRLOGO") - 25, outputImage.getHeight() - 25);
+
+		
+		g2d.setColor(new Color(46, 41, 41));
+		g2d.setStroke(new BasicStroke(5));
+		g2d.drawRoundRect(15, 15, workspace.getWidth(), workspace.getHeight(), 15, 15);
+  	
+		JFileChooser fileChooser = new JFileChooser();
+		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		
+		String path = null;
+    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+        File file = fileChooser.getSelectedFile();
+        if (file == null) return;
+        
+        path = fileChooser.getSelectedFile().getAbsolutePath();
+    } else return;
+    
+    long startTime = System.currentTimeMillis();
+    
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM hh-mm-ss");
+		String filePath = (path + "\\AirLogo - ZRZUT PLANSZA - " + dateFormat.format(startTime) + ".png");
+		
+  	try {
+			ImageIO.write(outputImage, "png", new File(filePath));
+		} catch (Exception ex) {
+			ConsoleOutputPanel.addErrorLog("(" + path + ")", "NIE UDAŁO SIĘ ZAPISAĆ ZDJĘCIA PLANSZY W PODANEJ LOKALIZACJI!");
 		}
-    
-    
-    String fileContent = null;
-    try(FileInputStream inputStream = new FileInputStream(path)) {     
-    	fileContent = new String(inputStream.readAllBytes());
-    } catch (FileNotFoundException e) {
-    	ConsoleOutputPanel.addErrorLog("(" + path + ")", "NIE ZNALEZIONO TAKIEGO PLIKU!");
-			return false;
-		} catch (IOException e) { 
-			ConsoleOutputPanel.addErrorLog("(" + path + ")", "WYSTĄPIŁ PROBLEM Z OTWIERANIEM PLIKU!");
-			return false;
-		}
-    
-    try {
-    	JSONObject json = new JSONObject(fileContent);
-    	
-    	ArrayList<Turtle> turtlesFinalList = new ArrayList<>();
-    	
-    	for(Object turtleMapObject : (JSONArray) json.get("turtles")) {
-    		JSONObject turtleMap = (JSONObject) turtleMapObject;
-    		Turtle t = new Turtle((int) turtleMap.get("turtlePosX"),(int) turtleMap.get("turtlePosY"), (String) turtleMap.get("turtleName"), Color.decode((String) turtleMap.get("turtleColor")));
-    		t.rotate((int) turtleMap.get("turtleRotation"));
-    		t.setTurtleVisibility((boolean) turtleMap.get("turtleVisibility"));
-    		t.setPenVisibility((boolean) turtleMap.get("penVisibility"));
-    		
-    		ArrayList<Turtle_Movement> turtleMovements = new ArrayList<>();
-    		
-    		for(Object moveDataObject : (JSONArray) turtleMap.get("movements")) {
-    			JSONObject moveData = (JSONObject) moveDataObject;
-    			turtleMovements.add(new Turtle_Movement(
-  					(int) moveData.get("x1"),
-  					(int) moveData.get("y1"),
-  					(int) moveData.get("x2"),
-  					(int) moveData.get("y2"),
-  					Color.decode((String) moveData.get("penColor"))
-    		));}
-    			
-    		t.setMovements(turtleMovements);
-    		turtlesFinalList.add(t);
-    	}
-    	
-    	HashMap<String, TurtleFunction> funcionsFinalMap = new HashMap<>();
-    	
-    	for(Object functionMapObject : (JSONArray) json.get("functions")) {
-    		JSONObject functionMap = (JSONObject) functionMapObject;
-    		
-    		ArrayList<String> functionArgs = new ArrayList<>();
-    		for(Object arg : (JSONArray) functionMap.get("args")) {
-    			functionArgs.add((String) arg);
-    		}
-    		
-    		funcionsFinalMap.put((String) functionMap.get("name"), new TurtleFunction(
-    				functionArgs, 
-    				(String) functionMap.get("commands"),
-    				(Boolean) functionMap.get("isDefaultFunction")
-    		));
-    	}
-    	
-    	JSONObject workspaceDataMap = (JSONObject) json.get("workspace");
-    	ArrayList<Color> pensFinalList = new ArrayList<>();
-    	
-    	for(Object c : (JSONArray) workspaceDataMap.get("pens")) {
-    		pensFinalList.add(Color.decode((String) c));
-    	}
-    	
-    	TurtlesWorkspacePanel.clearWorkspace();
-    	
-    	for(int i = 0; i < pensFinalList.size(); i++) {
-    		TurtlesWorkspacePanel.setPenColor(i, pensFinalList.get(i));
-    	}
-    	
-    	TurtlesWorkspacePanel.setTurtlesList(turtlesFinalList);
-    	FunctionManager.setFunctionsList(funcionsFinalMap);
-    	
-    	TurtlesWorkspacePanel.selectTurtle(0, false);
-    	TurtlesWorkspacePanel.forceRefresh(true, true);
-    	
-    } catch(Exception e) {
-    	ConsoleOutputPanel.addErrorLog("(" + path + ")", "WYBRANY PLIK NIE JEST ZAPISEM PLANSZY ŻÓŁWIA!");
-			return false;
-    }
-    ConsoleOutputPanel.addCustomColorLog(new Color(50, 168, 82), "POMYŚLNIE ZIMPORTOWANO PLANSZĘ ŻÓŁWIA!");
-    return true;
+  	ConsoleOutputPanel.addCustomColorLog(new Color(50, 168, 82), "(" + filePath + ")", "POMYŚLNIE ZROBIONO ZDJĘCIE PLANSZY! ZNAJDZIESZ JE TUTAJ");
 	}
 }

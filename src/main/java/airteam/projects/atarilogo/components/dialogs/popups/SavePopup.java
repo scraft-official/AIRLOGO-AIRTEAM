@@ -1,25 +1,19 @@
 package airteam.projects.atarilogo.components.dialogs.popups;
 
-import java.awt.Color;
-import java.awt.Dimension;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import airteam.projects.atarilogo.AtariLogo;
+import airteam.projects.atarilogo.AirLogo;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogPanel;
 import airteam.projects.atarilogo.savemanager.SaveManager;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -52,11 +46,11 @@ public class SavePopup extends JPanel {
 		
 		JButton cancelButton = panel.getCancelButton();
 		cancelButton.setText("NIE ZAPISUJ");
-		cancelButton.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/logout-icon.png"), 17, 17)));
+		cancelButton.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/logout-icon.png"), 17, 17)));
 		cancelButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-      	AtariLogo.getFrame().dispose();
+      	AirLogo.getFrame().dispose();
       	System.exit(0);
       }
     });
@@ -64,13 +58,13 @@ public class SavePopup extends JPanel {
 		
 		JButton acceptButton = panel.getAcceptButton();
 		acceptButton.setText("ZAPISZ");
-		acceptButton.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/save-icon.png"), 16, 16)));
+		acceptButton.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/save-icon.png"), 16, 16)));
 		acceptButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
       	if(SaveManager.saveWorkspace()) {
       		try { Thread.sleep(1000); } catch (InterruptedException ex) {}
-      		AtariLogo.getFrame().dispose();
+      		AirLogo.getFrame().dispose();
       		System.exit(0);
       	}
       	else dialog.frame.dispose();

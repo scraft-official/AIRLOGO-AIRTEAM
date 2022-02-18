@@ -13,7 +13,7 @@ import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogPanel;
 import airteam.projects.atarilogo.components.templates.CustomTextField;
 import airteam.projects.atarilogo.turtle.Turtle;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -50,7 +50,7 @@ public class EditTurtlePopup extends JPanel {
 		
 		JButton acceptButton = panel.getAcceptButton();
 		acceptButton.setText("ZAPISZ");
-		acceptButton.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/check-mark-icon.png"), 17, 17)));
+		acceptButton.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/check-mark-icon.png"), 17, 17)));
 		acceptButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -122,7 +122,7 @@ public class EditTurtlePopup extends JPanel {
 		
 		JButton cancelButton = panel.getCancelButton();
 		cancelButton.setText("ANULUJ");
-		cancelButton.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/close-icon.png"), 14, 14)));
+		cancelButton.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/close-icon.png"), 14, 14)));
 		cancelButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {

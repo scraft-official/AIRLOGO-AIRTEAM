@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.ConsoleOutputPanel;
 import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
-import airteam.projects.atarilogo.utilities.NTSCUtilies;
+import airteam.projects.atarilogo.utilities.NTSCUtility;
 
 public class CMD_SETC {
 private static int argsCount = 1;
@@ -33,7 +33,7 @@ private static int argsCount = 1;
 				return;
 			}
 		
-			TurtlesWorkspacePanel.getTurtle(id).setTurtleColor(NTSCUtilies.getAtariColorFromNumber(colorNumber));
+			TurtlesWorkspacePanel.getTurtle(id).setTurtleColor(NTSCUtility.getAtariColorFromNumber(colorNumber));
 		}
 		if(args.length > (argsCount + 1)) {
 			CommandManager.parse(Arrays.copyOfRange(args, argsCount + 1, args.length));

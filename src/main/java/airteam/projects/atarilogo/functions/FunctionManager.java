@@ -9,10 +9,31 @@ import airteam.projects.atarilogo.commands.CommandManager;
 import airteam.projects.atarilogo.components.ConsoleOutputPanel;
 import airteam.projects.atarilogo.components.TurtleFunctionsPanel;
 import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
-import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class FunctionManager {
 	private static HashMap<String, TurtleFunction> registeredFunctions = new HashMap<>();
+	
+	public static void addFunction(String name, ArrayList<String> args, String commands) {
+		registeredFunctions.put(name, new TurtleFunction(args, commands, false));
+		TurtleFunctionsPanel.setSelectedFunction(name, true);
+	}
+	
+	public static void addFunction(String name, ArrayList<String> args, String commands, boolean isDefaultFunction) {
+		registeredFunctions.put(name, new TurtleFunction(args, commands, isDefaultFunction));
+		TurtleFunctionsPanel.setSelectedFunction(name, false);
+	}
+	
+	public static boolean existFunction(String name) {
+		return (registeredFunctions.get(name) != null);
+	}
+	
+	public static HashMap<String, TurtleFunction> getAllFunctions() {
+		return registeredFunctions;
+	}
+	
+	public static TurtleFunction getFunction(String name) {
+		return registeredFunctions.get(name);
+	}
 	
 	public static void parseFunction(String name, String[] args) {
 		TurtleFunction function = registeredFunctions.get(name);
@@ -43,41 +64,6 @@ public class FunctionManager {
 		
 	}
 	
-	public static void addFunction(String name, ArrayList<String> args, String commands, boolean isDefaultFunction) {
-		registeredFunctions.put(name, new TurtleFunction(args, commands, isDefaultFunction));
-		TurtleFunctionsPanel.setSelectedFunction(name, false);
-	}
-	
-	public static void addFunction(String name, ArrayList<String> args, String commands) {
-		registeredFunctions.put(name, new TurtleFunction(args, commands, false));
-		TurtleFunctionsPanel.setSelectedFunction(name, true);
-	}
-	
-	public static void removeFunction(String name) {
-		registeredFunctions.remove(name);
-		String selected = null;
-		for(String n : registeredFunctions.keySet()) {
-			selected = n;
-		}
-		TurtleFunctionsPanel.setSelectedFunction(selected, true);
-	}
-	
-	public static TurtleFunction getFunction(String name) {
-		return registeredFunctions.get(name);
-	}
-	
-	public static HashMap<String, TurtleFunction> getAllFunctions() {
-		return registeredFunctions;
-	}
-	
-	public static void setFunctionsList(HashMap<String, TurtleFunction> f) {
-		registeredFunctions = f;
-	}
-	
-	public static boolean existFunction(String name) {
-		return (registeredFunctions.get(name) != null);
-	}
-	
 	public static void registerDefaultFunctions() {
 		ArrayList<String> args = new ArrayList<>();
 		args.add(":WIELKOSC");
@@ -93,7 +79,20 @@ public class FunctionManager {
 		FunctionManager.addFunction("WIELOKAT", args, "\tREPEAT :ILOSCBOKOW [FD :DLUGOSCBOKU RT 360/:ILOSCBOKOW]", true);
 		
 	}
+	
+	public static void removeFunction(String name) {
+		registeredFunctions.remove(name);
+		String selected = null;
+		for(String n : registeredFunctions.keySet()) {
+			selected = n;
+		}
+		TurtleFunctionsPanel.setSelectedFunction(selected, true);
+	}
 
+	public static void setFunctionsList(HashMap<String, TurtleFunction> f) {
+		registeredFunctions = f;
+	}
+	
 	public static class TurtleFunction {
 		public ArrayList<String> args;
 		public String commands;

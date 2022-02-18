@@ -11,11 +11,10 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
-
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class CustomTextField extends JTextField {
 	private boolean mouseOver = false;
 	private boolean isFocused = false;
@@ -34,11 +33,13 @@ public class CustomTextField extends JTextField {
 		setBorder(new EmptyBorder(20, 3, 10, 3));
 		setFont(new Font("Tahoma", Font.PLAIN, 15));
 		addMouseListener( new MouseAdapter() {
+			@Override
 			public void mouseEntered(MouseEvent e) {
 				mouseOver = true;
 				repaint();
 			}
 			
+			@Override
 			public void mouseExited(MouseEvent e) {
 				mouseOver = false;
 				repaint();
@@ -46,45 +47,18 @@ public class CustomTextField extends JTextField {
 		});
 		
 		addFocusListener(new FocusAdapter( ) {
+			@Override
 			public void focusGained(FocusEvent e) {
 				isFocused = true;
 				repaint();
 			}
 			
+			@Override
 			public void focusLost(FocusEvent e) {
 				isFocused = false;
 				repaint();
 			}
 		});
-	}
-	
-	@Override
-	public void paint(Graphics g) {
-		super.paint(g);
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-	
-		int width = getWidth();
-		int height = getHeight();
-		if(mouseOver || isFocused) {
-			g2d.setColor(lineColorHover);
-			g2d.fillRect(2, height - 3, width - 4, height);
-		} else {
-			g2d.setColor(lineColor);
-			g2d.fillRect(2, height - 2, width - 4, height);
-		}
-		
-		drawHintText(g2d);
-		g2d.dispose();
-	}
-	
-	public void showRequiredHint(boolean show) {
-		showRequiredHint = show;
-	}
-	
-	public void setRquiredHint(String text) {
-		hintRequiredText = text;
 	}
 	
 	public void drawHintText(Graphics2D g2d) {
@@ -115,6 +89,35 @@ public class CustomTextField extends JTextField {
     	}
 			g2d.drawString(hintRequiredText, posX, (int) (in.top + ((height - 18) / 2) + ft.getAscent() - 18));
     }
+	}
+	
+	@Override
+	public void paint(Graphics g) {
+		super.paint(g);
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+	
+		int width = getWidth();
+		int height = getHeight();
+		if(mouseOver || isFocused) {
+			g2d.setColor(lineColorHover);
+			g2d.fillRect(2, height - 3, width - 4, height);
+		} else {
+			g2d.setColor(lineColor);
+			g2d.fillRect(2, height - 2, width - 4, height);
+		}
+		
+		drawHintText(g2d);
+		g2d.dispose();
+	}
+	
+	public void setRquiredHint(String text) {
+		hintRequiredText = text;
+	}
+	
+	public void showRequiredHint(boolean show) {
+		showRequiredHint = show;
 	}
 	 
 	

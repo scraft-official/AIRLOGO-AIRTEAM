@@ -1,52 +1,32 @@
 package airteam.projects.atarilogo.components.dialogs;
 
-import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Point;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
+import java.awt.Dialog;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import airteam.projects.atarilogo.AtariLogo;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
-import airteam.projects.atarilogo.utilities.Log_Utilies;
-import net.miginfocom.swing.MigLayout;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
-import java.awt.Dimension;
+import airteam.projects.atarilogo.AirLogo;
 
 @SuppressWarnings("serial")
 public class CustomDialogFrame extends JDialog {
 	private CustomDialogPanel dialogPanel;
 	
   public CustomDialogFrame(String name, int dialogWidth, int dialogHeight, boolean onlyAcceptButton, boolean addDefaultIcons) {
-  	int w = AtariLogo.getFrame().getContentPane().getBounds().width;
-  	int h = AtariLogo.getFrame().getContentPane().getBounds().height;
+  	int w = AirLogo.getFrame().getContentPane().getBounds().width;
+  	int h = AirLogo.getFrame().getContentPane().getBounds().height;
   	
-  	setLocation(AtariLogo.getFrame().getLocation().x + 8,AtariLogo.getFrame().getLocation().y + 31);
+  	dialogPanel = new CustomDialogPanel(this, name, onlyAcceptButton, addDefaultIcons);
+  	
+  	setLocation(AirLogo.getFrame().getLocation().x + 8,AirLogo.getFrame().getLocation().y + 31);
   	setSize(w, h);
   	setUndecorated(true);
   	setResizable(false);
     setModal(true);
-    setModalityType(JDialog.DEFAULT_MODALITY_TYPE);
-    setIconImage(AtariLogo.getFrame().getIconImage());
+    setModalityType(Dialog.DEFAULT_MODALITY_TYPE);
+    setIconImage(AirLogo.getFrame().getIconImage());
     setBackground(new Color(0, 0, 0, 170));
-    
-    dialogPanel = new CustomDialogPanel(this, name, onlyAcceptButton, addDefaultIcons);
     
     JPanel borderPanel = new JPanel();
     borderPanel.setOpaque(false);

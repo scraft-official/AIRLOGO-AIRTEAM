@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import airteam.projects.atarilogo.components.ConsoleOutputPanel;
 import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
-import airteam.projects.atarilogo.utilities.NTSCUtilies;
+import airteam.projects.atarilogo.utilities.NTSCUtility;
 
 public class CMD_SETPC {
 private static int argsCount = 2;
@@ -43,7 +43,7 @@ private static int argsCount = 2;
 			return;
 		}
 	
-		TurtlesWorkspacePanel.setPenColor(penNumber, NTSCUtilies.getAtariColorFromNumber(colorNumber));
+		TurtlesWorkspacePanel.setPenColor(penNumber, NTSCUtility.getAtariColorFromNumber(colorNumber));
 		
 		if(args.length > (argsCount + 1)) {
 			CommandManager.parse(Arrays.copyOfRange(args, argsCount + 1, args.length));

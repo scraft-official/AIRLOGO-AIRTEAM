@@ -1,26 +1,19 @@
 package airteam.projects.atarilogo.components.dialogs.popups;
 
-import java.awt.Color;
-import java.awt.Dimension;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
-import airteam.projects.atarilogo.AtariLogo;
 import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.CustomDialogPanel;
 import airteam.projects.atarilogo.turtle.Turtle;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 
-import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,7 +46,7 @@ public class DeleteTurtlePopup extends JPanel {
 		
 		JButton cancelButton = panel.getCancelButton();
 		cancelButton.setText("ANULUJ");
-		cancelButton.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/close-icon.png"), 14, 14)));
+		cancelButton.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/close-icon.png"), 14, 14)));
 		cancelButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -64,7 +57,7 @@ public class DeleteTurtlePopup extends JPanel {
 		
 		JButton acceptButton = panel.getAcceptButton();
 		acceptButton.setText("USUŃ ŻÓŁWIA");
-		acceptButton.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/bin-icon.png"), 15, 15)));
+		acceptButton.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/bin-icon.png"), 15, 15)));
 		acceptButton.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {

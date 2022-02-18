@@ -9,11 +9,8 @@ import java.awt.RenderingHints;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
-import javax.swing.JSlider;
-
 import airteam.projects.atarilogo.components.templates.JScrollBarUI;
-import airteam.projects.atarilogo.components.templates.JSliderUI;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.BoxLayout;
@@ -147,6 +144,7 @@ public class ConsoleOutputPanel extends JPanel {
 		return visibility;
 	}
 
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		int w = getBounds().width;
@@ -160,8 +158,8 @@ public class ConsoleOutputPanel extends JPanel {
 			RenderingHints.KEY_ANTIALIASING,
 			RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		Graphics_Utilies.drawRoundFadedBorder(g2d, new Color(0,0,0), shadowSize, 0, 0, w, h, borderRadius);
-		Graphics_Utilies.setGradientPaint(g2d, backgroundColor1, backgroundColor2, 0, h);
+		GraphicsUtility.drawRoundFadedBorder(g2d, new Color(0,0,0), shadowSize, 0, 0, w, h, borderRadius);
+		GraphicsUtility.setGradientPaint(g2d, backgroundColor1, backgroundColor2, 0, h);
 		
 		g2d.fillRoundRect(shadowSize/2 + borderSize/2, shadowSize/2 + borderSize/2, w-shadowSize-borderSize, h-shadowSize-borderSize, borderRadius, borderRadius);
 		g2d.dispose();

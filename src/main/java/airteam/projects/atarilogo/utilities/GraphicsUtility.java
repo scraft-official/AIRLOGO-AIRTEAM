@@ -1,17 +1,13 @@
 package airteam.projects.atarilogo.utilities;
 
-import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-
 import javax.imageio.ImageIO;
 
-public class Graphics_Utilies {
+public class GraphicsUtility {
 	public static void setGradientPaint(Graphics2D g, Color startColor, Color endColor, int w, int h) {
 		g.setPaint(new GradientPaint(0, 0, startColor, w, h, endColor));
 	}
@@ -48,10 +44,10 @@ public class Graphics_Utilies {
 	
 	public static BufferedImage getInternalIcon(String imagePath) {
 		try{
-			return ImageIO.read(Graphics_Utilies.class.getResource("/airteam/projects/atarilogo/resources/" + imagePath));
-	  } catch(Exception e) { Log_Utilies.logError("Wystapil blad przy pobieraniu ikonki: " + e.getMessage(), "Path do ikonki: " + "/airteam/projects/atarilogo/resources/" + imagePath); }
+			return ImageIO.read(GraphicsUtility.class.getResource("/airteam/projects/atarilogo/resources/" + imagePath));
+	  } catch(Exception e) { LogUtility.logError("Wystapil blad przy pobieraniu ikonki: " + e.getMessage(), "Path do ikonki: " + "/airteam/projects/atarilogo/resources/" + imagePath); }
 		
-		Log_Utilies.logError("Zwrocono pustwa ikonke! ( /airteam/projects/atarilogo/resources/" + imagePath + " )");
+		LogUtility.logError("Zwrocono pustwa ikonke! ( /airteam/projects/atarilogo/resources/" + imagePath + " )");
 		return null;
 	}
 	

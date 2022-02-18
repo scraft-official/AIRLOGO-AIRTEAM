@@ -1,10 +1,8 @@
 package airteam.projects.atarilogo.components;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -12,29 +10,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import airteam.projects.atarilogo.commands.CMD_HELP;
 import airteam.projects.atarilogo.components.templates.CustomButtonUI;
 import airteam.projects.atarilogo.savemanager.SaveManager;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.border.EmptyBorder;
 
+@SuppressWarnings("serial")
 public class TurtleToolBarPanel extends JPanel {
 	public TurtleToolBarPanel() {
 		setBorder(new EmptyBorder(7, 11, 10, 11));
@@ -56,7 +46,7 @@ public class TurtleToolBarPanel extends JPanel {
 		buttonSave.setFont(new Font("Tahoma", Font.BOLD, 12));
 		buttonSave.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		buttonSave.setBackground(new Color(77, 163, 100));
-		buttonSave.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/save-icon.png"), 12, 12)));
+		buttonSave.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/save-icon.png"), 12, 12)));
 		buttonSave.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -86,7 +76,7 @@ public class TurtleToolBarPanel extends JPanel {
 		buttonImport.setFont(new Font("Tahoma", Font.BOLD, 12));
 		buttonImport.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		buttonImport.setBackground(new Color(27, 117, 207));
-		buttonImport.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/import-icon.png"), 13, 13)));
+		buttonImport.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/import-icon.png"), 13, 13)));
 		buttonImport.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -114,7 +104,7 @@ public class TurtleToolBarPanel extends JPanel {
 		buttonScreenShoot.setUI(new CustomButtonUI());
 		buttonScreenShoot.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		buttonScreenShoot.setBackground(new Color(201, 129, 60));
-		buttonScreenShoot.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/camera-icon.png"), 16, 16)));
+		buttonScreenShoot.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/camera-icon.png"), 16, 16)));
 		buttonScreenShoot.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -142,7 +132,7 @@ public class TurtleToolBarPanel extends JPanel {
 		buttonInfo.setUI(new CustomButtonUI());
 		buttonInfo.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		buttonInfo.setBackground(new Color(245, 245, 245));
-		buttonInfo.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/info-icon.png"), 17, 17)));
+		buttonInfo.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/info-icon.png"), 17, 17)));
 		buttonInfo.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
@@ -168,11 +158,11 @@ public class TurtleToolBarPanel extends JPanel {
 	}
 	
 	
+	@Override
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		
 		int w = getWidth();
 		int h = getHeight();
+		
 		Graphics2D g2d = (Graphics2D) g.create();
 		
 		g2d.setRenderingHint(
@@ -182,9 +172,9 @@ public class TurtleToolBarPanel extends JPanel {
 				RenderingHints.KEY_TEXT_ANTIALIASING, 
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		
-		Graphics_Utilies.drawRoundFadedBorder(g2d, new Color(0,0,0), 4, 0, -10, w, h+10, 10);
+		GraphicsUtility.drawRoundFadedBorder(g2d, new Color(0,0,0), 4, 0, -10, w, h+10, 10);
 		
-		Graphics_Utilies.setGradientPaint(g2d, new Color(56, 57, 59), new Color(38, 38, 38), 0, h);
+		GraphicsUtility.setGradientPaint(g2d, new Color(56, 57, 59), new Color(38, 38, 38), 0, h);
 		g2d.fillRoundRect(5, -10, w-8, h+7, 10, 10);
 	}
 }

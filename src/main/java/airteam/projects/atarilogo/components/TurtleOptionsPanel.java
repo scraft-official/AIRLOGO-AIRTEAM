@@ -2,11 +2,7 @@ package airteam.projects.atarilogo.components;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -18,66 +14,113 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
-import javax.swing.JWindow;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import javax.swing.plaf.basic.BasicComboPopup;
-import javax.swing.plaf.basic.ComboPopup;
-
-import airteam.projects.atarilogo.AtariLogo;
-import airteam.projects.atarilogo.components.dialogs.CustomDialogFrame;
 import airteam.projects.atarilogo.components.dialogs.popups.AddNewTurtlePopup;
 import airteam.projects.atarilogo.components.dialogs.popups.DeleteTurtlePopup;
 import airteam.projects.atarilogo.components.dialogs.popups.EditTurtlePopup;
 import airteam.projects.atarilogo.components.templates.ComboBox;
 import airteam.projects.atarilogo.components.templates.CustomButtonUI;
 import airteam.projects.atarilogo.turtle.Turtle;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
-import airteam.projects.atarilogo.utilities.Log_Utilies;
-
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
-import javax.accessibility.Accessible;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 
 
 @SuppressWarnings({ "rawtypes", "serial", "unchecked" })
 public class TurtleOptionsPanel extends JPanel {
 	private static ComboBox combobox = new ComboBox();
 	
-	private JLabel title = new JLabel(" USTAWIENIA ŻÓŁWIA");
-	
 	private static JButton buttonHideTurtle = new JButton();
-	private static ImageIcon showIcon = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/show-icon.png"), 14, 14));
-	private static ImageIcon hideIcon = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/hide-icon.png"), 14, 14));
 	
+	private static ImageIcon showIcon = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/show-icon.png"), 14, 14));
+	private static ImageIcon hideIcon = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/hide-icon.png"), 14, 14));
 	private static JButton buttonHidePen = new JButton();
-	private static ImageIcon penIconOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/pen-on.png"), 16, 16));
-	private static ImageIcon penIconOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/pen-off.png"), 16, 16));
 	
+	private static ImageIcon penIconOn = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/pen-on.png"), 16, 16));
+	private static ImageIcon penIconOff = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/pen-off.png"), 16, 16));
 	private static JButton buttonEditTurtle = new JButton();
-	private static ImageIcon settingsIcon = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/settings-icon.png"), 16, 16));
 	
+	private static ImageIcon settingsIcon = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/settings-icon.png"), 16, 16));
 	private static JButton buttonTeleport = new JButton();
-	private static ImageIcon teleportIcon = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/move-icon.png"), 16, 16));
+	
+	private static ImageIcon teleportIcon = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/move-icon.png"), 16, 16));
+	private static JButton buttonDelete = new JButton();
 
 	
-	private static JButton buttonDelete = new JButton();
-	private static ImageIcon deleteIconOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/bin-icon.png"), 14, 14));
-	private static ImageIcon deleteIconOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/bin-icon-darker.png"), 14, 14));
-
+	private static ImageIcon deleteIconOn = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/bin-icon.png"), 14, 14));
+	private static ImageIcon deleteIconOff = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/bin-icon-darker.png"), 14, 14));
 	private static Turtle selectedTurtle;
+
+	public static void refreshAll() {
+		refreshSelected();
+		refreshButtons();
+	}
+	
+	public static void refreshButtons() {
+		if(selectedTurtle.getTurtleVisibility()) {
+			buttonHideTurtle.setText("UKRYJ ŻÓŁWIA");
+			buttonHideTurtle.setIcon(hideIcon);
+		} else {
+			buttonHideTurtle.setText("POKAŻ ŻÓŁWIA");
+			buttonHideTurtle.setIcon(showIcon);
+		}
+		
+		if(selectedTurtle.getPenVisibility()) {
+			buttonHidePen.setText("PODNIEŚ PISAK");
+			buttonHidePen.setIcon(penIconOff);
+		} else {
+			buttonHidePen.setText("OPUŚĆ PISAK");
+			buttonHidePen.setIcon(penIconOn);
+		}
+		if(TurtlesWorkspacePanel.getAllTurtles().get(0) == selectedTurtle) {
+			CustomButtonUI ui = (CustomButtonUI) buttonDelete.getUI();
+			ui.allowClick(false);
+			
+			buttonDelete.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			buttonDelete.setBackground(new Color(143, 64, 64));
+	    buttonDelete.setForeground(new Color(173, 165, 165));
+	    buttonDelete.setIcon(deleteIconOff);
+	    
+		}
+		else {
+			CustomButtonUI ui = (CustomButtonUI) buttonDelete.getUI();
+			ui.allowClick(true);
+			
+			buttonDelete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			buttonDelete.setBackground(new Color(209, 85, 69));
+	    buttonDelete.setForeground(new Color(255, 255, 255));
+	    buttonDelete.setIcon(deleteIconOn);
+		}
+	}
+	
+	public static void refreshSelected() {
+		ArrayList<String> turtleNames = new ArrayList<>();
+		
+		int selectedID = 0;
+		int i = 0;
+		
+		for(Turtle t : TurtlesWorkspacePanel.getAllTurtles()) {
+			if(selectedTurtle == t) { selectedID = i; }
+			turtleNames.add(t.getName() + " (" + (i) + ")");
+			i++;
+		}
+		combobox.setModel(new DefaultComboBoxModel(turtleNames.toArray()));
+		combobox.setSelectedIndex(selectedID);
+	}
+	
+	public static void setSelectedTurtle(Turtle t) {
+		selectedTurtle = t;
+	}
+	
+	private JLabel title = new JLabel(" USTAWIENIA ŻÓŁWIA");
 	
 	public TurtleOptionsPanel() {
 		setOpaque(false);
@@ -114,24 +157,24 @@ public class TurtleOptionsPanel extends JPanel {
     combobox.setMaximumRowCount(4);
     combobox.addPopupMenuListener(new PopupMenuListener() {
       @Override
+      public void popupMenuCanceled(PopupMenuEvent pme) {
+      }
+
+      @Override
       public void popupMenuWillBecomeInvisible(PopupMenuEvent pme) {
       	TurtlesWorkspacePanel.selectTurtle(combobox.getSelectedIndex(), false); 
     		refreshButtons();
       }
-
-      @Override
-      public void popupMenuWillBecomeVisible(PopupMenuEvent pme) {
-      }
       
       @Override
-      public void popupMenuCanceled(PopupMenuEvent pme) {
+      public void popupMenuWillBecomeVisible(PopupMenuEvent pme) {
       }
     });
 
     refreshSelected();
     
     JLabel addIcon = new JLabel("");
-    addIcon.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/add-icon.png"), 18, 18)));
+    addIcon.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/add-icon.png"), 18, 18)));
     addIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     addIcon.addMouseListener(new MouseAdapter() {
 			@Override
@@ -139,8 +182,7 @@ public class TurtleOptionsPanel extends JPanel {
 				new AddNewTurtlePopup();
 			}
 		});
-    
-
+   
     buttonHideTurtle.setUI(new CustomButtonUI());
     buttonHideTurtle.setFont(new Font("Tahoma", Font.BOLD, 11));
     buttonHideTurtle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -291,67 +333,7 @@ public class TurtleOptionsPanel extends JPanel {
 		
 	}
 	
-	public static void refreshButtons() {
-		if(selectedTurtle.getTurtleVisibility()) {
-			buttonHideTurtle.setText("UKRYJ ŻÓŁWIA");
-			buttonHideTurtle.setIcon(hideIcon);
-		} else {
-			buttonHideTurtle.setText("POKAŻ ŻÓŁWIA");
-			buttonHideTurtle.setIcon(showIcon);
-		}
-		
-		if(selectedTurtle.getPenVisibility()) {
-			buttonHidePen.setText("PODNIEŚ PISAK");
-			buttonHidePen.setIcon(penIconOff);
-		} else {
-			buttonHidePen.setText("OPUŚĆ PISAK");
-			buttonHidePen.setIcon(penIconOn);
-		}
-		if(TurtlesWorkspacePanel.getAllTurtles().get(0) == selectedTurtle) {
-			CustomButtonUI ui = (CustomButtonUI) buttonDelete.getUI();
-			ui.allowClick(false);
-			
-			buttonDelete.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			buttonDelete.setBackground(new Color(143, 64, 64));
-	    buttonDelete.setForeground(new Color(173, 165, 165));
-	    buttonDelete.setIcon(deleteIconOff);
-	    
-		}
-		else {
-			CustomButtonUI ui = (CustomButtonUI) buttonDelete.getUI();
-			ui.allowClick(true);
-			
-			buttonDelete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			buttonDelete.setBackground(new Color(209, 85, 69));
-	    buttonDelete.setForeground(new Color(255, 255, 255));
-	    buttonDelete.setIcon(deleteIconOn);
-		}
-	}
-	
-	public static void setSelectedTurtle(Turtle t) {
-		selectedTurtle = t;
-	}
-	
-	public static void refreshSelected() {
-		ArrayList<String> turtleNames = new ArrayList<>();
-		
-		int selectedID = 0;
-		int i = 0;
-		
-		for(Turtle t : TurtlesWorkspacePanel.getAllTurtles()) {
-			if(selectedTurtle == t) { selectedID = i; }
-			turtleNames.add(t.getName() + " (" + (i) + ")");
-			i++;
-		}
-		combobox.setModel(new DefaultComboBoxModel(turtleNames.toArray()));
-		combobox.setSelectedIndex(selectedID);
-	}
-	
-	public static void refreshAll() {
-		refreshSelected();
-		refreshButtons();
-	}
-	
+	@Override
 	public void paintComponent(Graphics g) {
 		int w = (int) getBounds().getWidth();
 		int h = (int) getBounds().getHeight();

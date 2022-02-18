@@ -9,11 +9,18 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
-import javax.swing.JTextField;
+import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
@@ -23,57 +30,107 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.FormSpecs;
+import com.jgoodies.forms.layout.RowSpec;
+
 import airteam.projects.atarilogo.components.dialogs.popups.AddNewFunctionPopup;
-import airteam.projects.atarilogo.components.dialogs.popups.AddNewTurtlePopup;
 import airteam.projects.atarilogo.components.dialogs.popups.DeleteFunctionPopup;
-import airteam.projects.atarilogo.components.dialogs.popups.DeleteTurtlePopup;
 import airteam.projects.atarilogo.components.dialogs.popups.EditFunctionPopup;
-import airteam.projects.atarilogo.components.dialogs.popups.EditTurtlePopup;
 import airteam.projects.atarilogo.components.templates.ComboBox;
 import airteam.projects.atarilogo.components.templates.CustomButtonUI;
 import airteam.projects.atarilogo.components.templates.CustomTextPane;
 import airteam.projects.atarilogo.components.templates.JScrollBarUI;
 import airteam.projects.atarilogo.functions.FunctionManager;
 import airteam.projects.atarilogo.functions.FunctionManager.TurtleFunction;
-import airteam.projects.atarilogo.turtle.Turtle;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import javax.swing.JScrollPane;
-import javax.swing.BoxLayout;
-import net.miginfocom.swing.MigLayout;
-import java.awt.GridLayout;
-import javax.swing.JSeparator;
-
+@SuppressWarnings("serial")
 public class TurtleFunctionsPanel extends JPanel {
+	@SuppressWarnings("rawtypes")
 	private static ComboBox combobox = new ComboBox();
 	
-	private JLabel title = new JLabel(" ZAREJESTROWANE PROCEDURY");
 	private static JButton buttonEditFunction = new JButton();
-	private static ImageIcon settingsIcon = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/settings-icon.png"), 16, 16));
-
+	private static ImageIcon settingsIcon = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/settings-icon.png"), 16, 16));
 	private static CustomTextPane functionBodyField = new CustomTextPane();
-	
-	private static JButton buttonDelete = new JButton();
-	private static ImageIcon deleteIconOn = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/bin-icon.png"), 14, 14));
-	private static ImageIcon deleteIconOff = new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/bin-icon-darker.png"), 14, 14));
 
+	private static JButton buttonDelete = new JButton();
+	
+	private static ImageIcon deleteIconOn = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/bin-icon.png"), 14, 14));
+	private static ImageIcon deleteIconOff = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/bin-icon-darker.png"), 14, 14));
 	private static String selectedFunction = "KWADRAT";
+
+	public static void refreshAll() {
+		refreshSelected();
+		refreshButtons();
+	}
+	
+	public static void refreshButtons() {
+		TurtleFunction function = FunctionManager.getFunction(selectedFunction);
+		String args = "";
+		if(function.args.size() > 0) {
+			args = String.join(" ", function.args);
+		}
+		
+		functionBodyField.setText("TO " + selectedFunction + " " + args + "\n" + function.commands + "\nEND");
+		
+		
+		if(FunctionManager.getFunction(selectedFunction).isDefaultFunction) {
+			CustomButtonUI ui;
+			ui = (CustomButtonUI) buttonEditFunction.getUI();
+			ui.allowClick(false);
+			
+			buttonEditFunction.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			buttonEditFunction.setBackground(new Color(171, 166, 166));
+			
+			ui = (CustomButtonUI) buttonDelete.getUI();
+			ui.allowClick(false);
+			
+			buttonDelete.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+			buttonDelete.setBackground(new Color(143, 64, 64));
+	    buttonDelete.setForeground(new Color(173, 165, 165));
+	    buttonDelete.setIcon(deleteIconOff);
+	    
+		}
+		else {
+			CustomButtonUI ui;
+			ui = (CustomButtonUI) buttonEditFunction.getUI();
+			ui.allowClick(false);
+			
+			buttonEditFunction.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			buttonEditFunction.setBackground(new Color(245, 245, 245));
+			
+			ui = (CustomButtonUI) buttonDelete.getUI();
+			ui.allowClick(true);
+			
+			buttonDelete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			buttonDelete.setBackground(new Color(209, 85, 69));
+	    buttonDelete.setForeground(new Color(255, 255, 255));
+	    buttonDelete.setIcon(deleteIconOn);
+		}
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static void refreshSelected() {
+		int selectedID = 0;
+		int i = 0;
+		for(String func : FunctionManager.getAllFunctions().keySet()) {
+			if(func.equals(selectedFunction)) { selectedID = i; break;}
+			i++;
+		}
+		if(FunctionManager.getAllFunctions().keySet().size() > 0) {
+			combobox.setModel(new DefaultComboBoxModel(FunctionManager.getAllFunctions().keySet().toArray()));
+			combobox.setSelectedIndex(selectedID);
+		}
+	}
+	
+	public static void setSelectedFunction(String name, boolean refresh) {
+		selectedFunction = name;
+		if(refresh) refreshAll();
+	}
+	
+	private JLabel title = new JLabel(" ZAREJESTROWANE PROCEDURY");
 	
 	public TurtleFunctionsPanel() {
 		setOpaque(false);
@@ -108,6 +165,10 @@ public class TurtleFunctionsPanel extends JPanel {
     combobox.setMaximumRowCount(4);
     combobox.addPopupMenuListener(new PopupMenuListener() {
       @Override
+      public void popupMenuCanceled(PopupMenuEvent pme) {
+      }
+
+      @Override
       public void popupMenuWillBecomeInvisible(PopupMenuEvent pme) {
       	int i = 0;
       	for(String n : FunctionManager.getAllFunctions().keySet()) {
@@ -116,20 +177,16 @@ public class TurtleFunctionsPanel extends JPanel {
       	}
     		refreshButtons();
       }
-
-      @Override
-      public void popupMenuWillBecomeVisible(PopupMenuEvent pme) {
-      }
       
       @Override
-      public void popupMenuCanceled(PopupMenuEvent pme) {
+      public void popupMenuWillBecomeVisible(PopupMenuEvent pme) {
       }
     });
 
     refreshSelected();
     
     JLabel addIcon = new JLabel("");
-    addIcon.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage((BufferedImage) Graphics_Utilies.getInternalIcon("icons/add-icon.png"), 18, 18)));
+    addIcon.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/add-icon.png"), 18, 18)));
     addIcon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     addIcon.addMouseListener(new MouseAdapter() {
 			@Override
@@ -268,75 +325,7 @@ public class TurtleFunctionsPanel extends JPanel {
 		
 	}
 	
-	public static void setSelectedFunction(String name, boolean refresh) {
-		selectedFunction = name;
-		if(refresh) refreshAll();
-	}
-	
-	public static void refreshButtons() {
-		TurtleFunction function = FunctionManager.getFunction(selectedFunction);
-		String args = "";
-		if(function.args.size() > 0) {
-			args = String.join(" ", function.args);
-		}
-		
-		functionBodyField.setText("TO " + selectedFunction + " " + args + "\n" + function.commands + "\nEND");
-		
-		
-		if(FunctionManager.getFunction(selectedFunction).isDefaultFunction) {
-			CustomButtonUI ui;
-			ui = (CustomButtonUI) buttonEditFunction.getUI();
-			ui.allowClick(false);
-			
-			buttonEditFunction.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			buttonEditFunction.setBackground(new Color(171, 166, 166));
-			
-			ui = (CustomButtonUI) buttonDelete.getUI();
-			ui.allowClick(false);
-			
-			buttonDelete.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-			buttonDelete.setBackground(new Color(143, 64, 64));
-	    buttonDelete.setForeground(new Color(173, 165, 165));
-	    buttonDelete.setIcon(deleteIconOff);
-	    
-		}
-		else {
-			CustomButtonUI ui;
-			ui = (CustomButtonUI) buttonEditFunction.getUI();
-			ui.allowClick(false);
-			
-			buttonEditFunction.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			buttonEditFunction.setBackground(new Color(245, 245, 245));
-			
-			ui = (CustomButtonUI) buttonDelete.getUI();
-			ui.allowClick(true);
-			
-			buttonDelete.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			buttonDelete.setBackground(new Color(209, 85, 69));
-	    buttonDelete.setForeground(new Color(255, 255, 255));
-	    buttonDelete.setIcon(deleteIconOn);
-		}
-	}
-	
-	@SuppressWarnings("unchecked")
-	public static void refreshSelected() {
-		int selectedID = 0;
-		int i = 0;
-		for(String func : FunctionManager.getAllFunctions().keySet()) {
-			if(func.equals(selectedFunction)) { selectedID = i; break;}
-			i++;
-		}
-		if(FunctionManager.getAllFunctions().keySet().size() > 0) {
-			combobox.setModel(new DefaultComboBoxModel(FunctionManager.getAllFunctions().keySet().toArray()));
-			combobox.setSelectedIndex(selectedID);
-		}
-	}
-	
-	public static void refreshAll() {
-		refreshSelected();
-		refreshButtons();
-	}
-	
+	@Override
 	public void paintComponent(Graphics g) {
 		int w = (int) getBounds().getWidth();
 		int h = (int) getBounds().getHeight();

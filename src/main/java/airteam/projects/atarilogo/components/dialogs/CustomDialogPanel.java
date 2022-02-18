@@ -6,9 +6,6 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.ScrollPane;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -17,19 +14,16 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.components.templates.CustomButtonUI;
-import airteam.projects.atarilogo.turtle.Turtle;
-import airteam.projects.atarilogo.utilities.Graphics_Utilies;
+import airteam.projects.atarilogo.utilities.GraphicsUtility;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.border.EmptyBorder;
 import java.awt.Font;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 
+@SuppressWarnings("serial")
 public class CustomDialogPanel extends JPanel {
 	private int borderRadius = 15;
 	private int borderPadding = 18;
@@ -63,7 +57,7 @@ public class CustomDialogPanel extends JPanel {
 		title.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		add(title, "2, 1, 5, 1, left, top");
 		
-		JLabel closeButton = new JLabel(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/close-icon-dark.png"), 18, 18)));
+		JLabel closeButton = new JLabel(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/close-icon-dark.png"), 18, 18)));
 		closeButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		closeButton.addMouseListener(new MouseAdapter() {
 			@Override
@@ -73,7 +67,7 @@ public class CustomDialogPanel extends JPanel {
 		});
 		add(closeButton, "8, 1, 2, 2, left, bottom");
 		
-		if(addDefaultIcons) { buttonAccept.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/check-mark-icon.png"), 17, 17))); } 
+		if(addDefaultIcons) { buttonAccept.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/check-mark-icon.png"), 17, 17))); } 
 		buttonAccept.setUI(new CustomButtonUI());
 		buttonAccept.setForeground(new Color(234, 234, 234));
 		buttonAccept.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -96,7 +90,7 @@ public class CustomDialogPanel extends JPanel {
 		});
 		
 		if(!onlyAcceptButton) {
-			if(addDefaultIcons) { buttonCancel.setIcon(new ImageIcon(Graphics_Utilies.getSizedImage(Graphics_Utilies.getInternalIcon("icons/close-icon.png"), 14, 14))); } 
+			if(addDefaultIcons) { buttonCancel.setIcon(new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/close-icon.png"), 14, 14))); } 
 			buttonCancel.setUI(new CustomButtonUI());
 			buttonCancel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 			buttonCancel.setForeground(new Color(234, 234, 234));
@@ -139,6 +133,7 @@ public class CustomDialogPanel extends JPanel {
 	}
 	
 	
+	@Override
 	public void paintComponent(Graphics g) {
 		int w = getBounds().width;
 		int h = getBounds().height;
@@ -153,7 +148,7 @@ public class CustomDialogPanel extends JPanel {
 				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		
 		//Graphics_Utilies.drawRoundFadedBorder(g2d, new Color(0,0,0), shadowSize + 1, 1, 1, w-1, h-1, borderRadius);	
-		Graphics_Utilies.setGradientPaint(g2d, new Color(255, 255, 255), new Color(237, 232, 232), 0, h);
+		GraphicsUtility.setGradientPaint(g2d, new Color(255, 255, 255), new Color(237, 232, 232), 0, h);
 		
 		g2d.fillRoundRect(0, 0, w, h, borderRadius, borderRadius);
 		

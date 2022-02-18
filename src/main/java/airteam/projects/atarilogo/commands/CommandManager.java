@@ -2,13 +2,9 @@ package airteam.projects.atarilogo.commands;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
 import airteam.projects.atarilogo.components.ConsoleOutputPanel;
-import airteam.projects.atarilogo.components.TurtlesWorkspacePanel;
 import airteam.projects.atarilogo.functions.FunctionManager;
-import airteam.projects.atarilogo.turtle.Turtle;
-import airteam.projects.atarilogo.utilities.Log_Utilies;
 
 public class CommandManager {
 	public static ScriptEngineManager manager;
@@ -101,7 +97,6 @@ public class CommandManager {
 			ConsoleOutputPanel.addErrorLog("NIE MOŻNA OBLICZYĆ WARTOŚCI MATEMATYCZNEJ ( " + arg + " )");
 			throw new Exception();
 		}
-		
 		return calc;
 	}
 			
