@@ -38,7 +38,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import airteam.projects.airlogo.components.dialogs.popups.AddNewFunctionPopup;
 import airteam.projects.airlogo.components.dialogs.popups.DeleteFunctionPopup;
 import airteam.projects.airlogo.components.dialogs.popups.EditFunctionPopup;
-import airteam.projects.airlogo.components.templates.ComboBox;
+import airteam.projects.airlogo.components.templates.CustomComboBox;
 import airteam.projects.airlogo.components.templates.CustomButtonUI;
 import airteam.projects.airlogo.components.templates.CustomTextPane;
 import airteam.projects.airlogo.components.templates.JScrollBarUI;
@@ -49,7 +49,7 @@ import airteam.projects.airlogo.utilities.GraphicsUtility;
 @SuppressWarnings("serial")
 public class TurtleFunctionsPanel extends JPanel {
 	@SuppressWarnings("rawtypes")
-	private static ComboBox combobox = new ComboBox();
+	private static CustomComboBox combobox = new CustomComboBox();
 	
 	private static JButton buttonEditFunction = new JButton();
 	private static ImageIcon settingsIcon = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/settings-icon.png"), 16, 16));

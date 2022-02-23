@@ -31,7 +31,7 @@ import javax.swing.plaf.basic.BasicComboPopup;
 import javax.swing.plaf.basic.ComboPopup;
 
 @SuppressWarnings("serial")
-public class ComboBox<E> extends JComboBox<E> {
+public class CustomComboBox<E> extends JComboBox<E> {
 	private String labeText = "TEXT";
 	
 	private Color lineColor = new Color(255,255,255);
@@ -42,10 +42,10 @@ public class ComboBox<E> extends JComboBox<E> {
 	
 	private class ComboUI extends BasicComboBoxUI {
 		@SuppressWarnings("rawtypes")
-		private ComboBox combo;
+		private CustomComboBox combo;
 
 		@SuppressWarnings("rawtypes")
-		public ComboUI(ComboBox combo) {
+		public ComboUI(CustomComboBox combo) {
 			this.combo = combo;
 			addMouseListener(new MouseAdapter() {
 				@Override
@@ -169,7 +169,7 @@ public class ComboBox<E> extends JComboBox<E> {
 		}
 	}
 
-	public ComboBox() {
+	public CustomComboBox() {
 		setOpaque(false);
 		setBackground(Color.WHITE);
 		setBorder(new EmptyBorder(15, 0, 5, 3));

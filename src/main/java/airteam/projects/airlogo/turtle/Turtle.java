@@ -161,7 +161,7 @@ public class Turtle {
 	
 	public void rotate(int rot) {
 		turtleRotation += rot;
-		turtleRotation = (turtleRotation - ((turtleRotation / 360) * 360));
+		turtleRotation = Math.floorMod(turtleRotation, 360); //(turtleRotation - ((turtleRotation / 360) * 360));
 	}
 	
 	public void setMovements(ArrayList<Turtle_Movement> movements) {

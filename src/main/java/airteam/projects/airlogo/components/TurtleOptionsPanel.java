@@ -25,7 +25,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import airteam.projects.airlogo.components.dialogs.popups.AddNewTurtlePopup;
 import airteam.projects.airlogo.components.dialogs.popups.DeleteTurtlePopup;
 import airteam.projects.airlogo.components.dialogs.popups.EditTurtlePopup;
-import airteam.projects.airlogo.components.templates.ComboBox;
+import airteam.projects.airlogo.components.templates.CustomComboBox;
 import airteam.projects.airlogo.components.templates.CustomButtonUI;
 import airteam.projects.airlogo.turtle.Turtle;
 import airteam.projects.airlogo.utilities.GraphicsUtility;
@@ -38,7 +38,7 @@ import javax.swing.JButton;
 
 @SuppressWarnings({ "rawtypes", "serial", "unchecked" })
 public class TurtleOptionsPanel extends JPanel {
-	private static ComboBox combobox = new ComboBox();
+	private static CustomComboBox combobox = new CustomComboBox();
 	
 	private static JButton buttonHideTurtle = new JButton();
 	

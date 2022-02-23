@@ -4,7 +4,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 
 <modelVersion>4.0.0</modelVersion>
 
-<groupId>airteam.projects.atarilogo</groupId>
+<groupId>airteam.projects.airlogo</groupId>
 <artifactId>AirTeam-AirLogo</artifactId>
 <version>1.0.0</version>
 <name>AirLogo - AirTeam</name>
@@ -12,8 +12,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
 
 <properties>
   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  <maven.compiler.source>1.8</maven.compiler.source>
-  <maven.compiler.target>1.8</maven.compiler.target>
+  <maven.compiler.source>1.11</maven.compiler.source>
+  <maven.compiler.target>1.11</maven.compiler.target>
 </properties>
 
 <dependencies>
@@ -61,8 +61,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
       <artifactId>maven-compiler-plugin</artifactId>
       <version>3.8.1</version>
       <configuration>
-      <source>1.8</source>
-      <target>1.8</target>
+      <source>1.11</source>
+      <target>1.11</target>
       <encoding>UTF-8</encoding>
       </configuration>
     </plugin>
@@ -131,14 +131,48 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
  
             <classPath><mainClass>airteam.projects.airlogo.AirLogo</mainClass></classPath>
             <jre>
-              <minVersion>1.8.0</minVersion>
+              <minVersion>1.11.0</minVersion>
               <jdkPreference>preferJre</jdkPreference>
               <path>./libs/jre</path>
             </jre>
+            <versionInfo>
+              <fileVersion>1.0.0.0</fileVersion>
+              <txtFileVersion>${project.version}</txtFileVersion>
+              <fileDescription>${project.name}</fileDescription>
+              <copyright>C</copyright>
+              <productVersion>1.0.0.0</productVersion>
+              <txtProductVersion>1.0.0.0</txtProductVersion>
+              <productName>${project.name}</productName>
+              <internalName>${project.artifactId}</internalName>
+              <originalFilename>${project.name}.exe</originalFilename>
+           </versionInfo>
           </configuration>
         </execution>
       </executions>
     </plugin>
+
+	<!-- EXE Signature to remove AntiVirus false positives and windows defender popup -->
+	<!-- KeyGen Command 'keytool -genkey -alias airteam-airlogo -keyalg RSA -keystore "{DIR ON PC}\build-libs\app-keystore.jks"' -->
+	<plugin>
+     <groupId>net.jsign</groupId>
+     <artifactId>jsign-maven-plugin</artifactId>
+     <version>4.0</version>
+     <executions>
+       <execution>
+         <goals>
+           <goal>sign</goal>
+         </goals>
+         <configuration>
+           <file>${project.build.directory}/${project.name}.exe</file>
+           <name>${project.name}</name>
+           <url>https://science-cup.pl</url>
+           <keystore>${project.basedir}/build-libs/app-keystore.jks</keystore>
+           <alias>airteam-airlogo</alias>
+           <storepass>3kafBGhFPwBMfX9y</storepass>
+         </configuration>
+       </execution>
+   	 </executions>
+   </plugin>
 
     <!-- CREATE ZIP FILE WITH JRE LIBS AND .EXE -->
     <plugin>
