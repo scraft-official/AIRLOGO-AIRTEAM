@@ -24,6 +24,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import airteam.projects.airlogo.AirLogo;
 import airteam.projects.airlogo.components.ConsoleOutputPanel;
 import airteam.projects.airlogo.components.TurtlesWorkspacePanel;
 import airteam.projects.airlogo.functions.FunctionManager;
@@ -37,8 +38,9 @@ public class SaveManager {
 		if(path == null) {
 			JFileChooser fileChooser = new JFileChooser();
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			fileChooser.setDialogTitle("AIRLOGO - IMPORTUJ PLANSZĘ ŻÓŁWIA");
 			
-	    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+	    if (fileChooser.showOpenDialog(AirLogo.getFrame()) == JFileChooser.APPROVE_OPTION) {
 	        File file = fileChooser.getSelectedFile();
 	        if (file == null) return false;
 	        
@@ -136,8 +138,9 @@ public class SaveManager {
 		
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setDialogTitle("AIRLOGO - ZAPISZ PLANSZĘ ŻÓŁWIA");
 		
-    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+    if (fileChooser.showOpenDialog(AirLogo.getFrame()) == JFileChooser.APPROVE_OPTION) {
         File file = fileChooser.getSelectedFile();
         if (file == null) return false;
         
@@ -261,9 +264,10 @@ public class SaveManager {
   	
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fileChooser.setDialogTitle("AIRLOGO - ZAPISZ ZDJĘCIE PLANSZY ŻÓŁWIA");
 		
 		String path = null;
-    if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+    if (fileChooser.showOpenDialog(AirLogo.getFrame()) == JFileChooser.APPROVE_OPTION) {
         File file = fileChooser.getSelectedFile();
         if (file == null) return;
         
