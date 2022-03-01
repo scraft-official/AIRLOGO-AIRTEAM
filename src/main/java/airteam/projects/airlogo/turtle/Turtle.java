@@ -41,9 +41,9 @@ public class Turtle {
 		
 		for(double i = 0.25; i <= 2; i += 0.25) {
 			BufferedImage turtleIcon;
-//			if(turtleName.equals("KAMIL") || turtleName.equals("KB"))  { turtleIcon = GraphicsUtility.getInternalIcon("icons/turtle_kamil.png"); }
-//			else { turtleIcon = GraphicsUtility.getInternalIcon("icons/turtle.png"); }
-			turtleIcon = GraphicsUtility.getInternalIcon("icons/turtle.png");
+			if(turtleName.equals("KAMIL") || turtleName.equals("KB"))  { turtleIcon = GraphicsUtility.getInternalIcon("icons/turtle-kamil.png"); }
+			else { turtleIcon = GraphicsUtility.getInternalIcon("icons/turtle.png"); }
+			//turtleIcon = GraphicsUtility.getInternalIcon("icons/turtle.png");
 			turtleIcon = GraphicsUtility.getTintedImage(turtleIcon, color);
 			scaledTurtleImages.put(i, GraphicsUtility.toBufferedImage(GraphicsUtility.getScaledImage(turtleIcon, i)));
 		}
