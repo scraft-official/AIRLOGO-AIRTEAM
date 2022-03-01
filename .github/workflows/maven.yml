@@ -25,6 +25,6 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     - uses: actions/upload-artifact@v2
-    with:
-      name: Export artifacts
-      path: target/
+      with:
+        name: Export artifacts
+        path: target/
