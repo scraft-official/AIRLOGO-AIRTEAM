@@ -18,8 +18,6 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
