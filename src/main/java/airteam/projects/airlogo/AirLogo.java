@@ -15,6 +15,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import airteam.projects.airlogo.components.ConsoleOutputPanel;
 import airteam.projects.airlogo.components.SidebarPanel;
 import airteam.projects.airlogo.components.TurtlesWorkspacePanel;
+import airteam.projects.airlogo.components.dialogs.popups.IntroPopup;
 import airteam.projects.airlogo.components.dialogs.popups.SavePopup;
 import airteam.projects.airlogo.utilities.GraphicsUtility;
 
@@ -67,7 +68,7 @@ public class AirLogo extends JFrame {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try { AtariLogo = new AirLogo(); } 
+				try { AtariLogo = new AirLogo(); new IntroPopup();} 
 				catch (Exception e) { e.printStackTrace();}
 			}
 		});
