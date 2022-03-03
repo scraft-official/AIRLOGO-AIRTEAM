@@ -12,15 +12,15 @@ public class CMD_ST {
 	public static String syntax = "ST";
 	public static String description = "POKAZUJE ŻÓŁWIA";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
+		
 		for(Turtle t : TurtlesWorkspacePanel.getSelectedTurtles()) {
 			t.setTurtleVisibility(true);
 		}
+		
 		if(args.length > (argsCount + 1)) {
 			CommandManager.parse(Arrays.copyOfRange(args, argsCount + 1, args.length));
 		}

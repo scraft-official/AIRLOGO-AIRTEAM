@@ -481,6 +481,7 @@ public class TurtlesWorkspacePanel extends JPanel {
 	}
 	
 	public void startRendering(int fps) {
+		if(fps == 0) return;
 		Thread thread = new Thread(new Runnable() {
     	@Override
 			public void run() {

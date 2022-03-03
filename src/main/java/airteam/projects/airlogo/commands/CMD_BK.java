@@ -2,6 +2,7 @@ package airteam.projects.airlogo.commands;
 
 import java.util.Arrays;
 
+import airteam.projects.airlogo.commands.CommandManager.CommandException;
 import airteam.projects.airlogo.components.ConsoleOutputPanel;
 import airteam.projects.airlogo.components.TurtlesWorkspacePanel;
 
@@ -11,11 +12,9 @@ public class CMD_BK {
 	public static String syntax = "BK <DYSTANS>";
 	public static String description = "COFA ŻÓLWIA O PODANY <DYSTANS>";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
 		
 		for(int id : TurtlesWorkspacePanel.getSelectedTurtlesID()) {

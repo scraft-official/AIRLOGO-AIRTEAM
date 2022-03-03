@@ -12,35 +12,31 @@ private static int argsCount = 2;
 	public static String syntax = "SETPC <NUMER PISAKA> <NUMER KOLORU>";
 	public static String description = "USTAWIA KOLOR WSKAZANEGO PISAKA NA PODANY KOLOR (0 -> 127)";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
 		
 		int penNumber;
 		try {
 			penNumber = Integer.valueOf(args[1]);
 		} catch (Exception e) { 
-			ConsoleOutputPanel.addErrorLog("MOŻESZ WYBIERAĆ TYLKO MIĘDZY PISAKAMI (0, 1, 2)");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("MOŻESZ WYBIERAĆ TYLKO MIĘDZY PISAKAMI (0, 1, 2)");
 		}
 		
 		if(penNumber > 2 || penNumber < 0) { 
-			ConsoleOutputPanel.addErrorLog("MOŻESZ WYBIERAĆ TYLKO MIĘDZY PISAKAMI (0, 1, 2)");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("MOŻESZ WYBIERAĆ TYLKO MIĘDZY PISAKAMI (0, 1, 2)");
 		}
 		
 		int colorNumber;
 		try {
 			colorNumber = Integer.valueOf(args[2]);
 		} catch (Exception e) { 
-			ConsoleOutputPanel.addErrorLog("MOŻESZ WYBIERAĆ KOLORY W PRZEDZIALE (0 -> 127)");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("MOŻESZ WYBIERAĆ KOLORY W PRZEDZIALE (0 -> 127)");
+		}
+		
+		if(colorNumber > 127 || colorNumber < 0) {
+			throw new CommandManager.CommandException("MOŻESZ WYBIERAĆ KOLORY W PRZEDZIALE (0 -> 127)");
 		}
 	
 		TurtlesWorkspacePanel.setPenColor(penNumber, NTSCUtility.getAtariColorFromNumber(colorNumber));

@@ -12,11 +12,9 @@ private static int argsCount = 1;
 	public static String syntax = "SETC <NUMER KOLORU>";
 	public static String description = "USTAWIA KOLOR ŻÓŁWIA NA PODANY KOLOR (0 -> 127)";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
 		for(int id : TurtlesWorkspacePanel.getSelectedTurtlesID()) {
 			if(args[1] == null) {
@@ -28,9 +26,11 @@ private static int argsCount = 1;
 			try {
 				colorNumber = CommandManager.parseMath(args[1], id);
 			} catch (Exception e) {
-				ConsoleOutputPanel.addErrorLog("MOŻESZ WYBIERAĆ KOLORY W PRZEDZIALE (0 -> 127)");
-				TurtlesWorkspacePanel.forceRefresh(true, true);
-				return;
+				throw new CommandManager.CommandException("MOŻESZ WYBIERAĆ KOLORY W PRZEDZIALE (0 -> 127)");
+			}
+			
+			if(colorNumber > 127 || colorNumber < 0) {
+				throw new CommandManager.CommandException("MOŻESZ WYBIERAĆ KOLORY W PRZEDZIALE (0 -> 127)");
 			}
 		
 			TurtlesWorkspacePanel.getTurtle(id).setTurtleColor(NTSCUtility.getAtariColorFromNumber(colorNumber));

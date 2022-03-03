@@ -11,15 +11,11 @@ private static int argsCount = 0;
 	public static String syntax = "HELP";
 	public static String description = "WYŚWIETLA LISTĘ WSZYSTKICH KOMEND";
 	
-	public static void execute(String... args) {
+	public static void execute(String... args) throws Exception {
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
 		
-		
-		//TODO WYPSIAC WSZYSTKIE komendy!
 		ConsoleOutputPanel.addInfoLog("==============================================");
 		ConsoleOutputPanel.addInfoLog(" - " + CMD_HELP.syntax + " - " + CMD_HELP.description);
 		ConsoleOutputPanel.addInfoLog(" - " + CMD_ASK.syntax + " - " + CMD_ASK.description);

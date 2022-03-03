@@ -12,21 +12,17 @@ public class CMD_EACH {
 	public static String syntax = "EACH [LISTA KOMEND]";
 	public static String description = "WYSYŁA POLECENIA DO WSZYSTKICH ŻÓŁWI";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
 		
 		if(args[1].charAt(0) != '[') {
-			ConsoleOutputPanel.addErrorLog(
+			throw new CommandManager.CommandException(
 					"UŻYJ ZNAKU \"[\", ABY ROZPOCZĄĆ LISTĘ POWTARZNYCH POLECEŃ.",
 					"NIE ZNALEZIONO ROZPOCZĘCIA POWTARZNYCH POLECEŃ! ( " + String.join(" ", args) + " )"
 			);
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
 		}
 		
 		String repeatCommand = String.join(" ", Arrays.copyOfRange(args, argsCount, args.length));
@@ -54,12 +50,10 @@ public class CMD_EACH {
 						restOfCommands = repeatCommand.substring(endIndex+2, repeatCommand.length());
 					
 					else {
-						ConsoleOutputPanel.addErrorLog(
+						throw new CommandManager.CommandException(
 							"SPRAWDŹ, CZY NIE UMIESZCZONO ZA DUŻO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKÓW!",
 							"ŹLE ZAKOŃCZONO LISTĘ POWTARZANYCH POLECEŃ ( " + String.join(" ", args) + " )"
 						);
-						TurtlesWorkspacePanel.forceRefresh(true, true);
-						return;
 					}
 				repeatCommand = repeatCommand.substring(1, endIndex);
  				break;
@@ -68,21 +62,17 @@ public class CMD_EACH {
 		}
 		
 		if(leftBracketCount > rightBracketCount) {
-			ConsoleOutputPanel.addErrorLog(
+			throw new CommandManager.CommandException(
 					"UŻYJ ZNAKU \"]\", ABY ZAKOŃCZYĆ LISTE POWTARZNYCH POLECEŃ!",
 					"NIE ZNALEZIONO ZAKOŃCZENIA LISTY POWTARZNYCH POLECEŃ! ( " + String.join(" ", args) + " )"
 			);
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
 		}
 		
 		if(repeatCommand.length() <= 1) {
 			if(repeatCommand.length() == 0 || repeatCommand.charAt(0) == ' ') {
-				ConsoleOutputPanel.addErrorLog(
+				throw new CommandManager.CommandException(
 						"NIE WPROWADZONO ŻADNEJ LISTY POLECEŃ DO POWTÓRZENIA! ( " + String.join(" ", args) + " )"
 				);
-				TurtlesWorkspacePanel.forceRefresh(true, true);
-				return;
 			}
 		}
 		

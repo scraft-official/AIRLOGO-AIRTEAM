@@ -46,6 +46,8 @@ public class ConsoleInputPanel extends JPanel {
 	private static ImageIcon consoleOn = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/paper-icon-full.png"), 28, 28));
 	private static ImageIcon consoleOff = new ImageIcon(GraphicsUtility.getSizedImage(GraphicsUtility.getInternalIcon("icons/paper-icon.png"), 28, 28));
 	
+	private static JTextField textField = new JTextField();
+	
 	public static void refreshConsoleButton() {
 		if(ConsoleOutputPanel.getVisbility()) consoleButton.setIcon(consoleOn);
 		else consoleButton.setIcon(consoleOff);
@@ -74,7 +76,6 @@ public class ConsoleInputPanel extends JPanel {
 		JLabel beforeText = new JLabel("WYSLIJ POLECENIE »");
 		beforeText.setFont(new Font("Tahoma", Font.BOLD, 14));
 		
-		JTextField textField = new JTextField();
 		textField.setOpaque(false);
 		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		textField.setBorder(null);
@@ -126,8 +127,9 @@ public class ConsoleInputPanel extends JPanel {
 					} else SaveManager.importWorkspace(null);
 				}
 				else if(cmdList[0].equals("ED")) {
-					CMD_ED.execute(command.split(" "));
-				} else CommandManager.parse(cmdList);
+					try { CMD_ED.execute(command.split(" ")); } 
+					catch(Exception ex) { ConsoleOutputPanel.addErrorLog(ex.getMessage().split("\n")); }
+				} else try { CommandManager.parse(cmdList); } catch(Exception ex) {}
 				
 				textField.setText("");
       }});
@@ -178,6 +180,10 @@ public class ConsoleInputPanel extends JPanel {
 		add(beforeText, "1, 1, 2, 1, center, fill");
 		add(consoleButton, "8, 1, center, default");
 		
+	}
+	
+	public static JTextField getInputField() {
+		return textField;
 	}
 	
 	@Override

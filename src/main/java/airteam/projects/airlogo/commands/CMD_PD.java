@@ -12,11 +12,9 @@ public class CMD_PD {
 	public static String syntax = "PD";
 	public static String description = "OPUSZCZA PISAK";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
 		
 		for(Turtle t : TurtlesWorkspacePanel.getSelectedTurtles()) {

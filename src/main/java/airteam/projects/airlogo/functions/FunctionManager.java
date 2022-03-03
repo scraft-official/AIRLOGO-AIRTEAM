@@ -35,12 +35,10 @@ public class FunctionManager {
 		return registeredFunctions.get(name);
 	}
 	
-	public static void parseFunction(String name, String[] args) {
+	public static void parseFunction(String name, String[] args) throws Exception {
 		TurtleFunction function = registeredFunctions.get(name);
 		if(function.args.size() > args.length - 1) { 
-			ConsoleOutputPanel.addErrorLog("PRAWIDLOWE UZYCIE FUNKCJI: " + name + " <" + String.join("> <", function.args) + ">", "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!"); 
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDLOWE UZYCIE FUNKCJI: " + name + " <" + String.join("> <", function.args) + ">", "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!"); 
 		}
 		
 		String commands = function.commands;

@@ -11,28 +11,20 @@ private static int argsCount = 1;
 	public static String syntax = "SETPN <NUMER PISAKA>";
 	public static String description = "USTAWIA PISAK ŻÓŁWIA NA WSKAZANY (0 -> 2)";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
 		
 		int penNumber;
 		try {
 			penNumber = Integer.valueOf(args[1]);
 		} catch (Exception e) { 
-			ConsoleOutputPanel.addErrorLog("MOŻESZ WYBIERAĆ TYLKO MIĘDZY PISAKAMI (0, 1, 2)");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("MOŻESZ WYBIERAĆ TYLKO MIĘDZY PISAKAMI (0, 1, 2)");
 		}
 		
-		
-		
 		if(penNumber > 2 || penNumber < 0) { 
-			ConsoleOutputPanel.addErrorLog("MOŻESZ WYBIERAĆ TYLKO MIĘDZY PISAKAMI (0, 1, 2)");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("MOŻESZ WYBIERAĆ TYLKO MIĘDZY PISAKAMI (0, 1, 2)");
 		}
 	
 		TurtlesWorkspacePanel.selectPenID(penNumber);

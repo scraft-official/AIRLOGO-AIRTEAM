@@ -139,7 +139,7 @@ public class TurtleToolBarPanel extends JPanel {
 		buttonInfo.addActionListener(new ActionListener() {
       @Override
       public void actionPerformed(ActionEvent e) {
-      	CMD_HELP.execute("HELP");
+      	try { CMD_HELP.execute("HELP"); } catch(Exception ex) {}
       }
     });
     

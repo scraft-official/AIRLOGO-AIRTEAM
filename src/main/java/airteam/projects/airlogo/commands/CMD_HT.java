@@ -10,13 +10,11 @@ public class CMD_HT {
 private static int argsCount = 0;
 	
 	public static String syntax = "HT";
-	public static String description = "UKRUWA ŻÓŁWIA";
+	public static String description = "UKRYWA ŻÓŁWIA";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
 		
 		for(Turtle t : TurtlesWorkspacePanel.getSelectedTurtles()) {

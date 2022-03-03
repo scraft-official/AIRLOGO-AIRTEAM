@@ -4,6 +4,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 import airteam.projects.airlogo.components.ConsoleOutputPanel;
+import airteam.projects.airlogo.components.TurtlesWorkspacePanel;
 import airteam.projects.airlogo.functions.FunctionManager;
 
 public class CommandManager {
@@ -15,7 +16,7 @@ public class CommandManager {
 		engine = manager.getEngineByName("js");
 	}
 	
-	public static void parse(String[] args) {
+	public static void parse(String[] args) throws Exception {
 		try {
 			if(args[0].equals("FD")) {
 				CMD_FD.execute(args);
@@ -79,9 +80,20 @@ public class CommandManager {
 			}
 			else {
 				ConsoleOutputPanel.addErrorLog("NIE ZNALEZIONO TAKIEJ KOMENDY! ( " + String.join(" ", args) + " )");
+				throw new CommandManager.CommandException("NIE ZNALEZIONO TAKIEJ KOMENDY! ( " + String.join(" ", args) + " )");
 			}
 		}
-		catch(Exception e) { e.printStackTrace(); ConsoleOutputPanel.addErrorLog("WYSTĄPIŁ BŁĄD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )");}
+		catch(CommandException e) {
+			ConsoleOutputPanel.addErrorLog(e.getMessage().split("\n"));
+			TurtlesWorkspacePanel.forceRefresh(true, true);
+			throw new Exception(e.getMessage());
+		}
+		catch(Exception e) { 
+			e.printStackTrace(); 
+			ConsoleOutputPanel.addErrorLog("WYSTĄPIŁ BŁĄD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )");
+			TurtlesWorkspacePanel.forceRefresh(true, true);
+			throw new Exception(e.getMessage());
+		}
 	}
 	
 	public static int parseMath(String arg, int turtleID) throws Exception {
@@ -98,6 +110,12 @@ public class CommandManager {
 			throw new Exception();
 		}
 		return calc;
+	}
+	
+	public static class CommandException extends Exception {
+		public CommandException(String... msgs) {
+			super(String.join("\n", msgs));
+		}
 	}
 			
 }

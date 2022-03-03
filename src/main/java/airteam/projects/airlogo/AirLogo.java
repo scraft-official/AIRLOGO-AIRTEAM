@@ -28,7 +28,7 @@ public class AirLogo extends JFrame {
 	private static AirLogo AtariLogo;
 	private static int fps = 50;
 	
-	public AirLogo() {
+	public AirLogo(boolean showApp) {
 		setIconImage(GraphicsUtility.getSizedImage((BufferedImage) GraphicsUtility.getInternalIcon("icons/app-icon.png"), 250, 250));
 		getContentPane().setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("center:350px"),
@@ -51,7 +51,7 @@ public class AirLogo extends JFrame {
 		
 		ConsoleOutputPanel.addUserLog("===============================================","MIŁEJ ZABAWY!","LISTĘ WSZYSTKICH POLECEŃ ZNAJDZIESZ POD KOMENDĄ \"HELP\"","WITAJ W APLIKACJI AIRLOGO OD AIRTEAM!","===============================================");
 		
-		setVisible(true);
+		setVisible(showApp);
 	}
 	
 	public static AirLogo getFrame() {
@@ -68,7 +68,7 @@ public class AirLogo extends JFrame {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				try { AtariLogo = new AirLogo(); new IntroPopup();} 
+				try { AtariLogo = new AirLogo(true); new IntroPopup();} 
 				catch (Exception e) { e.printStackTrace();}
 			}
 		});

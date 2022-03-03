@@ -12,12 +12,10 @@ public class CMD_TELL {
 	public static String syntax = "TELL [LISTA INDEKSÓW ŻÓŁWI]";
 	public static String description = "WSKAZUJE ŻÓLWI KTÓRZY MAJĄ WYKONYWAĆ DALSZE POLECENIA";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDŁOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJĄCO ARGUMENTÓW!");
 		}
 		
 		String turtlesIDs;
@@ -50,12 +48,10 @@ public class CMD_TELL {
 							restOfCommands = turtlesIDs.substring(endIndex+2, turtlesIDs.length());
 						
 						else {
-							ConsoleOutputPanel.addErrorLog(
+							throw new CommandManager.CommandException(
 									"SPRAWDZ, CZY NIE UMIESCILES ZA DUZO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKOW!",
 									"ZLE ZAKONCZONO LIST INDEKSÓW ŻÓŁWI " + String.join(" ", args) + " )"
 									);
-							TurtlesWorkspacePanel.forceRefresh(true, true);
-							return;
 						}
 					turtlesIDs = turtlesIDs.substring(1, endIndex);
 					break;
@@ -64,21 +60,17 @@ public class CMD_TELL {
 			}
 			
 			if(leftBracketCount > rightBracketCount) {
-				ConsoleOutputPanel.addErrorLog(
+				throw new CommandManager.CommandException(
 						"UŻYJ ZNAKU \"]\", ABY ZAKOŃCZYĆ LISTE INDEKSÓW ŻÓŁWI!",
 						"NIE ZNALEZIONO ZAKOŃCZENIA LISTY INDEKSÓW ŻÓŁWI! ( " + String.join(" ", args) + " )"
 				);
-				TurtlesWorkspacePanel.forceRefresh(true, true);
-				return;
 			}
 			
 			if(turtlesIDs.length() <= 1) {
 				if(turtlesIDs.length() == 0 || turtlesIDs.charAt(0) == ' ') {
-					ConsoleOutputPanel.addErrorLog(
+					throw new CommandManager.CommandException(
 							"NIE WPROWADZONO ŻADNEJ LISTY INDEKSÓW ŻÓŁWI! ( " + String.join(" ", args) + " )"
 					);
-					TurtlesWorkspacePanel.forceRefresh(true, true);
-					return;
 				}
 			}
 			
@@ -94,7 +86,7 @@ public class CMD_TELL {
 			try {
 				selectedIDs.add(Integer.valueOf(id));
 			} catch(Exception e) {
-				ConsoleOutputPanel.addErrorLog("WPROWADZONO BŁĘDNY INDEKS ŻÓŁWIA  ( " + id + "!= LICZBA )");
+				throw new CommandManager.CommandException("WPROWADZONO BŁĘDNY INDEKS ŻÓŁWIA  ( " + id + "!= LICZBA )");
 			}
 		}
 		

@@ -11,12 +11,10 @@ public class CMD_REPEAT {
 	public static String syntax = "REPEAT <ILE RAZY> [LISTA KOMEND]";
 	public static String description = "POWTARZA WSKAZANE KOMENDY PODANĄ ILOŚĆ RAZY";
 	
-	public static void execute(String[] args) {
+	public static void execute(String[] args) throws Exception {
 
 		if(args.length < argsCount + 1) {
-			ConsoleOutputPanel.addErrorLog("PRAWIDLOWE UZYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("PRAWIDLOWE UŻYCIE KOMENDY: " + syntax, "WPROWADZONO NIEWYSTARCZAJACO ARGUMENTOW!");
 		}
 		
 		if(args[1] == null) {
@@ -28,23 +26,17 @@ public class CMD_REPEAT {
 		try {
 			repeatCount = Integer.valueOf(args[1]);
 			if(repeatCount <= 0) {
-				ConsoleOutputPanel.addErrorLog("LICZBA POWTORZEN MUSI BYC WIEKSZA OD 0! ( " + args[0] + " " + args[1] + " )");
-				TurtlesWorkspacePanel.forceRefresh(true, true);
-				return;
+				throw new CommandManager.CommandException("LICZBA POWTORZEN MUSI BYC WIEKSZA OD 0! ( " + args[0] + " " + args[1] + " )");
 			}
 		} catch(Exception e) {
-			ConsoleOutputPanel.addErrorLog("WPROWADZONO NIEPRAWIDLOWA LICZBE POWTORZEN! ( " + args[0] + " " + args[1] + " != LICZBA )");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
+			throw new CommandManager.CommandException("WPROWADZONO NIEPRAWIDLOWA LICZBE POWTORZEN! ( " + args[0] + " " + args[1] + " != LICZBA )");
 		}
 		
 		if(args[2].charAt(0) != '[') {
-			ConsoleOutputPanel.addErrorLog(
+			throw new CommandManager.CommandException(
 					"UŻYJ ZNAKU \"[\", ABY ROZPOCZĄĆ LISTĘ POWTARZNYCH POLECEŃ.",
 					"NIE ZNALEZIONO ROZPOCZĘCIA POWTARZNYCH POLECEŃ! ( " + String.join(" ", args) + " )"
 			);
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
 		}
 		
 		String repeatCommand = String.join(" ", Arrays.copyOfRange(args, argsCount, args.length));
@@ -72,12 +64,10 @@ public class CMD_REPEAT {
 						restOfCommands = repeatCommand.substring(endIndex+2, repeatCommand.length());
 					
 					else {
-						ConsoleOutputPanel.addErrorLog(
+						throw new CommandManager.CommandException(
 								"SPRAWDŹ, CZY NIE UMIESZCZONO ZA DUŻO ZNAKOW \"]\" LUB DODATKOWYCH ZNAKÓW!",
 								"ŹLE ZAKOŃCZONO LISTĘ POWTARZANYCH POLECEŃ ( " + String.join(" ", args) + " )"
 								);
-						TurtlesWorkspacePanel.forceRefresh(true, true);
-						return;
 					}
 				repeatCommand = repeatCommand.substring(1, endIndex);
  				break;
@@ -86,21 +76,17 @@ public class CMD_REPEAT {
 		}
 		
 		if(leftBracketCount > rightBracketCount) {
-			ConsoleOutputPanel.addErrorLog(
+			throw new CommandManager.CommandException(
 					"UŻYJ ZNAKU \"]\", ABY ZAKOŃCZYĆ LISTE POWTARZNYCH POLECEŃ!",
 					"NIE ZNALEZIONO ZAKOŃCZENIA LISTY POWTARZNYCH POLECEŃ! ( " + String.join(" ", args) + " )"
 			);
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			return;
 		}
 		
 		if(repeatCommand.length() <= 1) {
 			if(repeatCommand.length() == 0 || repeatCommand.charAt(0) == ' ') {
-				ConsoleOutputPanel.addErrorLog(
+				throw new CommandManager.CommandException(
 						"NIE WPROWADZONO ŻADNEJ LISTY POLECEŃ DO POWTÓRZENIA! ( " + String.join(" ", args) + " )"
 				);
-				TurtlesWorkspacePanel.forceRefresh(true, true);
-				return;
 			}
 		}
 		
