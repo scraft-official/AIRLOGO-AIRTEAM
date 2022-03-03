@@ -128,11 +128,11 @@ public class AutomatedTests {
 		assertDoesNotThrow(() -> CommandManager.parse(("SETPC 1 127").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("SETPC 0 129").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("SETC 129").split(" ")));
+		assertThrows(Exception.class, () -> CommandManager.parse(("SETC -1").split(" ")));
 		
 		assertDoesNotThrow(() -> CommandManager.parse(("SETPN 0").split(" ")));
 		assertDoesNotThrow(() -> CommandManager.parse(("SETPN 1").split(" ")));
 		assertDoesNotThrow(() -> CommandManager.parse(("SETPN 2").split(" ")));
-		
 		
 		assertThrows(Exception.class, () -> CommandManager.parse(("SETPN 5").split(" ")));
 		
@@ -141,12 +141,15 @@ public class AutomatedTests {
 		assertThrows(Exception.class, () -> CommandManager.parse(("RT").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("LT").split(" ")));
 		
+		assertDoesNotThrow(() -> CommandManager.parse(("EACH [FD 100 RT 90]").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("EACH").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("EACH [").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("EACH []").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("EACH []]").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("EACH [[]]]").split(" ")));
 		
+		
+		assertDoesNotThrow(() -> CommandManager.parse(("REPEAT 4 [FD 100 RT 90]").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("REPEAT").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("REPEAT [").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("REPEAT []").split(" ")));
@@ -157,6 +160,10 @@ public class AutomatedTests {
 		assertThrows(Exception.class, () -> CommandManager.parse(("REPEAT 1 []]").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("REPEAT 1 [[]]]").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("REPEAT A [FD 100]").split(" ")));
+		
+		assertDoesNotThrow(() -> CommandManager.parse(("ASK 5 [FD 100 RT 90]").split(" ")));
+		assertDoesNotThrow(() -> CommandManager.parse(("ASK [0 1 2 3] [FD 100 RT 90]").split(" ")));
+		assertDoesNotThrow(() -> CommandManager.parse(("ASK [ 0  ] [FD     100     RT    90]").split(" ")));
 		
 		assertThrows(Exception.class, () -> CommandManager.parse(("ASK").split(" ")));
 		assertThrows(Exception.class, () -> CommandManager.parse(("ASK [").split(" ")));
@@ -183,6 +190,7 @@ public class AutomatedTests {
 			assertEquals(500, CommandManager.parseMath("100*(WHO+1)", 4));
 			assertEquals(20, CommandManager.parseMath("100/(WHO+1)", 4));
 			assertEquals(25, CommandManager.parseMath("100/(WHO-1)", 5));
+			assertEquals(6, CommandManager.parseMath("360/57", 0));
 			
 		} catch (Exception e) {}
 	}
