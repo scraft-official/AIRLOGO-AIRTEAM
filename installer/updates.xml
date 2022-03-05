@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <updateDescriptor baseUrl="">
-  <entry targetMediaFileId="30" updatableVersionMin="" updatableVersionMax="" fileName="AirLogo_windows-x32_1.0.0.exe" newVersion="1.0.0" newMediaFileId="30" fileSize="49122304" md5Sum="feb63d24e83ba968c5300751ece0bea5" sha256Sum="bcb60c8a642bfc36211a18fbf97d5cb311c8d318a606b24ccdaad0c124f98169" bundledJre="windows-x86-11.0.14.1.tar.gz" archive="false" singleBundle="false">
+  <entry targetMediaFileId="30" updatableVersionMin="" updatableVersionMax="" fileName="AirLogo_windows-x32_1.0.0.exe" newVersion="1.0.0" newMediaFileId="30" fileSize="49033216" md5Sum="cd37f1890cc0a23da06cce22bfe4bce7" sha256Sum="77e449311ab3c6a190f960d5996af902a608cd492dae91651d3602d5f70d1407" bundledJre="windows-x86-11.0.14.1.tar.gz" archive="false" singleBundle="false">
+    <comment language="pl" />
+  </entry>
+  <entry targetMediaFileId="38" updatableVersionMin="" updatableVersionMax="" fileName="AirLogo_windows-x64_1.0.0.exe" newVersion="1.0.0" newMediaFileId="38" fileSize="55446016" md5Sum="713559d224ec07f6fa2f4cc63092857a" sha256Sum="b684a450b12ed499dca6672aa72ed2b4d3169c0c788cfc918c8b56fb9806d3f5" bundledJre="windows-amd64-11.0.14.1.tar.gz" archive="false" singleBundle="false">
     <comment language="pl" />
   </entry>
 </updateDescriptor>

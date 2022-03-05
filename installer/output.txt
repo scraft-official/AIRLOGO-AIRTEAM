@@ -1,3 +1,4 @@
 # List of generated media files. The columns are tab-separated:
 # id | media file type | display name | media file path
-30	windows	Windows	F:\Eclipse\AIRTEAM PROJECTS\AIRTEAM - ATARI\AIRTEAM-ATARILOGO\installer\AirLogo_windows-x32_1.0.0.exe
+30	windows	Windows 32bit	F:\Eclipse\AIRTEAM PROJECTS\AIRTEAM - AIRLOGO\AIRLOGO-AIRTEAM\installer\AirLogo_windows-x32_1.0.0.exe
+38	windows	Windows 64bit	F:\Eclipse\AIRTEAM PROJECTS\AIRTEAM - AIRLOGO\AIRLOGO-AIRTEAM\installer\AirLogo_windows-x64_1.0.0.exe

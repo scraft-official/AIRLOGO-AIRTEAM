@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <install4j version="9.0.6" transformSequenceNumber="9">
-  <directoryPresets config="F:/Eclipse/AIRTEAM PROJECTS/AIRTEAM - ATARI/AIRTEAM-ATARILOGO/build-libs" />
-  <application name="AirLogo - AirTeam" applicationId="9048-2148-4662-8549" mediaDir="F:/Eclipse/AIRTEAM PROJECTS/AIRTEAM - ATARI/AIRTEAM-ATARILOGO/installer" compression="8" shortName="AirLogo" publisher="AirTeam" publisherWeb="https://science-cup.pl" version="1.0.0" convertDotsToUnderscores="false" convertSpacesToUnderscores="false" macVolumeId="75a9abe332830482" javaMinVersion="11" javaMaxVersion="12">
+  <directoryPresets config="F:/Eclipse/AIRTEAM PROJECTS/AIRTEAM - AIRLOGO/AIRLOGO-AIRTEAM/installer" />
+  <application name="AirLogo - AirTeam" applicationId="9048-2148-4662-8549" mediaDir="F:/Eclipse/AIRTEAM PROJECTS/AIRTEAM - AIRLOGO/AIRLOGO-AIRTEAM/installer" compression="8" shortName="AirLogo" publisher="AirTeam" publisherWeb="https://science-cup.pl" version="1.0.0" convertDotsToUnderscores="false" convertSpacesToUnderscores="false" macVolumeId="75a9abe332830482" javaMinVersion="11" javaMaxVersion="12">
     <languages>
       <principalLanguage id="pl" />
     </languages>
@@ -12,7 +12,7 @@
       <mountPoint id="24" location="app-libs" />
     </mountPoints>
     <entries>
-      <fileEntry mountPoint="24" file="F:/Eclipse/AIRTEAM PROJECTS/AIRTEAM - ATARI/AIRTEAM-ATARILOGO/target/AirTeam-AirLogo-1.0.0-shaded.jar" />
+      <fileEntry mountPoint="24" file="F:/Eclipse/AIRTEAM PROJECTS/AIRTEAM - AIRLOGO/AIRLOGO-AIRTEAM/target/AirTeam-AirLogo-1.0.0-shaded.jar" />
     </entries>
   </files>
   <launchers>
@@ -26,7 +26,7 @@
       </java>
       <vmOptionsFile mode="none" />
       <iconImageFiles>
-        <file path="F:/Eclipse/AIRTEAM PROJECTS/AIRTEAM - ATARI/AIRTEAM-ATARILOGO/build-libs/app-icon.png" />
+        <file path="F:/Eclipse/AIRTEAM PROJECTS/AIRTEAM - AIRLOGO/AIRLOGO-AIRTEAM/build-libs/app-icon.png" />
       </iconImageFiles>
     </launcher>
   </launchers>
@@ -496,6 +496,7 @@ return console.askYesNo(message, true);
     </styles>
   </installerGui>
   <mediaSets>
-    <windows name="Windows" id="30" jreBitType="32" />
+    <windows name="Windows 32bit" id="30" jreBitType="32" />
+    <windows name="Windows 64bit" id="38" />
   </mediaSets>
 </install4j>

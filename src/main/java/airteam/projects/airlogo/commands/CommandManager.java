@@ -17,82 +17,68 @@ public class CommandManager {
 	}
 	
 	public static void parse(String[] args) throws Exception {
-		try {
-			if(args[0].equals("FD")) {
-				CMD_FD.execute(args);
-			}
-			else if(args[0].equals("BK")) {
-				CMD_BK.execute(args);
-			}
-			else if(args[0].equals("LT")) {
-				CMD_LT.execute(args);
-			}
-			else if(args[0].equals("RT")) {
-				CMD_RT.execute(args);
-			}
-			else if(args[0].equals("HT")) {
-				CMD_HT.execute(args);
-			}
-			else if(args[0].equals("ST")) {
-				CMD_ST.execute(args);
-			}
-			else if(args[0].equals("CS")) {
-				CMD_CS.execute(args);
-			}
-			else if(args[0].equals("PU")) {
-				CMD_PU.execute(args);
-			}
-			else if(args[0].equals("PD")) {
-				CMD_PD.execute(args);
-			}
-			else if(args[0].equals("SETC")) {
-			  CMD_SETC.execute(args);
-			}
-			else if(args[0].equals("SETPN")) {
-				CMD_SETPN.execute(args);
-			}
-			else if(args[0].equals("SETPC")) {
-				CMD_SETPC.execute(args);
-			}
-			else if(args[0].equals("ASK")) {
-				CMD_ASK.execute(args);
-			}
-			else if(args[0].equals("ERALL")) {
-				CMD_ERALL.execute(args);
-			}
-			else if(args[0].equals("POTS")) {
-				CMD_POTS.execute(args);
-			}
-			else if(args[0].equals("HELP")) {
-				CMD_HELP.execute(args);
-			}
-			else if(args[0].equals("TELL")) {
-				CMD_TELL.execute(args);
-			}
-			else if(args[0].equals("EACH")) {
-				CMD_EACH.execute(args);
-			}
-			else if(args[0].equals("REPEAT")) {
-				CMD_REPEAT.execute(args);
-			}
-			else if(FunctionManager.existFunction(args[0])) {
-				FunctionManager.parseFunction(args[0], args);
-			}
-			else {
-				ConsoleOutputPanel.addErrorLog("NIE ZNALEZIONO TAKIEJ KOMENDY! ( " + String.join(" ", args) + " )");
-				throw new CommandManager.CommandException("NIE ZNALEZIONO TAKIEJ KOMENDY! ( " + String.join(" ", args) + " )");
-			}
+		if(args[0].equals("FD")) {
+			CMD_FD.execute(args);
 		}
-		catch(CommandException e) {
-			ConsoleOutputPanel.addErrorLog(e.getMessage().split("\n"));
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			throw new Exception(e.getMessage());
+		else if(args[0].equals("BK")) {
+			CMD_BK.execute(args);
 		}
-		catch(Exception e) { 
-			e.printStackTrace(); 
-			ConsoleOutputPanel.addErrorLog("WYSTĄPIŁ BŁĄD Z WYKONYWANIEM TEJ KOMENDY! ( " + e.getMessage() + " ) ( " + String.join(" ", args) + " )");
-			TurtlesWorkspacePanel.forceRefresh(true, true);
-			throw new Exception(e.getMessage());
+		else if(args[0].equals("LT")) {
+			CMD_LT.execute(args);
+		}
+		else if(args[0].equals("RT")) {
+			CMD_RT.execute(args);
+		}
+		else if(args[0].equals("HT")) {
+			CMD_HT.execute(args);
+		}
+		else if(args[0].equals("ST")) {
+			CMD_ST.execute(args);
+		}
+		else if(args[0].equals("CS")) {
+			CMD_CS.execute(args);
+		}
+		else if(args[0].equals("PU")) {
+			CMD_PU.execute(args);
+		}
+		else if(args[0].equals("PD")) {
+			CMD_PD.execute(args);
+		}
+		else if(args[0].equals("SETC")) {
+		  CMD_SETC.execute(args);
+		}
+		else if(args[0].equals("SETPN")) {
+			CMD_SETPN.execute(args);
+		}
+		else if(args[0].equals("SETPC")) {
+			CMD_SETPC.execute(args);
+		}
+		else if(args[0].equals("ASK")) {
+			CMD_ASK.execute(args);
+		}
+		else if(args[0].equals("ERALL")) {
+			CMD_ERALL.execute(args);
+		}
+		else if(args[0].equals("POTS")) {
+			CMD_POTS.execute(args);
+		}
+		else if(args[0].equals("HELP")) {
+			CMD_HELP.execute(args);
+		}
+		else if(args[0].equals("TELL")) {
+			CMD_TELL.execute(args);
+		}
+		else if(args[0].equals("EACH")) {
+			CMD_EACH.execute(args);
+		}
+		else if(args[0].equals("REPEAT")) {
+			CMD_REPEAT.execute(args);
+		}
+		else if(FunctionManager.existFunction(args[0])) {
+			FunctionManager.parseFunction(args[0], args);
+		}
+		else {
+			throw new CommandManager.CommandException("NIE ZNALEZIONO TAKIEJ KOMENDY! ( " + String.join(" ", args) + " )");
 		}
 	}
 	

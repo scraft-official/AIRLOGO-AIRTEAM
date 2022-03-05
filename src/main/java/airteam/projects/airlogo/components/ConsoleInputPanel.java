@@ -29,6 +29,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import airteam.projects.airlogo.commands.CMD_ED;
 import airteam.projects.airlogo.commands.CommandManager;
+import airteam.projects.airlogo.commands.CommandManager.CommandException;
 import airteam.projects.airlogo.components.dialogs.popups.AddNewFunctionPopup;
 import airteam.projects.airlogo.savemanager.SaveManager;
 import airteam.projects.airlogo.utilities.GraphicsUtility;
@@ -129,7 +130,16 @@ public class ConsoleInputPanel extends JPanel {
 				else if(cmdList[0].equals("ED")) {
 					try { CMD_ED.execute(command.split(" ")); } 
 					catch(Exception ex) { ConsoleOutputPanel.addErrorLog(ex.getMessage().split("\n")); }
-				} else try { CommandManager.parse(cmdList); } catch(Exception ex) {}
+				} else try { 
+					CommandManager.parse(cmdList); 
+				} catch(CommandException ex) {
+					ConsoleOutputPanel.addErrorLog(ex.getMessage().split("\n"));
+					TurtlesWorkspacePanel.forceRefresh(true, true);
+				} catch(Exception ex) { 
+					ex.printStackTrace(); 
+					ConsoleOutputPanel.addErrorLog("WYSTĄPIŁ BŁĄD Z WYKONYWANIEM TEJ KOMENDY! ( " + ex.getMessage() + " )");
+					TurtlesWorkspacePanel.forceRefresh(true, true);
+				}
 				
 				textField.setText("");
       }});
