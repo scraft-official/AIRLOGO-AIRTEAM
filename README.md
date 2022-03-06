@@ -21,11 +21,20 @@ Swoją pracę można zapisać i udostępnić, za pomocą opcji zapisu planszy lu
 4.	Po zainstalowaniu, jeżeli została wybrana opcja „Utwórz ikonę Pulpitu”, to skrót aplikacji można znaleźć na pulpicie lub wyszukując go po nazwie w wyszukiwarce aplikacji.
 
 # BUDOWANIE APLIKACJI
-### WYMAGANIA:
-   - Apache Maven
+### DO ZBUDOWANIA APLIKACJI POTRZEBNE BĘDZIE:
+   - [Apache Maven](https://maven.apache.org/download.cgi)
+   - [JDK 11](https://www.oracle.com/pl/java/technologies/javase/jdk11-archive-downloads.html)
 
-
-
+### JAK ZBUDOWAĆ?
+   - Należy pobrać pliki tego repozytorium. (Przycisk "CODE" > Download ZIP)
+   - Pobrane repozytorium należy rozpakować.
+   - Wewnątrz wypakowanego folderu należy uruchomić CMD (Command Prompt) i wywołać komendę\
+   ```mvn clean install```
+   - Gotowe pliki aplikacji znajdują się w lokalizacji **/target/**
+   
+   `* Plik z koncówką -shaded.jar jest to plik JAR aplikacji ze wszystkimi bibliotekami.`\
+   `* Plik z koncówką .exe jest to plik EXE aplikacji ze wszystkimi bibliotekami.`\
+   `* Plik zakończony tylko .jar jest to plik JAR aplikacji bez bibliotek. (Brak możliwości uruchomienia)`
 
 # DODATKOWE INFORMACJE:
 * Wykorzystane w aplikacji ikony zostały pobrane ze strony https://www.flaticon.com
