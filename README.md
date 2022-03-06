@@ -20,6 +20,9 @@ Swoją pracę można zapisać i udostępnić, za pomocą opcji zapisu planszy lu
 3.	Gdy instalator się otworzy, należy postępować zgodnie ze wskazówkami jakie będą wyświetlane.
 4.	Po zainstalowaniu, jeżeli została wybrana opcja „Utwórz ikonę Pulpitu”, to skrót aplikacji można znaleźć na pulpicie lub wyszukując go po nazwie w wyszukiwarce aplikacji.
 
+# DOKUMENTACJA APLIKACJI
+Dokumentacje aplikacji znajdziesz tutaj: [AIRLOGO - DOKUMENTACJA.pdf](https://github.com/scraft-official/AIRLOGO-AIRTEAM/files/8192457/AIRLOGO.-.DOKUMENTACJA.pdf)
+
 # BUDOWANIE APLIKACJI
 ### DO ZBUDOWANIA APLIKACJI POTRZEBNE BĘDZIE:
    - [Apache Maven](https://maven.apache.org/download.cgi)
