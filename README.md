@@ -12,7 +12,7 @@ Swoją pracę można zapisać i udostępnić, za pomocą opcji zapisu planszy lu
    - 2GB+ RAM,
    - ~180+ MB Przestrzeni Dyskowej
 
-`* Aplikacja była testowana na wersji systemu Windows 10, lecznie wykluczone jest wsparcie, także dla innych wersji systemów Windows.`
+`* Aplikacja była testowana na wersji systemu Windows 10, lecznie niewykluczone jest wsparcie, także dla innych wersji systemów Windows.`
 
 ### SPOSÓB INSTALACJI:
 1.	Należy pobrać instalator aplikacji wedle korzystanej wersji architektury systemu, na której będzie instalowana aplikacja. (32bit lub 64bit). [POBIERZ GO TUTAJ](https://github.com/scraft-official/AIRLOGO-AIRTEAM/releases/latest)
